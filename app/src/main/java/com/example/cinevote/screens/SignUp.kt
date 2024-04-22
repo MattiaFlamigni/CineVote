@@ -26,6 +26,7 @@ import com.example.cinevote.R
 import com.example.cinevote.components.FancyButton
 
 import com.example.cinevote.components.PasswordInput
+import com.example.cinevote.components.SimpleButton
 import com.example.cinevote.components.TextInput
 
 @Composable
@@ -62,9 +63,9 @@ fun SignUp(){
                 horizontalArrangement = Arrangement.SpaceBetween
 
             ){
-                FancyButton(text = "Login", onClick = {/*TODO*/}, modifier=Modifier.weight(1f))
+                SimpleButton(text = "Login", onClick = {/*TODO*/}, modifier=Modifier.weight(1f), fontSize = 20.sp)
 
-                FancyButton(text = "Registrati", onClick = {/*TODO*/}, modifier=Modifier.weight(1.1f), fontSize = 23.sp)
+                SimpleButton(text = "Registrati", onClick = {/*TODO*/}, modifier=Modifier.weight(1.1f), fontSize = 20.sp)
 
             }
 

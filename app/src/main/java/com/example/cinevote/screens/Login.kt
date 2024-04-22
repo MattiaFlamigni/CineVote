@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxHeight
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -23,11 +25,13 @@ import androidx.compose.ui.unit.sp
 import com.example.cinevote.R
 import com.example.cinevote.components.FancyButton
 import com.example.cinevote.components.PasswordInput
+import com.example.cinevote.components.SimpleButton
 import com.example.cinevote.components.TextInput
 
 @Composable
 fun LoginForm(){
     Scaffold(
+
         modifier= Modifier.background(Color.White)
     ) {innerPadding->
         Column(
@@ -42,7 +46,9 @@ fun LoginForm(){
         ) {
 
             Text(
-                modifier = Modifier.padding(bottom=40.dp, start=20.dp).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(bottom = 40.dp, start = 20.dp)
+                    .fillMaxWidth(),
                 text= stringResource(id = R.string.login_title),
                 style= MaterialTheme.typography.headlineLarge,
 
@@ -58,9 +64,9 @@ fun LoginForm(){
                 horizontalArrangement = Arrangement.SpaceBetween
 
             ){
-                FancyButton(text = "Registrati", onClick = {/*TODO*/}, modifier=Modifier.weight(1.1f))
+                SimpleButton(text = "Registrati", onClick = {/*TODO*/}, modifier=Modifier.weight(1f), fontSize = 20.sp)
 
-                FancyButton(text = "Login", onClick = {/*TODO*/}, modifier=Modifier.weight(1f), fontSize = 23.sp)
+                SimpleButton(text = "Entra", onClick = {/*TODO*/}, modifier=Modifier.weight(1f), fontSize = 20.sp)
             }
 
         }

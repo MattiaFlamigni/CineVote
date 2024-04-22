@@ -13,6 +13,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -22,13 +24,15 @@ fun SimpleButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    color: ButtonColors
+    color: ButtonColors = ButtonDefaults.buttonColors(),
+    fontSize: TextUnit = MaterialTheme.typography.bodyLarge.fontSize
 ) {
     Button(
         onClick = onClick,
         modifier = modifier
             .padding(8.dp),
-        colors = color
+        colors = ButtonDefaults.buttonColors(containerColor = Color.Blue, contentColor = Color.White),
+        shape= RoundedCornerShape(35)
 
     ) {
         Box(
@@ -36,7 +40,9 @@ fun SimpleButton(
             contentAlignment = Alignment.Center
         ) {
             // Here you can customize further if needed
-            Text(text = text)
+            Text(text = text,
+                style = TextStyle(fontSize= fontSize)
+            )
         }
     }
 }

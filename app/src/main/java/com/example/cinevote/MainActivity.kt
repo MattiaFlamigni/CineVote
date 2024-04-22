@@ -27,8 +27,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     //Greeting("Android")
-                    LoginForm()
-                    //SignUp()
+                    //LoginForm()
+                    SignUp()
                 }
             }
         }
