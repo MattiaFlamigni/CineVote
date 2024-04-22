@@ -1,4 +1,4 @@
-package com.example.cinevote.screen
+package com.example.cinevote.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -9,30 +9,24 @@ import androidx.compose.foundation.layout.fillMaxHeight
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cinevote.R
 import com.example.cinevote.components.FancyButton
-import com.example.cinevote.components.SimpleButton
+import com.example.cinevote.components.PasswordInput
+import com.example.cinevote.components.TextInput
 
 @Composable
-fun Login(){
+fun LoginForm(){
     Scaffold(
         modifier= Modifier.background(Color.White)
     ) {innerPadding->
@@ -48,16 +42,19 @@ fun Login(){
         ) {
 
             Text(
-                modifier = Modifier.padding(bottom=40.dp),
-                text="Login into CineVote",
-                style= MaterialTheme.typography.headlineLarge
+                modifier = Modifier.padding(bottom=40.dp, start=20.dp).fillMaxWidth(),
+                text= stringResource(id = R.string.login_title),
+                style= MaterialTheme.typography.headlineLarge,
+
             )
 
-            UsernameInput()
+            TextInput("username")
             Spacer(modifier = Modifier.padding(top= 20.dp))
             PasswordInput()
             Row(
-                modifier=Modifier.fillMaxWidth().padding(top=20.dp),
+                modifier= Modifier
+                    .fillMaxWidth()
+                    .padding(top = 20.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
 
             ){
@@ -73,27 +70,4 @@ fun Login(){
 
 
 
-@Composable
-fun UsernameInput() {
-    var username by remember { mutableStateOf("") }
 
-    OutlinedTextField(
-        value = username,
-        onValueChange = { username = it },
-        label = { Text("Username") }
-    )
-}
-
-
-@Composable
-fun PasswordInput() {
-    var password by rememberSaveable { mutableStateOf("") }
-
-    OutlinedTextField(
-        value = password,
-        onValueChange = { password = it },
-        label = { Text("Password") },
-        visualTransformation = PasswordVisualTransformation(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-    )
-}
