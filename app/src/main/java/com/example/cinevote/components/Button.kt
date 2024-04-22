@@ -24,15 +24,17 @@ fun SimpleButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    color: ButtonColors = ButtonDefaults.buttonColors(),
-    fontSize: TextUnit = MaterialTheme.typography.bodyLarge.fontSize
+    color: ButtonColors = ButtonDefaults.buttonColors(containerColor = Color.Blue, contentColor = Color.White),
+    fontSize: TextUnit = MaterialTheme.typography.bodyLarge.fontSize,
+    buttonEnabled: Boolean = true
 ) {
     Button(
         onClick = onClick,
         modifier = modifier
             .padding(8.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color.Blue, contentColor = Color.White),
-        shape= RoundedCornerShape(35)
+        colors = color,
+        shape= RoundedCornerShape(35),
+        enabled = buttonEnabled
 
     ) {
         Box(
