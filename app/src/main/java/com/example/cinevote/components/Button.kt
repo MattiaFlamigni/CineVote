@@ -39,7 +39,7 @@ fun SimpleButton(
 
             contentAlignment = Alignment.Center
         ) {
-            // Here you can customize further if needed
+
             Text(text = text,
                 style = TextStyle(fontSize= fontSize)
             )
