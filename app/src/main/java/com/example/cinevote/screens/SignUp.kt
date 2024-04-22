@@ -22,6 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.cinevote.NavigationRoute
 import com.example.cinevote.R
 import com.example.cinevote.components.FancyButton
 
@@ -30,7 +32,7 @@ import com.example.cinevote.components.SimpleButton
 import com.example.cinevote.components.TextInput
 
 @Composable
-fun SignUp(){
+fun SignUpScreen(navController:NavHostController){
     Scaffold(
         modifier= Modifier.background(Color.White)
     ) {innerPadding->
@@ -63,7 +65,7 @@ fun SignUp(){
                 horizontalArrangement = Arrangement.SpaceBetween
 
             ){
-                SimpleButton(text = "Login", onClick = {/*TODO*/}, modifier=Modifier.weight(1f), fontSize = 20.sp)
+                SimpleButton(text = "Login", onClick = {navController.navigate(NavigationRoute.Login.route)}, modifier=Modifier.weight(1f), fontSize = 20.sp)
 
                 SimpleButton(text = "Registrati", onClick = {/*TODO*/}, modifier=Modifier.weight(1.1f), fontSize = 20.sp)
 
@@ -76,7 +78,7 @@ fun SignUp(){
 
 
 @Composable
-fun SignUpForm(){3
+fun SignUpForm(){
 
     var username by remember { mutableStateOf("") }
     var mail by remember { mutableStateOf("") }
