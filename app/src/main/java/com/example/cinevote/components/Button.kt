@@ -2,7 +2,9 @@ package com.example.cinevote.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -15,23 +17,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import com.example.cinevote.R
 
 @Composable
 fun SimpleButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    color: ButtonColors = ButtonDefaults.buttonColors(containerColor = Color.Blue, contentColor = Color.White),
+    //color: ButtonColors = ButtonDefaults.buttonColors(containerColor = Color.Green, contentColor = Color.Black),
+    color: ButtonColors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.myGreen)),
+
     fontSize: TextUnit = MaterialTheme.typography.bodyLarge.fontSize,
     buttonEnabled: Boolean = true
 ) {
     Button(
         onClick = onClick,
         modifier = modifier
-            .padding(8.dp),
+            .padding(15.dp).fillMaxWidth(),
         colors = color,
         shape= RoundedCornerShape(35),
         enabled = buttonEnabled

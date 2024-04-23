@@ -2,6 +2,9 @@
     <string name="app_name">CineVote</string>
 
 
-    <string name="login_title">Login</string>
+    <string name="login_title">Effettua il Login</string>
     <string name="registrati_title">Registrati</string>
+    <string name="registration_spot">Unisciti. Esplora. Condividi. Cinema.</string>
+    <string name="login_spot">Preparati per un\'immersione cinematografica senza precedenti.</string>
+    <string name="signup_password">La tua sicurezza è la nostra priorità</string>
 </resources>

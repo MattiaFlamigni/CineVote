@@ -1,4 +1,4 @@
-package com.example.cinevote.screens
+package com.example.cinevote.screens.auth
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +16,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -29,7 +33,8 @@ import com.example.cinevote.components.TextInput
 @Composable
 fun LoginScreen(navController: NavHostController){
     Scaffold(
-
+        containerColor= MaterialTheme.colorScheme.primaryContainer,
+        //containerColor = colorResource(id = R.color.myRedTheatre),
         modifier= Modifier.background(Color.White)
     ) {innerPadding->
         Column(
@@ -47,8 +52,24 @@ fun LoginScreen(navController: NavHostController){
                 modifier = Modifier
                     .padding(bottom = 40.dp, start = 20.dp)
                     .fillMaxWidth(),
+                text = stringResource(id = R.string.login_spot),
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    fontStyle = FontStyle.Italic,
+                    fontFamily = FontFamily.Monospace,
+                    fontWeight = FontWeight.ExtraBold,
+                    //color = colorResource(id = R.color.myOrange) // Colore del testo aggiunto per maggior leggibilità
+                    color= MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            )
+
+
+            Text(
+                modifier = Modifier
+                    .padding(bottom = 40.dp, start = 20.dp)
+                    .fillMaxWidth(),
                 text= stringResource(id = R.string.login_title),
                 style= MaterialTheme.typography.headlineLarge,
+                fontFamily = FontFamily.Monospace,
 
             )
 
@@ -62,9 +83,9 @@ fun LoginScreen(navController: NavHostController){
                 horizontalArrangement = Arrangement.SpaceBetween
 
             ){
-                SimpleButton(text = "Registrati", onClick = {navController.navigate(NavigationRoute.SignUp.route)}, modifier=Modifier.weight(1f), fontSize = 20.sp)
+                SimpleButton(text = "Registrati", onClick = {navController.navigate(NavigationRoute.SignUpGeneral.route)}, modifier=Modifier.weight(1f), fontSize = 20.sp)
 
-                SimpleButton(text = "Entra", onClick = {/*TODO*/}, modifier=Modifier.weight(1f), fontSize = 20.sp)
+                SimpleButton(text = "Accedi", onClick = {/*TODO*/}, modifier=Modifier.weight(1f), fontSize = 20.sp)
             }
 
         }

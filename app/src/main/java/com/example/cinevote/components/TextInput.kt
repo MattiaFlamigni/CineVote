@@ -16,9 +16,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import com.example.cinevote.R
 
 
 enum class KeyBoard(){
@@ -43,7 +45,7 @@ fun TextInput(role:String, type:KeyBoard=KeyBoard.TEXT, error:Boolean=false):Str
         onValueChange = { text = it },
         label = { Text(role) },
         colors= OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Color.Blue,
+            focusedBorderColor = colorResource(id = R.color.myGreen),
             unfocusedBorderColor = Color.Gray,
             cursorColor = Color.Blue
         ),
@@ -66,7 +68,7 @@ fun PasswordInput(error:Boolean=false):String {
         visualTransformation = PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         colors= OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Color.Blue,
+            focusedBorderColor = colorResource(id = R.color.myGreen),
             unfocusedBorderColor = Color.Gray,
             cursorColor = Color.Blue
         ),
