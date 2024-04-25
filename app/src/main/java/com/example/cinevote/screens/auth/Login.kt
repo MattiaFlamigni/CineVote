@@ -85,7 +85,7 @@ fun LoginScreen(navController: NavHostController){
             ){
                 SimpleButton(text = "Registrati", onClick = {navController.navigate(NavigationRoute.SignUpGeneral.route)}, modifier=Modifier.weight(1f), fontSize = 20.sp)
 
-                SimpleButton(text = "Accedi", onClick = {/*TODO*/}, modifier=Modifier.weight(1f), fontSize = 20.sp)
+                SimpleButton(text = "Accedi", onClick = {navController.navigate(NavigationRoute.HomeScreen.route)/*TODO*/}, modifier=Modifier.weight(1f), fontSize = 20.sp)
             }
 
         }
