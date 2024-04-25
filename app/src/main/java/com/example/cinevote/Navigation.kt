@@ -5,8 +5,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.cinevote.screens.HomeScreen
+import com.example.cinevote.screens.SignUpGeneralScreen
 import com.example.cinevote.screens.auth.LoginScreen
-import com.example.cinevote.screens.auth.SignUpGeneralScreen
 import com.example.cinevote.screens.auth.SignUpMailScreen
 import com.example.cinevote.screens.auth.SignUpasswordScreen
 
@@ -15,13 +16,14 @@ sealed class NavigationRoute(val route:String){
     data object SignUpGeneral : NavigationRoute("SignUpGeneral")
     data object SignUpMail : NavigationRoute("SignUpMail")
     data object SignUpPassword : NavigationRoute("SignUpPassword")
+    data object HomeScreen : NavigationRoute("Home")
 }
 
 @Composable
 fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
     NavHost(
         navController = navController,
-        startDestination = NavigationRoute.SignUpPassword.route, /*TODO*/
+        startDestination = NavigationRoute.Login.route, /*TODO*/
         modifier=modifier){
 
         composable(NavigationRoute.Login.route){
@@ -35,6 +37,9 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
         }
         composable(NavigationRoute.SignUpPassword.route){
             SignUpasswordScreen(navController=navController)
+        }
+        composable(NavigationRoute.HomeScreen.route){
+            HomeScreen(navController=navController)
         }
 
 
