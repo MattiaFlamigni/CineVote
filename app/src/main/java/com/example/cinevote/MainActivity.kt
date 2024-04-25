@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.example.cinevote.screens.HomeScreen
+
 import com.example.cinevote.screens.auth.SignUpasswordScreen
 
 
@@ -31,6 +33,7 @@ class MainActivity : ComponentActivity() {
                     //Greeting("Android")
                     //LoginForm()
                     //SignUp()
+                    //HomeScreen()
 
                 }
             }
