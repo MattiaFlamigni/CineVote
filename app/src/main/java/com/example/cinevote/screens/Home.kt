@@ -16,11 +16,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.cinevote.R
+import com.example.cinevote.components.FilmCard
 import com.example.cinevote.components.TopBar
 
 
@@ -28,7 +30,7 @@ import com.example.cinevote.components.TopBar
 @Composable
 fun HomeScreen(navController: NavHostController){
     Scaffold(
-        topBar = { TopBar("Prova")},
+        topBar = { TopBar(title= stringResource(id = R.string.home_title),navController= navController)},
         containerColor = MaterialTheme.colorScheme.primaryContainer
     ) {innerPadding->
         LazyColumn(
@@ -41,7 +43,7 @@ fun HomeScreen(navController: NavHostController){
 
 
                 for(genre in loadGenres()) {
-                    FilmCard(category = genre)
+                    FilmCard(genre)
                 }
             }
         }
@@ -86,36 +88,6 @@ private fun TopCategory() {
 
 
 
-@Composable
-private fun FilmCard(category:String){
-
-    Column {
-
-        Text(
-            text=category,
-            fontFamily = FontFamily.Monospace,
-            fontSize = 30.sp
-        )
-
-
-        LazyRow {
-            items(50) {
-                Card(
-                    modifier=Modifier.padding(10.dp),
-                    colors= CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-                    )
-                ){
-                    val image: Painter = painterResource(id = R.drawable.ic_launcher_foreground)
-                    Image(painter = image, contentDescription = "")
-
-                }
-            }
-        }
-    }
-
-}
 
 fun loadGenres(): List<String> {
     return listOf("Commedia", "Horror", "Comico", "Thriller", "Prova")
