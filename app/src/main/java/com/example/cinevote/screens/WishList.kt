@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.cinevote.components.FilmCard
 import com.example.cinevote.components.TopBar
+import com.example.cinevote.components.bottomAppBar
 
 
 @Composable
@@ -22,6 +23,7 @@ fun WishListScreen(navController: NavHostController){
             navController = navController,
             title="WishList"
         )},
+        bottomBar = { bottomAppBar(navController) },
         content = {innerPadding->
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = 128.dp),

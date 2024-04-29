@@ -24,12 +24,13 @@ import androidx.navigation.NavHostController
 import com.example.cinevote.R
 import com.example.cinevote.components.FilmCard
 import com.example.cinevote.components.TopBar
-
+import com.example.cinevote.components.bottomAppBar
 
 
 @Composable
 fun HomeScreen(navController: NavHostController){
     Scaffold(
+        bottomBar = { bottomAppBar(navController) },
         topBar = { TopBar(title= stringResource(id = R.string.home_title),navController= navController)},
         containerColor = MaterialTheme.colorScheme.primaryContainer
     ) {innerPadding->
