@@ -47,7 +47,6 @@ fun TopBar(title:String="", navController: NavHostController){
             }
         },
         actions = {
-
             if(title!= stringResource(id = R.string.wishlist_title)) {
                 IconButton(onClick = { navController.navigate(NavigationRoute.WishList.route) }) {
                     Icon(Icons.Default.Favorite, "Likes")

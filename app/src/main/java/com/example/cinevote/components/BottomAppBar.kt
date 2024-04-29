@@ -32,8 +32,8 @@ fun bottomAppBar(navController: NavHostController) {
 
             ){
                 simpleChip(Icons.Default.Home, "Home",navController)
-                simpleChip(Icons.Default.Search, "search",navController)
-                simpleChip(Icons.Default.PlayArrow, "in the cinema", navController)
+                simpleChip(Icons.Default.Search, "",navController)
+                simpleChip(Icons.Default.PlayArrow, "OutNow", navController)
                 simpleChip(Icons.Default.Face, "seen", navController)
 
             }
