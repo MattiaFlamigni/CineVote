@@ -44,6 +44,8 @@ fun simpleChip(icon: ImageVector, alternative:String, navController: NavHostCont
                         navController.navigate((NavigationRoute.OutNow.route))
                     }
 
+            navController.navigate(NavigationRoute.review.route) /*TODO*/
+
                   },
         label = { Text("") },
         icon = {

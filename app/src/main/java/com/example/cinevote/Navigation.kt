@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.cinevote.screens.HomeScreen
 import com.example.cinevote.screens.OutNowScreen
+import com.example.cinevote.screens.ReviewScreen
 import com.example.cinevote.screens.SignUpGeneralScreen
 import com.example.cinevote.screens.WishListScreen
 import com.example.cinevote.screens.auth.LoginScreen
@@ -21,6 +22,7 @@ sealed class NavigationRoute(val route:String){
     data object HomeScreen : NavigationRoute("Home")
     data object WishList : NavigationRoute("wishList")
     data object OutNow : NavigationRoute("outNow")
+    data object review : NavigationRoute("review")
 }
 
 @Composable
@@ -50,6 +52,9 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
         }
         composable(NavigationRoute.OutNow.route){
             OutNowScreen(navController = navController)
+        }
+        composable(NavigationRoute.review.route){
+            ReviewScreen(navController = navController)
         }
 
 
