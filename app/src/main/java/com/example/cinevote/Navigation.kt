@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.cinevote.screens.DetailScreen
 import com.example.cinevote.screens.HomeScreen
 import com.example.cinevote.screens.OutNowScreen
 import com.example.cinevote.screens.ReviewScreen
@@ -23,6 +24,7 @@ sealed class NavigationRoute(val route:String){
     data object WishList : NavigationRoute("wishList")
     data object OutNow : NavigationRoute("outNow")
     data object review : NavigationRoute("review")
+    data object detail : NavigationRoute("detail")
 }
 
 @Composable
@@ -55,6 +57,9 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
         }
         composable(NavigationRoute.review.route){
             ReviewScreen(navController = navController)
+        }
+        composable(NavigationRoute.detail.route){
+            DetailScreen(navController = navController)
         }
 
 
