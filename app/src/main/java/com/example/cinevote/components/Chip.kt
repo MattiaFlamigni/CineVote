@@ -36,8 +36,12 @@ fun simpleChip(icon: ImageVector, alternative:String, navController: NavHostCont
             backgroundColor = if(isSelected){Color.Green}else{Color.Transparent}
         ),
         onClick = { isSelected = true
-                    if(alternative.equals("Home")) {
+                    if(alternative == "Home") {
                         navController.navigate(NavigationRoute.HomeScreen.route)
+                    }
+
+                    if(alternative=="OutNow"){
+                        navController.navigate((NavigationRoute.OutNow.route))
                     }
 
                   },
