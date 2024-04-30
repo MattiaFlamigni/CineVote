@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.cinevote.NavigationRoute
 import com.example.cinevote.components.FilmCard
 import com.example.cinevote.components.TopBar
 import com.example.cinevote.components.bottomAppBar
@@ -31,7 +32,7 @@ fun WishListScreen(navController: NavHostController){
         ){
 
             items(LoadWishList().size) {
-                FilmCard()
+                FilmCard(onClick = {navController.navigate(NavigationRoute.Detail.route)})
             }
 
         }

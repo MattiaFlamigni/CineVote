@@ -25,8 +25,9 @@ sealed class NavigationRoute(val route:String){
     data object WishList : NavigationRoute("wishList")
     data object OutNow : NavigationRoute("outNow")
     data object Review : NavigationRoute("review")
+
+    data object Ricerca : NavigationRoute("cerca")
     data object Detail : NavigationRoute("detail")
-    data object Search : NavigationRoute("detail")
 }
 
 @Composable
@@ -60,12 +61,15 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
         composable(NavigationRoute.Review.route){
             ReviewScreen(navController = navController)
         }
+
+        composable(NavigationRoute.Ricerca.route){
+            searchScreen(navController = navController)
+        }
+
         composable(NavigationRoute.Detail.route){
             DetailScreen(navController = navController)
         }
-        composable(NavigationRoute.Search.route){
-            searchScreen(navController = navController)
-        }
+
 
 
     }
