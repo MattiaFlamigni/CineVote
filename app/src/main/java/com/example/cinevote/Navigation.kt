@@ -14,6 +14,7 @@ import com.example.cinevote.screens.WishListScreen
 import com.example.cinevote.screens.auth.LoginScreen
 import com.example.cinevote.screens.auth.SignUpMailScreen
 import com.example.cinevote.screens.auth.SignUpasswordScreen
+import com.example.cinevote.screens.searchScreen
 
 sealed class NavigationRoute(val route:String){
     data object Login : NavigationRoute("Login")
@@ -23,8 +24,9 @@ sealed class NavigationRoute(val route:String){
     data object HomeScreen : NavigationRoute("Home")
     data object WishList : NavigationRoute("wishList")
     data object OutNow : NavigationRoute("outNow")
-    data object review : NavigationRoute("review")
-    data object detail : NavigationRoute("detail")
+    data object Review : NavigationRoute("review")
+    data object Detail : NavigationRoute("detail")
+    data object Search : NavigationRoute("detail")
 }
 
 @Composable
@@ -55,11 +57,14 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
         composable(NavigationRoute.OutNow.route){
             OutNowScreen(navController = navController)
         }
-        composable(NavigationRoute.review.route){
+        composable(NavigationRoute.Review.route){
             ReviewScreen(navController = navController)
         }
-        composable(NavigationRoute.detail.route){
+        composable(NavigationRoute.Detail.route){
             DetailScreen(navController = navController)
+        }
+        composable(NavigationRoute.Search.route){
+            searchScreen(navController = navController)
         }
 
 

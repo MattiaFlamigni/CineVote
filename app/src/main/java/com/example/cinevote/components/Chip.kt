@@ -16,12 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.wear.compose.material.Chip
 import androidx.wear.compose.material.ChipDefaults
 import com.example.cinevote.NavigationRoute
-import com.example.cinevote.R
 
 @Composable
 fun simpleChip(icon: ImageVector, alternative:String, navController: NavHostController){
@@ -44,7 +42,7 @@ fun simpleChip(icon: ImageVector, alternative:String, navController: NavHostCont
                         navController.navigate((NavigationRoute.OutNow.route))
                     }
 
-            navController.navigate(NavigationRoute.detail.route) /*TODO*/
+            navController.navigate(NavigationRoute.Search.route) /*TODO*/
 
                   },
         label = { Text("") },
