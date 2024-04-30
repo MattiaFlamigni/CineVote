@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.cinevote.NavigationRoute
 import com.example.cinevote.R
 import com.example.cinevote.components.FilmCard
 import com.example.cinevote.components.TopBar
@@ -40,11 +41,11 @@ fun HomeScreen(navController: NavHostController){
                 .padding(start = 10.dp)
         ) {
             item {
-                TopCategory()
+                TopCategory(navController)
 
 
                 for(genre in loadGenres()) {
-                    FilmCard(genre)
+                    FilmCard(genre) {}
                 }
             }
         }
@@ -54,7 +55,7 @@ fun HomeScreen(navController: NavHostController){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopCategory() {
+private fun TopCategory(navController: NavHostController) {
 
 
 
@@ -72,7 +73,7 @@ private fun TopCategory() {
                     modifier= Modifier
                         .padding(10.dp)
                         .size(200.dp),
-                    onClick = {/*TODO*/},
+                    onClick = {navController.navigate(NavigationRoute.Detail.route)},
                     colors= CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                         contentColor = MaterialTheme.colorScheme.onTertiaryContainer
