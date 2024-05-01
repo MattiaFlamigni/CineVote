@@ -1,4 +1,4 @@
-package com.example.cinevote.screens.auth
+package com.example.cinevote.screens.auth.ViewModel
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +13,7 @@ class AuthViewModel :ViewModel() {
     val state = _state.asStateFlow()
 
 
-    fun changeState(authState:AuthStatus){
+    fun changeState(authState: AuthStatus){
         _state.value = AuthState(authState)
     }
 }

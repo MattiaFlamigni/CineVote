@@ -12,14 +12,13 @@ import com.example.cinevote.screens.OutNowScreen
 import com.example.cinevote.screens.ReviewScreen
 import com.example.cinevote.screens.SignUpGeneralScreen
 import com.example.cinevote.screens.WishListScreen
-import com.example.cinevote.screens.auth.AuthViewModel
+import com.example.cinevote.screens.auth.ViewModel.AuthViewModel
 import com.example.cinevote.screens.auth.LoginScreen
-import com.example.cinevote.screens.auth.LoginViewModel
+import com.example.cinevote.screens.auth.ViewModel.LoginViewModel
 import com.example.cinevote.screens.auth.SignUpMailScreen
 import com.example.cinevote.screens.auth.SignUpasswordScreen
 import com.example.cinevote.screens.auth.mainScreen
 import com.example.cinevote.screens.searchScreen
-import org.koin.androidx.compose.koinViewModel
 
 sealed class NavigationRoute(val route:String){
     data object Login : NavigationRoute("Login")

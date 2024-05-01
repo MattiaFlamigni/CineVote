@@ -1,4 +1,4 @@
-package com.example.cinevote.screens.auth
+package com.example.cinevote.screens.auth.ViewModel
 
 enum class AuthStatus {
     LOGIN, SIGNUP, LOGGED

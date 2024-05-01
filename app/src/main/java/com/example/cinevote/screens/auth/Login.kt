@@ -1,6 +1,5 @@
 package com.example.cinevote.screens.auth
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,9 +29,10 @@ import com.example.cinevote.R
 import com.example.cinevote.components.PasswordInput
 import com.example.cinevote.components.SimpleButton
 import com.example.cinevote.components.TextInput
+import com.example.cinevote.screens.auth.ViewModel.LoginViewModel
 
 @Composable
-fun LoginScreen(navController: NavHostController, Loginvm:LoginViewModel, onSubmit:()->Unit){
+fun LoginScreen(navController: NavHostController, Loginvm: LoginViewModel, onSubmit:()->Unit){
 
     Scaffold(
         containerColor= MaterialTheme.colorScheme.primaryContainer,
