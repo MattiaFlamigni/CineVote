@@ -76,8 +76,8 @@ private fun SignUpMailForm(navController: NavHostController){
     var canEnable by remember { mutableStateOf(false) }
 
 
-    mail= TextInput(role = "Mail", error = mailError, type=KeyBoard.MAIL)
-    confirmMail= TextInput(role = "Conferma Mail", error=mailError, type=KeyBoard.MAIL)
+    mail= TextInput(role = "Mail", error = mailError, type=KeyBoard.MAIL, onChangeAction = {})
+    confirmMail= TextInput(role = "Conferma Mail", error=mailError, type=KeyBoard.MAIL, onChangeAction = {})
 
 
 

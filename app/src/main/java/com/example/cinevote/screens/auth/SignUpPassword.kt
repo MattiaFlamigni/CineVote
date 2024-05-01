@@ -77,8 +77,8 @@ private fun SignUpPasswordForm(navController: NavHostController){
     var confirmPassword by remember { mutableStateOf("") } ; var passwordError by remember { mutableStateOf(false) }
     var canEnable by remember { mutableStateOf(false) }
 
-    password = PasswordInput(error = passwordError)
-    confirmPassword = PasswordInput(error = passwordError)
+    password = PasswordInput(error = passwordError, {})
+    confirmPassword = PasswordInput(error = passwordError, {})
 
 
 

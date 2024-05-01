@@ -88,9 +88,9 @@ private fun SignUpGeneralForm(navController: NavHostController){
 
     var canEnable by remember { mutableStateOf(false) }
 
-    nome= TextInput(role = "Nome")
-    cognome = TextInput(role = "Cognome")
-    username=TextInput(role = "username")
+    nome= TextInput(role = "Nome", onChangeAction = {})
+    cognome = TextInput(role = "Cognome", onChangeAction = {})
+    username=TextInput(role = "username", onChangeAction = {})
 
 
 
