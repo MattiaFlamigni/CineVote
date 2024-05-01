@@ -1,5 +1,6 @@
 package com.example.cinevote.screens.auth
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,10 +30,12 @@ import com.example.cinevote.R
 import com.example.cinevote.components.PasswordInput
 import com.example.cinevote.components.SimpleButton
 import com.example.cinevote.components.TextInput
+import com.example.cinevote.screens.auth.ViewModel.AuthStatus
+import com.example.cinevote.screens.auth.ViewModel.AuthViewModel
 import com.example.cinevote.screens.auth.ViewModel.LoginViewModel
 
 @Composable
-fun LoginScreen(navController: NavHostController, Loginvm: LoginViewModel, onSubmit:()->Unit){
+fun LoginScreen(navController: NavHostController, Loginvm: LoginViewModel, onSubmit:()->Unit, auth:AuthViewModel){
 
     Scaffold(
         containerColor= MaterialTheme.colorScheme.primaryContainer,
@@ -92,9 +95,14 @@ fun LoginScreen(navController: NavHostController, Loginvm: LoginViewModel, onSub
                 SimpleButton(
                     text = "Accedi",
                     onClick = {
+
                         val correctKey = Loginvm.actions.checkKey(Loginvm.state.value.username, Loginvm.state.value.password)
                         if(correctKey){
-                            navController.navigate(NavigationRoute.HomeScreen.route)}},
+                            auth.changeState(AuthStatus.LOGGED)
+                            navController.navigate(NavigationRoute.HomeScreen.route)
+
+                            Log.d("loginstato", auth.state.value.status.toString())
+                        } },
                     modifier=Modifier.weight(1f), fontSize = 20.sp)
             }
 

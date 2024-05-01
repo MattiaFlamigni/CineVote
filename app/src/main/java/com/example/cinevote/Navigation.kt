@@ -47,7 +47,8 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
         composable(NavigationRoute.Login.route){
             val LoginVm = viewModel<LoginViewModel>()
             val state = LoginVm.state
-            LoginScreen(navController = navController, LoginVm, {}  )
+            val authVm = viewModel<AuthViewModel>()
+            LoginScreen(navController = navController, LoginVm, {} , authVm )
         }
         composable(NavigationRoute.SignUpGeneral.route){
             SignUpGeneralScreen(navController=navController)
