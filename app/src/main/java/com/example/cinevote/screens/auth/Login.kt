@@ -1,9 +1,6 @@
 package com.example.cinevote.screens.auth
 
-import android.app.Activity
-import android.hardware.biometrics.BiometricPrompt
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,39 +10,29 @@ import androidx.compose.foundation.layout.fillMaxHeight
 
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavHostController
 import com.example.cinevote.NavigationRoute
 import com.example.cinevote.R
 import com.example.cinevote.components.PasswordInput
 import com.example.cinevote.components.SimpleButton
 import com.example.cinevote.components.TextInput
-import java.util.concurrent.Executor
 
 @Composable
-fun LoginScreen(navController: NavHostController){
+fun LoginScreen(navController: NavHostController, Loginvm:LoginViewModel, onSubmit:()->Unit){
 
     Scaffold(
         containerColor= MaterialTheme.colorScheme.primaryContainer,
@@ -88,9 +75,11 @@ fun LoginScreen(navController: NavHostController){
 
             )
 
-            TextInput("username")
+            TextInput("username", onChangeAction =Loginvm.actions::setUsername)
             Spacer(modifier = Modifier.padding(top= 20.dp))
-            PasswordInput()
+
+
+            PasswordInput(onChangeAction =Loginvm.actions::setPassword)
             Row(
                 modifier= Modifier
                     .fillMaxWidth()
@@ -100,13 +89,21 @@ fun LoginScreen(navController: NavHostController){
             ){
                 SimpleButton(text = "Registrati", onClick = {navController.navigate(NavigationRoute.SignUpGeneral.route)}, modifier=Modifier.weight(1f), fontSize = 20.sp)
 
-                SimpleButton(text = "Accedi", onClick = {navController.navigate(NavigationRoute.HomeScreen.route)/*TODO*/}, modifier=Modifier.weight(1f), fontSize = 20.sp)
+                SimpleButton(
+                    text = "Accedi",
+                    onClick = {
+                        val correctKey = Loginvm.actions.checkKey(Loginvm.state.value.username, Loginvm.state.value.password)
+                        if(correctKey){
+                            navController.navigate(NavigationRoute.HomeScreen.route)}},
+                    modifier=Modifier.weight(1f), fontSize = 20.sp)
             }
 
         }
 
     }
 }
+
+
 
 
 
