@@ -2,6 +2,7 @@ package com.example.cinevote
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -11,10 +12,14 @@ import com.example.cinevote.screens.OutNowScreen
 import com.example.cinevote.screens.ReviewScreen
 import com.example.cinevote.screens.SignUpGeneralScreen
 import com.example.cinevote.screens.WishListScreen
+import com.example.cinevote.screens.auth.AuthViewModel
 import com.example.cinevote.screens.auth.LoginScreen
+import com.example.cinevote.screens.auth.LoginViewModel
 import com.example.cinevote.screens.auth.SignUpMailScreen
 import com.example.cinevote.screens.auth.SignUpasswordScreen
+import com.example.cinevote.screens.auth.mainScreen
 import com.example.cinevote.screens.searchScreen
+import org.koin.androidx.compose.koinViewModel
 
 sealed class NavigationRoute(val route:String){
     data object Login : NavigationRoute("Login")
@@ -28,17 +33,22 @@ sealed class NavigationRoute(val route:String){
 
     data object Ricerca : NavigationRoute("cerca")
     data object Detail : NavigationRoute("detail")
+    data object Main : NavigationRoute("main")
+
+
 }
 
 @Composable
 fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
     NavHost(
         navController = navController,
-        startDestination = NavigationRoute.Login.route, /*TODO*/
+        startDestination = NavigationRoute.Main.route, /*TODO*/
         modifier=modifier){
 
         composable(NavigationRoute.Login.route){
-            LoginScreen(navController = navController)
+            val LoginVm = viewModel<LoginViewModel>()
+            val state = LoginVm.state
+            LoginScreen(navController = navController, LoginVm, {}  )
         }
         composable(NavigationRoute.SignUpGeneral.route){
             SignUpGeneralScreen(navController=navController)
@@ -69,6 +79,12 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
         composable(NavigationRoute.Detail.route){
             DetailScreen(navController = navController)
         }
+
+        composable(NavigationRoute.Main.route){
+            val authviewModel = viewModel<AuthViewModel>()
+            mainScreen(navController = navController, authviewModel.state)
+        }
+
 
 
 
