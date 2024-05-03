@@ -99,11 +99,7 @@ private fun SignUpGeneralForm(navController: NavHostController, actions: SignUPA
 
 
 
-    if(username.isEmpty() || nome.isEmpty() || cognome.isEmpty()){
-        canEnable=false
-    }else{
-        canEnable=true
-    }
+    canEnable = !(username.isEmpty() || nome.isEmpty() || cognome.isEmpty())
 
 
 
