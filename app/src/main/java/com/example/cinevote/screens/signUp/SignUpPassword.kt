@@ -119,14 +119,12 @@ private fun SignUpPasswordForm(navController: NavHostController, actions: SignUP
 
     ){
 
-        SimpleButton(text = "Registrati", onClick = {
-            /*TODO*/
-            navController.navigate(NavigationRoute.Login.route)
-            Log.d("test Sign Up NAME", state.name)
-            Log.d("test Sign Up USERNAME", state.username)
-            Log.d("test Sign Up MAIL", state.mail)
-            Log.d("test Sign Up password", state.password)
-                                                    },
+        SimpleButton(
+            text = "Registrati",
+            onClick = {
+                navController.navigate(NavigationRoute.Login.route)
+                actions.createUser(state.name, state.surname, state.username, state.mail, state.password)
+            },
             modifier=Modifier.weight(1.1f), fontSize = 20.sp, buttonEnabled = canEnable)
 
     }
