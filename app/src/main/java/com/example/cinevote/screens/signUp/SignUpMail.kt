@@ -32,7 +32,11 @@ import com.example.cinevote.components.SimpleButton
 import com.example.cinevote.components.TextInput
 
 @Composable
-fun SignUpMailScreen(navController:NavHostController){
+fun SignUpMailScreen(
+    state : SignupState,
+    actions : SignUPActions,
+    navController:NavHostController
+){
     Scaffold(
         modifier= Modifier.background(Color.White),
         containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -58,7 +62,7 @@ fun SignUpMailScreen(navController:NavHostController){
 
             )
 
-            SignUpMailForm(navController)
+            SignUpMailForm(navController, actions)
 
         }
 
@@ -67,7 +71,7 @@ fun SignUpMailScreen(navController:NavHostController){
 
 
 @Composable
-private fun SignUpMailForm(navController: NavHostController){
+private fun SignUpMailForm(navController: NavHostController, actions: SignUPActions){
 
 
     var mail by remember { mutableStateOf("") } ; var mailError by remember { mutableStateOf(false) }
@@ -77,7 +81,7 @@ private fun SignUpMailForm(navController: NavHostController){
 
 
     mail= TextInput(role = "Mail", error = mailError, type=KeyBoard.MAIL, onChangeAction = {})
-    confirmMail= TextInput(role = "Conferma Mail", error=mailError, type=KeyBoard.MAIL, onChangeAction = {})
+    confirmMail= TextInput(role = "Conferma Mail", error=mailError, type=KeyBoard.MAIL, onChangeAction = actions::setMail)
 
 
 

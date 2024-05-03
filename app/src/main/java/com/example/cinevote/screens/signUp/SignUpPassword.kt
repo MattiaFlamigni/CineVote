@@ -1,5 +1,6 @@
 package com.example.cinevote.screens.signUp
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,7 +36,11 @@ import com.example.cinevote.components.SimpleButton
 import java.util.regex.Pattern
 
 @Composable
-fun SignUpasswordScreen(navController:NavHostController){
+fun SignUpasswordScreen(
+    state: SignupState,
+    actions : SignUPActions,
+    navController:NavHostController
+){
     Scaffold(
         modifier= Modifier.background(Color.White),
         containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -62,7 +67,7 @@ fun SignUpasswordScreen(navController:NavHostController){
                 fontWeight = FontWeight(50)
             )
 
-            SignUpPasswordForm(navController)
+            SignUpPasswordForm(navController, actions, state) //STATE SOLO PER DEBUG
 
         }
 
@@ -71,14 +76,14 @@ fun SignUpasswordScreen(navController:NavHostController){
 
 
 @Composable
-private fun SignUpPasswordForm(navController: NavHostController){
+private fun SignUpPasswordForm(navController: NavHostController, actions: SignUPActions, state : SignupState){
 
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") } ; var passwordError by remember { mutableStateOf(false) }
     var canEnable by remember { mutableStateOf(false) }
 
     password = PasswordInput(error = passwordError, {})
-    confirmPassword = PasswordInput(error = passwordError, {})
+    confirmPassword = PasswordInput(error = passwordError, actions::setPassword)
 
 
 
@@ -118,7 +123,15 @@ private fun SignUpPasswordForm(navController: NavHostController){
 
     ){
 
-        SimpleButton(text = "Registrati", onClick = {/*TODO*/ navController.navigate(NavigationRoute.Login.route)}, modifier=Modifier.weight(1.1f), fontSize = 20.sp, buttonEnabled = canEnable)
+        SimpleButton(text = "Registrati", onClick = {
+            /*TODO*/
+            navController.navigate(NavigationRoute.Login.route)
+            Log.d("test Sign Up NAME", state.name)
+            Log.d("test Sign Up USERNAME", state.username)
+            Log.d("test Sign Up MAIL", state.mail)
+            Log.d("test Sign Up password", state.password)
+                                                    },
+            modifier=Modifier.weight(1.1f), fontSize = 20.sp, buttonEnabled = canEnable)
 
     }
 

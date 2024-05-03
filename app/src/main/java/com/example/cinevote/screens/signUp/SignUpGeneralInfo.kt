@@ -1,5 +1,6 @@
 package com.example.cinevote.screens.signUp
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,7 +34,11 @@ import com.example.cinevote.components.SimpleButton
 import com.example.cinevote.components.TextInput
 
 @Composable
-fun SignUpGeneralScreen(navController:NavHostController){
+fun SignUpGeneralScreen(
+    state: SignupState,
+    actions : SignUPActions,
+    navController:NavHostController
+){
     Scaffold(
         modifier= Modifier.background(Color.White),
         containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -70,7 +75,7 @@ fun SignUpGeneralScreen(navController:NavHostController){
                 style= MaterialTheme.typography.headlineLarge,
                 fontFamily = FontFamily.Monospace,
             )
-            SignUpGeneralForm(navController)
+            SignUpGeneralForm(navController, actions, state)
 
         }
 
@@ -79,7 +84,7 @@ fun SignUpGeneralScreen(navController:NavHostController){
 
 
 @Composable
-private fun SignUpGeneralForm(navController: NavHostController){
+private fun SignUpGeneralForm(navController: NavHostController, actions: SignUPActions, state :SignupState){
 
     var username by remember { mutableStateOf("") }
 
@@ -88,9 +93,9 @@ private fun SignUpGeneralForm(navController: NavHostController){
 
     var canEnable by remember { mutableStateOf(false) }
 
-    nome= TextInput(role = "Nome", onChangeAction = {})
-    cognome = TextInput(role = "Cognome", onChangeAction = {})
-    username=TextInput(role = "username", onChangeAction = {})
+    nome= TextInput(role = "Nome", onChangeAction = actions::setName)
+    cognome = TextInput(role = "Cognome", onChangeAction = actions::setSurname)
+    username=TextInput(role = "username", onChangeAction = actions::setUsername)
 
 
 
@@ -112,7 +117,10 @@ private fun SignUpGeneralForm(navController: NavHostController){
     ){
         SimpleButton(text = "Login", onClick = {navController.navigate(NavigationRoute.Login.route)}, modifier=Modifier.weight(1f), fontSize = 20.sp)
 
-        SimpleButton(text = "Continua", onClick = {navController.navigate((NavigationRoute.SignUpMail.route))}, modifier=Modifier.weight(1.1f), fontSize = 20.sp, buttonEnabled = canEnable)
+        SimpleButton(text = "Continua", onClick = {
+            Log.d("ennessima prova", state.name)
+            navController.navigate((NavigationRoute.SignUpMail.route))
+                                                  }, modifier=Modifier.weight(1.1f), fontSize = 20.sp, buttonEnabled = canEnable)
 
     }
 

@@ -21,6 +21,7 @@ import com.example.cinevote.screens.signUp.SignUpMailScreen
 import com.example.cinevote.screens.signUp.SignUpasswordScreen
 import com.example.cinevote.screens.mainScreen
 import com.example.cinevote.screens.searchScreen
+import com.example.cinevote.screens.signUp.SignupViewModel
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -43,6 +44,10 @@ sealed class NavigationRoute(val route:String){
 
 @Composable
 fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
+
+    val signUpVm = viewModel<(SignupViewModel)>()
+    val signUpState by signUpVm.state.collectAsState()
+
     NavHost(
         navController = navController,
         startDestination = NavigationRoute.Main.route, /*TODO*/
@@ -52,21 +57,19 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
             //val LoginVm = viewModel<LoginViewModel>()
             val loginVm = koinViewModel<LoginViewModel>()
             val state by loginVm.state.collectAsState()
-
-
-
             val authVm = viewModel<AuthViewModel>()
 
             LoginScreen(navController = navController, state=state, actions = loginVm.actions, auth= authVm )
         }
         composable(NavigationRoute.SignUpGeneral.route){
-            SignUpGeneralScreen(navController=navController)
+
+            SignUpGeneralScreen(navController=navController, state = signUpState, actions=signUpVm.action)
         }
         composable(NavigationRoute.SignUpMail.route){
-            SignUpMailScreen(navController=navController)
+            SignUpMailScreen(navController=navController, state=signUpState, actions=signUpVm.action)
         }
         composable(NavigationRoute.SignUpPassword.route){
-            SignUpasswordScreen(navController=navController)
+            SignUpasswordScreen(navController=navController, state = signUpState, actions = signUpVm.action)
         }
         composable(NavigationRoute.HomeScreen.route){
             HomeScreen(navController=navController)
