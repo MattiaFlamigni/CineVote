@@ -1,9 +1,11 @@
 package com.example.cinevote.components
 
+
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -37,6 +39,13 @@ fun TopBar(title:String="", navController: NavHostController){
             titleContentColor = Color.Black
         ),
         navigationIcon = {
+
+            if(title== stringResource(id = R.string.home_title)){
+                IconButton(onClick = {/*TODO*/}) {
+                    Icon(Icons.Default.Menu, "menu")
+                }
+            }
+
             if(title!= stringResource(id = R.string.home_title)) {
                 IconButton(onClick = { navController.navigateUp() }) {
                     Icon(Icons.AutoMirrored.Default.ArrowBack, "back")
@@ -49,7 +58,6 @@ fun TopBar(title:String="", navController: NavHostController){
                     Icon(Icons.Default.Favorite, "Likes")
                 }
             }
-        }
-
+        },
     )
 }
