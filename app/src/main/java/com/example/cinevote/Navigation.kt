@@ -8,7 +8,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.cinevote.screens.DetailScreen
+import com.example.cinevote.screens.details.DetailScreen
 import com.example.cinevote.screens.HomeScreen
 import com.example.cinevote.screens.OutNowScreen
 import com.example.cinevote.screens.ReviewScreen
