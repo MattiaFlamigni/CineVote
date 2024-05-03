@@ -97,10 +97,10 @@ private fun SignUpMailForm(navController: NavHostController, actions: SignUPActi
 
 
 
-    if(mailError|| mail.isEmpty() || confirmMail.isEmpty()){
-        canEnable=false
+    canEnable = if(mailError|| mail.isEmpty() || confirmMail.isEmpty()){
+        false
     }else{
-        canEnable=true
+        true
     }
 
 

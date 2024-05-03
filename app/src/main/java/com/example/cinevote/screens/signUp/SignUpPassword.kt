@@ -89,21 +89,17 @@ private fun SignUpPasswordForm(navController: NavHostController, actions: SignUP
 
 
 
-    if(confirmPassword!=password && password.isNotEmpty()){
+    passwordError = if(confirmPassword!=password && password.isNotEmpty()){
         Text(text = "Le password non corrispondono")
-        passwordError=true
+        true
     }else if(!isValidPassword(password) && confirmPassword.isNotEmpty()){
         Text(text = "Password non valida")
-        passwordError=true
+        true
     }else{
-        passwordError=false
+        false
     }
 
-    if(passwordError || password.isEmpty() || confirmPassword.isEmpty()){
-        canEnable=false
-    }else{
-        canEnable=true
-    }
+    canEnable = !(passwordError || password.isEmpty() || confirmPassword.isEmpty())
 
     Spacer(modifier = Modifier.padding(top=30.dp))
     val message = checkPasswordRequirements(password = password)
