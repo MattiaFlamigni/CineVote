@@ -19,6 +19,13 @@ interface SignUPActions{
     fun setUsername(username:String)
     fun setMail(mail:String)
     fun setPassword(password:String)
+    fun createUser(
+        name:String,
+        surname:String,
+        username:String,
+        mail:String,
+        password: String
+    )
 }
 class SignupViewModel : ViewModel() {
     private val _state = MutableStateFlow(SignupState())
@@ -44,6 +51,16 @@ class SignupViewModel : ViewModel() {
 
         override fun setPassword(password: String) {
             _state.update { it.copy(password=password) }
+        }
+
+        override fun createUser(
+            name: String,
+            surname: String,
+            username: String,
+            mail: String,
+            password: String
+        ) {
+            TODO("Not yet implemented")
         }
 
     }
