@@ -102,7 +102,7 @@ fun LoginScreen(
 
                         Log.d("test viewModel", state.username)
 
-                        val correctKey = true; /*TODO*/
+                        val correctKey = true /*TODO*/
                         if(correctKey){
                             auth.changeState(AuthStatus.LOGGED)
                             navController.navigate(NavigationRoute.HomeScreen.route)
