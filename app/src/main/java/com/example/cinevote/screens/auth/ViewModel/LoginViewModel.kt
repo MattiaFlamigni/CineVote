@@ -1,36 +1,33 @@
-package com.example.cinevote.screens.auth.ViewModel
+package com.example.cinevote.screens.auth.viewModel
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-data class Loginstate(val username:String="", val password:String="")
+data class LoginState (
+    val username:String="",
+    val password:String=""
+)
 
-interface LoginAction{
+interface LoginActions{
     fun setUsername(username:String)
-    fun setPassword (password:String)
-    fun checkKey(username:String, password: String): Boolean
+    fun setPassword(password:String)
+
 }
-
 class LoginViewModel: ViewModel() {
-
-    private val _state = MutableStateFlow((Loginstate()))
+    private val _state= MutableStateFlow(LoginState())
     val state = _state.asStateFlow()
 
-
-    val actions = object : LoginAction {
-
-        override fun setUsername(username: String): Unit {
-            _state.update { _state.value.copy(username = username) }
+    val actions = object : LoginActions{
+        override fun setUsername(username: String) {
+            _state.update { it.copy(username=username) }
         }
 
         override fun setPassword(password: String) {
-            _state.update { _state.value.copy(password = password) }
+            _state.update { it.copy(password=password) }
         }
 
-        override fun checkKey(username: String, password: String): Boolean {
-            return true
-        }
     }
+
 }

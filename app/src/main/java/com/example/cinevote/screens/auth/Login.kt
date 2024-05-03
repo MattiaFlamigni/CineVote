@@ -30,12 +30,18 @@ import com.example.cinevote.R
 import com.example.cinevote.components.PasswordInput
 import com.example.cinevote.components.SimpleButton
 import com.example.cinevote.components.TextInput
-import com.example.cinevote.screens.auth.ViewModel.AuthStatus
-import com.example.cinevote.screens.auth.ViewModel.AuthViewModel
-import com.example.cinevote.screens.auth.ViewModel.LoginViewModel
+import com.example.cinevote.screens.auth.viewModel.AuthStatus
+import com.example.cinevote.screens.auth.viewModel.AuthViewModel
+import com.example.cinevote.screens.auth.viewModel.LoginActions
+import com.example.cinevote.screens.auth.viewModel.LoginState
 
 @Composable
-fun LoginScreen(navController: NavHostController, Loginvm: LoginViewModel, onSubmit:()->Unit, auth:AuthViewModel){
+fun LoginScreen(
+    state: LoginState,
+    actions: LoginActions,
+    navController: NavHostController,
+    auth:AuthViewModel
+){
 
     Scaffold(
         containerColor= MaterialTheme.colorScheme.primaryContainer,
@@ -78,11 +84,11 @@ fun LoginScreen(navController: NavHostController, Loginvm: LoginViewModel, onSub
 
             )
 
-            TextInput("username", onChangeAction =Loginvm.actions::setUsername)
+            TextInput("username", onChangeAction =actions::setUsername)
             Spacer(modifier = Modifier.padding(top= 20.dp))
 
 
-            PasswordInput(onChangeAction =Loginvm.actions::setPassword)
+            PasswordInput(onChangeAction =actions::setPassword)
             Row(
                 modifier= Modifier
                     .fillMaxWidth()
@@ -96,7 +102,9 @@ fun LoginScreen(navController: NavHostController, Loginvm: LoginViewModel, onSub
                     text = "Accedi",
                     onClick = {
 
-                        val correctKey = Loginvm.actions.checkKey(Loginvm.state.value.username, Loginvm.state.value.password)
+                        Log.d("test viewModel", state.username)
+
+                        val correctKey = true; /*TODO*/
                         if(correctKey){
                             auth.changeState(AuthStatus.LOGGED)
                             navController.navigate(NavigationRoute.HomeScreen.route)

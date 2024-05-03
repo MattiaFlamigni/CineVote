@@ -22,6 +22,9 @@ import com.example.cinevote.screens.auth.SignUpasswordScreen
 
 
 import com.example.cinevote.ui.theme.CineVoteTheme
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.GlobalContext.startKoin
 
 class MainActivity : ComponentActivity() {
 

@@ -1,6 +1,8 @@
 package com.example.cinevote
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -12,13 +14,15 @@ import com.example.cinevote.screens.OutNowScreen
 import com.example.cinevote.screens.ReviewScreen
 import com.example.cinevote.screens.SignUpGeneralScreen
 import com.example.cinevote.screens.WishListScreen
-import com.example.cinevote.screens.auth.ViewModel.AuthViewModel
+import com.example.cinevote.screens.auth.viewModel.AuthViewModel
 import com.example.cinevote.screens.auth.LoginScreen
-import com.example.cinevote.screens.auth.ViewModel.LoginViewModel
+import com.example.cinevote.screens.auth.viewModel.LoginViewModel
 import com.example.cinevote.screens.auth.SignUpMailScreen
 import com.example.cinevote.screens.auth.SignUpasswordScreen
 import com.example.cinevote.screens.auth.mainScreen
 import com.example.cinevote.screens.searchScreen
+import org.koin.androidx.compose.koinViewModel
+
 
 sealed class NavigationRoute(val route:String){
     data object Login : NavigationRoute("Login")
@@ -45,10 +49,15 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
         modifier=modifier){
 
         composable(NavigationRoute.Login.route){
-            val LoginVm = viewModel<LoginViewModel>()
-            val state = LoginVm.state
+            //val LoginVm = viewModel<LoginViewModel>()
+            val loginVm = koinViewModel<LoginViewModel>()
+            val state by loginVm.state.collectAsState()
+
+
+
             val authVm = viewModel<AuthViewModel>()
-            LoginScreen(navController = navController, LoginVm, {} , authVm )
+
+            LoginScreen(navController = navController, state=state, actions = loginVm.actions, auth= authVm )
         }
         composable(NavigationRoute.SignUpGeneral.route){
             SignUpGeneralScreen(navController=navController)

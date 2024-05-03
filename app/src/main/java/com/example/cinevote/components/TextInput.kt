@@ -25,7 +25,7 @@ enum class KeyBoard(){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextInput(role:String, type:KeyBoard=KeyBoard.TEXT, error:Boolean=false, onChangeAction:(text:String)->Unit):String {
+fun TextInput(role:String, type:KeyBoard=KeyBoard.TEXT, error:Boolean=false, onChangeAction:(title:String)->Unit):String {
 
      var text by remember { mutableStateOf("") }
     var key = KeyboardOptions(keyboardType = KeyboardType.Text)
@@ -55,7 +55,7 @@ fun TextInput(role:String, type:KeyBoard=KeyBoard.TEXT, error:Boolean=false, onC
 }
 
 @Composable
-fun PasswordInput(error:Boolean=false, onChangeAction:(title:String)->Unit):String {
+fun PasswordInput(error:Boolean=false, onChangeAction:(password:String)->Unit):String {
     var password by rememberSaveable { mutableStateOf("") }
 
     OutlinedTextField(
