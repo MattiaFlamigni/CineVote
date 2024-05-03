@@ -13,6 +13,7 @@ data class LoginState (
 interface LoginActions{
     fun setUsername(username:String)
     fun setPassword(password:String)
+    fun isKeyCorrect(username:String, password:String): Boolean
 
 }
 class LoginViewModel: ViewModel() {
@@ -26,6 +27,10 @@ class LoginViewModel: ViewModel() {
 
         override fun setPassword(password: String) {
             _state.update { it.copy(password=password) }
+        }
+
+        override fun isKeyCorrect(username: String, password: String): Boolean {
+            return true /*TODO*/
         }
 
     }
