@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.PlayArrow
@@ -40,7 +41,7 @@ fun bottomAppBar(navController: NavHostController) {
                 simpleChip(Icons.Default.Home, "Home",navController)
                 simpleChip(Icons.Default.Search, "Search",navController)
                 simpleChip(Icons.Default.PlayArrow, "OutNow", navController)
-                simpleChip(Icons.Default.Face, "seen", navController)
+                simpleChip(Icons.Default.DateRange, "seen", navController)
 
             }
         }
