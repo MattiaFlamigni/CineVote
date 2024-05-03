@@ -23,6 +23,7 @@ import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.rounded.Face
 import androidx.compose.material.icons.sharp.Star
 import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
