@@ -1,7 +1,7 @@
 package com.example.cinevote
 
 
-import com.example.cinevote.screens.auth.viewModel.LoginViewModel
+import com.example.cinevote.screens.login.LoginViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

@@ -1,4 +1,4 @@
-package com.example.cinevote.screens.auth.viewModel
+package com.example.cinevote.screens.auth
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

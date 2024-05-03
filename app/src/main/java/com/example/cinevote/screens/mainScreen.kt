@@ -1,4 +1,4 @@
-package com.example.cinevote.screens.auth
+package com.example.cinevote.screens
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -6,8 +6,8 @@ import com.example.cinevote.NavigationRoute
 import kotlinx.coroutines.flow.StateFlow
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.example.cinevote.screens.auth.viewModel.AuthState
-import com.example.cinevote.screens.auth.viewModel.AuthStatus
+import com.example.cinevote.screens.auth.AuthState
+import com.example.cinevote.screens.auth.AuthStatus
 
 @Composable
 fun mainScreen(navController:NavHostController, authStateFlow: StateFlow<AuthState>){

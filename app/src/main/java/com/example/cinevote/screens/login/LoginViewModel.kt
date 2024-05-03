@@ -1,4 +1,4 @@
-package com.example.cinevote.screens.auth.viewModel
+package com.example.cinevote.screens.login
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,7 @@ class LoginViewModel: ViewModel() {
     private val _state= MutableStateFlow(LoginState())
     val state = _state.asStateFlow()
 
-    val actions = object : LoginActions{
+    val actions = object : LoginActions {
         override fun setUsername(username: String) {
             _state.update { it.copy(username=username) }
         }

@@ -12,14 +12,14 @@ import com.example.cinevote.screens.DetailScreen
 import com.example.cinevote.screens.HomeScreen
 import com.example.cinevote.screens.OutNowScreen
 import com.example.cinevote.screens.ReviewScreen
-import com.example.cinevote.screens.SignUpGeneralScreen
+import com.example.cinevote.screens.signUp.SignUpGeneralScreen
 import com.example.cinevote.screens.WishListScreen
-import com.example.cinevote.screens.auth.viewModel.AuthViewModel
-import com.example.cinevote.screens.auth.LoginScreen
-import com.example.cinevote.screens.auth.viewModel.LoginViewModel
-import com.example.cinevote.screens.auth.SignUpMailScreen
-import com.example.cinevote.screens.auth.SignUpasswordScreen
-import com.example.cinevote.screens.auth.mainScreen
+import com.example.cinevote.screens.auth.AuthViewModel
+import com.example.cinevote.screens.login.LoginScreen
+import com.example.cinevote.screens.login.LoginViewModel
+import com.example.cinevote.screens.signUp.SignUpMailScreen
+import com.example.cinevote.screens.signUp.SignUpasswordScreen
+import com.example.cinevote.screens.mainScreen
 import com.example.cinevote.screens.searchScreen
 import org.koin.androidx.compose.koinViewModel
 

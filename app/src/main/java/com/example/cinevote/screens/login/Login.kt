@@ -1,4 +1,4 @@
-package com.example.cinevote.screens.auth
+package com.example.cinevote.screens.login
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -30,17 +30,15 @@ import com.example.cinevote.R
 import com.example.cinevote.components.PasswordInput
 import com.example.cinevote.components.SimpleButton
 import com.example.cinevote.components.TextInput
-import com.example.cinevote.screens.auth.viewModel.AuthStatus
-import com.example.cinevote.screens.auth.viewModel.AuthViewModel
-import com.example.cinevote.screens.auth.viewModel.LoginActions
-import com.example.cinevote.screens.auth.viewModel.LoginState
+import com.example.cinevote.screens.auth.AuthStatus
+import com.example.cinevote.screens.auth.AuthViewModel
 
 @Composable
 fun LoginScreen(
     state: LoginState,
     actions: LoginActions,
     navController: NavHostController,
-    auth:AuthViewModel
+    auth: AuthViewModel
 ){
 
     Scaffold(

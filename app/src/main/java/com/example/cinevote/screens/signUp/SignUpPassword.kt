@@ -1,4 +1,4 @@
-package com.example.cinevote.screens.auth
+package com.example.cinevote.screens.signUp
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
