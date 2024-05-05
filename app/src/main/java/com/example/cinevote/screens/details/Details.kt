@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -29,6 +30,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -58,45 +60,51 @@ fun DetailScreen(navController : NavHostController){
         containerColor = MaterialTheme.colorScheme.background,
 
     ) {innerPadding->
-        Column(
-            modifier= Modifier
-                .padding(innerPadding)
-                .fillMaxWidth(),
+        Surface(
+            tonalElevation = 8.dp,
+            shape = MaterialTheme.shapes.medium,
+            modifier = Modifier.fillMaxSize()
         ) {
 
-            Row(
+            Column(
+                modifier= Modifier
+                    .padding(innerPadding)
+                    .fillMaxWidth(),
+            ) {
 
-                horizontalArrangement = Arrangement.Center,
+                Row(
 
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .width(200.dp),
+                    horizontalArrangement = Arrangement.Center,
 
-                ){
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .width(200.dp),
 
-                GetImage()
-                Column(
-                    horizontalAlignment = Alignment.End,
-                    modifier=Modifier.padding(start=20.dp, top=40.dp)
-                ) {
-                    IconToggle(initialIcon = Icons.Default.FavoriteBorder, finalIcon = Icons.Default.Favorite, { /*TODO*/},{/*TODO*/}  )
-                    IconToggle(initialIcon = Icons.Outlined.CheckCircle, finalIcon = Icons.Default.CheckCircle, {/*TODO*/}, {/*TODO*/} )
-                    IconButton(onClick = {/*TODO*/}) {
-                        Icon(Icons.Default.Star, "info")
+                    ){
+
+                    GetImage()
+                    Column(
+                        horizontalAlignment = Alignment.End,
+                        modifier=Modifier.padding(start=20.dp, top=40.dp)
+                    ) {
+                        IconToggle(initialIcon = Icons.Default.FavoriteBorder, finalIcon = Icons.Default.Favorite, { /*TODO*/},{/*TODO*/}  )
+                        IconToggle(initialIcon = Icons.Outlined.CheckCircle, finalIcon = Icons.Default.CheckCircle, {/*TODO*/}, {/*TODO*/} )
+                        IconButton(onClick = {/*TODO*/}) {
+                            Icon(Icons.Default.Star, "info")
+                        }
+
                     }
+
 
                 }
 
+                Column(
 
-            }
-
-            Column(
-
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .width(300.dp)
-                    .padding(start = 25.dp)
-            ) {
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .width(300.dp)
+                        .padding(start = 25.dp)
+                ) {
 
                     Row(modifier = Modifier.fillMaxWidth()) {
 
@@ -137,49 +145,52 @@ fun DetailScreen(navController : NavHostController){
                     )
 
                     Spacer(modifier = Modifier.padding(top=15.dp))
-                    
+
                     ReviewRating(3)
 
                     Spacer(modifier = Modifier.padding(top=15.dp))
                 }
 
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ){
-                item {
-                    AssistChipExample("trama", Icons.Default.Info, selectedChip==ChipOption.TRAMA){
-                        selectedChip = ChipOption.TRAMA
-                    }
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    item {
+                        AssistChipExample("trama", Icons.Default.Info, selectedChip==ChipOption.TRAMA){
+                            selectedChip = ChipOption.TRAMA
+                        }
 
-                }
-                item{
-                    AssistChipExample("Cast", Icons.Default.Person, selectedChip==ChipOption.CAST){
-                        selectedChip = ChipOption.CAST
                     }
+                    item{
+                        AssistChipExample("Cast", Icons.Default.Person, selectedChip==ChipOption.CAST){
+                            selectedChip = ChipOption.CAST
+                        }
 
+                    }
+                    item{
+                        AssistChipExample("Recensioni", Icons.Default.Star, selectedChip==ChipOption.RECENSIONI){
+                            selectedChip = ChipOption.RECENSIONI
+                        }
+                    }
                 }
-                item{
-                    AssistChipExample("Recensioni", Icons.Default.Star, selectedChip==ChipOption.RECENSIONI){
-                        selectedChip = ChipOption.RECENSIONI
+
+
+                // Contenuto basato sul chip selezionato
+                when(selectedChip) {
+                    ChipOption.TRAMA -> {
+                        Text("trama")
+                    }
+                    ChipOption.CAST -> {
+                        Text("cast")
+                    }
+                    ChipOption.RECENSIONI -> {
+                        Text("recensioni")
                     }
                 }
             }
 
-
-            // Contenuto basato sul chip selezionato
-            when(selectedChip) {
-                ChipOption.TRAMA -> {
-                    Text("trama")
-                }
-                ChipOption.CAST -> {
-                    Text("cast")
-                }
-                ChipOption.RECENSIONI -> {
-                    Text("recensioni")
-                }
-            }
         }
+
     }
 }
 
