@@ -23,7 +23,6 @@ fun WishListScreen(navController: NavHostController){
             navController = navController,
             title="WishList"
         )},
-        bottomBar = { bottomAppBar(navController) },
         content = {innerPadding->
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = 128.dp),
