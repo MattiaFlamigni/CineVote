@@ -11,6 +11,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -35,20 +36,27 @@ fun HomeScreen(navController: NavHostController){
         topBar = { TopBar(title= stringResource(id = R.string.home_title),navController= navController)},
         containerColor = MaterialTheme.colorScheme.background
     ) {innerPadding->
-        LazyColumn(
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(start = 10.dp)
-        ) {
-            item {
-                TopCategory(navController)
+        Surface(
+            shape = MaterialTheme.shapes.medium,
+            tonalElevation = 8.dp
+        ){
+            LazyColumn(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .padding(start = 10.dp)
+            ) {
+                item {
+                    TopCategory(navController)
 
 
-                for(genre in loadGenres()) {
-                    FilmCard(genre) {}
+                    for(genre in loadGenres()) {
+                        FilmCard(genre) {}
+                    }
                 }
             }
+
         }
+
 
     }
 }
@@ -59,32 +67,32 @@ private fun TopCategory(navController: NavHostController) {
 
 
 
-    Column {
-        Text(
-            text="Top Film",
-            fontFamily = FontFamily.Default,
-            fontSize = 50.sp
-        )
+        Column {
+            Text(
+                text = "Top Film",
+                fontFamily = FontFamily.Default,
+                fontSize = 50.sp
+            )
 
 
-        LazyRow {
-            items(50) {
-                Card(
-                    modifier= Modifier
-                        .padding(10.dp)
-                        .size(200.dp),
-                    onClick = {navController.navigate(NavigationRoute.Detail.route)},
-                    colors= CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-                    )
-                ){
-                    val image: Painter = painterResource(id = R.drawable.ic_launcher_foreground)
-                    Image(painter = image, contentDescription = "")
+            LazyRow {
+                items(50) {
+                    Card(
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .size(200.dp),
+                        onClick = { navController.navigate(NavigationRoute.Detail.route) },
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                        )
+                    ) {
+                        val image: Painter = painterResource(id = R.drawable.ic_launcher_foreground)
+                        Image(painter = image, contentDescription = "")
+                    }
                 }
             }
         }
-    }
 }
 
 
