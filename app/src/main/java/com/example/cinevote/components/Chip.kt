@@ -1,14 +1,8 @@
 package com.example.cinevote.components
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -21,13 +15,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.wear.compose.material.Chip
 import androidx.wear.compose.material.ChipDefaults
 import com.example.cinevote.NavigationRoute
-import com.example.cinevote.R
+import com.example.cinevote.util.currentRoute
 
 @Composable
 fun simpleChip(icon: ImageVector, alternative:String, navController: NavHostController){
@@ -39,9 +32,9 @@ fun simpleChip(icon: ImageVector, alternative:String, navController: NavHostCont
             .fillMaxWidth(),
         colors = ChipDefaults.chipColors(
             contentColor = Color.Black,
-            backgroundColor = if(isSelected){Color.Green}else{Color.Transparent}
+            backgroundColor = if( isSelected ){Color.Green}else{Color.Transparent}
         ),
-        onClick = { isSelected = true
+        onClick = { isSelected=true
                     if(alternative == "Home") {
                         navController.navigate(NavigationRoute.HomeScreen.route)
                     }

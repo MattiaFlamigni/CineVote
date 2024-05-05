@@ -33,7 +33,7 @@ fun HomeScreen(navController: NavHostController){
     Scaffold(
         bottomBar = { bottomAppBar(navController) },
         topBar = { TopBar(title= stringResource(id = R.string.home_title),navController= navController)},
-        containerColor = MaterialTheme.colorScheme.primaryContainer
+        containerColor = MaterialTheme.colorScheme.background
     ) {innerPadding->
         LazyColumn(
             modifier = Modifier

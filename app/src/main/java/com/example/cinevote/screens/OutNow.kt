@@ -20,7 +20,7 @@ import com.example.cinevote.components.bottomAppBar
 @Composable
 fun OutNowScreen(navController: NavHostController){
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = { TopBar(
             navController = navController,
             title= stringResource(R.string.outNow_title)

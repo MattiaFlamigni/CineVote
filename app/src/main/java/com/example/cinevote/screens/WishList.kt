@@ -18,7 +18,7 @@ import com.example.cinevote.components.bottomAppBar
 @Composable
 fun WishListScreen(navController: NavHostController){
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = { TopBar(
             navController = navController,
             title="WishList"

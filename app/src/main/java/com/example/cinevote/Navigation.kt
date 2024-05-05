@@ -38,8 +38,6 @@ sealed class NavigationRoute(val route:String){
     data object Ricerca : NavigationRoute("cerca")
     data object Detail : NavigationRoute("detail")
     data object Main : NavigationRoute("main")
-
-
 }
 
 @Composable
