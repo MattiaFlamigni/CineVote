@@ -55,7 +55,6 @@ fun DetailScreen(navController : NavHostController){
 
     Scaffold(
         topBar = { TopBar(navController = navController, title= stringResource(R.string.details_title)) },
-        bottomBar = { bottomAppBar(navController) },
         containerColor = MaterialTheme.colorScheme.secondaryContainer,
 
     ) {innerPadding->
