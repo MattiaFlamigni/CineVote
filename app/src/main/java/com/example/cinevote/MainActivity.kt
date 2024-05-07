@@ -15,15 +15,12 @@ import androidx.navigation.compose.rememberNavController
 
 
 import com.example.cinevote.ui.theme.CineVoteTheme
+import com.example.cinevote.util.LocationService
 
 class MainActivity : ComponentActivity() {
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
-
-
-
 
         setContent {
             CineVoteTheme {
@@ -32,6 +29,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+
+
                     val navController = rememberNavController()
                     NavGraph(navController = navController)
 

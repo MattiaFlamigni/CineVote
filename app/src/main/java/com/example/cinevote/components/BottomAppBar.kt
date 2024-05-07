@@ -4,9 +4,11 @@ package com.example.cinevote.components
 import androidx.compose.material.icons.Icons
 
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Badge
@@ -60,6 +62,13 @@ fun bottomAppBar(navController: NavHostController){
             unselectedIcon = Icons.Outlined.PlayArrow,
             badgeCount=0,
             route = { navController.navigate(NavigationRoute.HomeScreen.route) }
+        ),
+        BottomNavigationItem(
+            title = NavigationRoute.Cinema.route,
+            selectedIcon = Icons.Filled.Notifications,
+            unselectedIcon = Icons.Outlined.Notifications,
+            badgeCount=0,
+            route = { navController.navigate(NavigationRoute.Cinema.route) }
         ),
     )
 

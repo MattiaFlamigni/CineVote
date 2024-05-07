@@ -37,8 +37,7 @@ fun HomeScreen(navController: NavHostController){
         containerColor = MaterialTheme.colorScheme.background
     ) {innerPadding->
         Surface(
-            shape = MaterialTheme.shapes.medium,
-            tonalElevation = 8.dp
+
         ){
             LazyColumn(
                 modifier = Modifier

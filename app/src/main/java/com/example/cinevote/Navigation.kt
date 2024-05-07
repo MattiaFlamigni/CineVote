@@ -8,6 +8,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.cinevote.screens.cinema.CinemaScreen
 import com.example.cinevote.screens.details.DetailScreen
 import com.example.cinevote.screens.HomeScreen
 import com.example.cinevote.screens.OutNowScreen
@@ -15,6 +16,7 @@ import com.example.cinevote.screens.ReviewScreen
 import com.example.cinevote.screens.signUp.SignUpGeneralScreen
 import com.example.cinevote.screens.WishListScreen
 import com.example.cinevote.screens.auth.AuthViewModel
+import com.example.cinevote.screens.cinema.cinemaVm
 import com.example.cinevote.screens.login.LoginScreen
 import com.example.cinevote.screens.login.LoginViewModel
 import com.example.cinevote.screens.signUp.SignUpMailScreen
@@ -38,6 +40,8 @@ sealed class NavigationRoute(val route:String){
     data object Ricerca : NavigationRoute("cerca")
     data object Detail : NavigationRoute("detail")
     data object Main : NavigationRoute("main")
+
+    data object Cinema : NavigationRoute("cinema")
 }
 
 @Composable
@@ -93,6 +97,12 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
         composable(NavigationRoute.Main.route){
             val authviewModel = viewModel<AuthViewModel>()
             mainScreen(navController = navController, authviewModel.state)
+        }
+        composable(NavigationRoute.Cinema.route){
+            val cinemaViewModel = koinViewModel<cinemaVm>()
+            val state by cinemaViewModel.state.collectAsState()
+
+            CinemaScreen(navController = navController, state =state, actions = cinemaViewModel.actions::getCinema)
         }
 
 
