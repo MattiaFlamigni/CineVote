@@ -1,5 +1,7 @@
 package com.example.cinevote.screens.signUp
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,6 +34,8 @@ class SignupViewModel : ViewModel() {
     val state = _state.asStateFlow()
 
 
+
+
     val action= object :SignUPActions{
         override fun setName(name: String) {
             _state.update { it.copy(name=name) }
@@ -60,7 +64,8 @@ class SignupViewModel : ViewModel() {
             mail: String,
             password: String
         ) {
-            TODO("Not yet implemented")
+
+            /*TODO */
         }
 
     }

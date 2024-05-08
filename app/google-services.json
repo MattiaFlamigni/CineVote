@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "366608684761",
+    "firebase_url": "https://cinevote-26f36-default-rtdb.firebaseio.com",
+    "project_id": "cinevote-26f36",
+    "storage_bucket": "cinevote-26f36.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:366608684761:android:0846efba2fc1085532d0c8",
+        "android_client_info": {
+          "package_name": "com.example.cinevote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "366608684761-oqr72k5ikfvrukgm1oummsnv45vsvs69.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUIsVMCZjcmYfbxLF4rPFZg9WUUyPvXso"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "366608684761-oqr72k5ikfvrukgm1oummsnv45vsvs69.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

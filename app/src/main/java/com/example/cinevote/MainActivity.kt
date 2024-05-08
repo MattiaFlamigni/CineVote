@@ -17,8 +17,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cinevote.ui.theme.CineVoteTheme
 import com.example.cinevote.util.LocationService
 
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
 
         super.onCreate(savedInstanceState)
 
