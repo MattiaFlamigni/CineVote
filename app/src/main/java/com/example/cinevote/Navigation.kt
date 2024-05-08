@@ -102,7 +102,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
             val cinemaViewModel = koinViewModel<cinemaVm>()
             val state by cinemaViewModel.state.collectAsState()
 
-            CinemaScreen(navController = navController, state =state, /*actions = cinemaViewModel.actions::getCinema*/ action = cinemaViewModel.actions)
+            CinemaScreen(navController = navController, state =state, action = cinemaViewModel.actions)
         }
 
 

@@ -4,6 +4,7 @@ package com.example.cinevote.screens.cinema
 import android.Manifest
 import android.content.Intent
 import android.net.Uri
+import android.provider.Settings
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -24,8 +26,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -55,7 +60,6 @@ fun CinemaScreen(
     navController : NavHostController,
     state: CinemaStatus,
     action: CinemaAction,
-    //onRequestActions: ()->Unit
 ) {
     var locationService: LocationService = LocationService(LocalContext.current)
 
@@ -107,16 +111,25 @@ fun CinemaScreen(
 
             item {
 
-                Button(onClick = ::requestLocation) {
-                    Text("Get current location")
+                Button(
+                    onClick = { requestLocation() }
+                ){
+                    Text(text = "Load cinema")
                 }
-                Spacer(modifier = Modifier.height(16.dp))
+
                 val latitude = locationService.coordinates?.latitude ?: 0.00
                 val longitude = locationService.coordinates?.longitude ?: 0.00
-
-                Text("Latitude: ${latitude}")
-                Text("Longitude: ${longitude}")
                 Log.d("coordinates", latitude.toString())
+
+
+                if(locationPermission.status.isGranted){
+                    if(latitude==0.00 && longitude==0.00){
+                        requestLocation()
+                    }
+                }
+
+
+                //requestLocation()
 
                 if (latitude != 0.00 && longitude != 0.00) {
                     action.setUserPosition(LatLng(latitude, longitude))
@@ -160,7 +173,76 @@ fun CinemaScreen(
 
 
         }
+
+
+
+        if (showLocationDisabledAlert) {
+            AlertDialog(
+                title = { Text("Location disabled") },
+                text = { Text("Location must be enabled to get your current location in the app.") },
+                confirmButton = {
+                    TextButton(onClick = {
+                        locationService.openLocationSettings()
+                        showLocationDisabledAlert = false
+                    }) {
+                        Text("Enable")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showLocationDisabledAlert = false }) {
+                        Text("Dismiss")
+                    }
+                },
+                onDismissRequest = { showLocationDisabledAlert = false }
+            )
+        }
+
+        if (showPermissionDeniedAlert) {
+            AlertDialog(
+                title = { Text("Location permission denied") },
+                text = { Text("Location permission is required to get your current location in the app.") },
+                confirmButton = {
+                    TextButton(onClick = {
+                        locationPermission.launchPermissionRequest()
+                        showPermissionDeniedAlert = false
+                    }) {
+                        Text("Grant")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showPermissionDeniedAlert = false }) {
+                        Text("Dismiss")
+                    }
+                },
+                onDismissRequest = { showPermissionDeniedAlert = false }
+            )
+        }
+
+        val ctx = LocalContext.current
+        if (showPermissionPermanentlyDeniedSnackbar) {
+            LaunchedEffect(snackbarHostState) {
+                val res = snackbarHostState.showSnackbar(
+                    "Location permission is required.",
+                    "Go to Settings",
+                    duration = SnackbarDuration.Long
+                )
+                if (res == SnackbarResult.ActionPerformed) {
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.fromParts("package", ctx.packageName, null)
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    }
+                    if (intent.resolveActivity(ctx.packageManager) != null) {
+                        ctx.startActivity(intent)
+                    }
+                }
+                showPermissionPermanentlyDeniedSnackbar = false
+            }
+        }
     }
+
+
+
+
 }
 
 
@@ -221,3 +303,5 @@ private fun ViewCinema(){
         ctx.startActivity(shareIntent)
     }
 }
+
+
