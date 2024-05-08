@@ -3,11 +3,10 @@ package com.example.cinevote.screens.cinema
 import android.Manifest
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import com.example.cinevote.util.LocationService
-import com.example.cinevote.util.PermissionHandler
 import com.example.cinevote.util.PermissionStatus
-import com.example.cinevote.util.StartMonitoringResult
 import com.example.cinevote.util.rememberPermission
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,9 +21,8 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 import java.net.URLEncoder
-import java.security.acl.Permission
 
-const val DISTANCE = 2000
+const val DISTANCE = 15000
 data class CinemaStatus(
     val userPosition : LatLng,
     val cinemaList : List<Cinema> = emptyList()
@@ -42,12 +40,17 @@ data class Cinema(
 
 interface CinemaAction{
     fun setUserPosition(latLng: LatLng)
-    fun getCinema()
+    fun getCinema(coordinates:LatLng)
 }
 
 class cinemaVm : ViewModel() {
     private val _state= MutableStateFlow(CinemaStatus(LatLng(44.4949, 11.3426 )))
     val state = _state.asStateFlow()
+
+
+
+
+
 
 
 
@@ -58,12 +61,14 @@ class cinemaVm : ViewModel() {
 
         }
 
-        override fun getCinema() {
-            val userPosition = _state.value.userPosition
+        override fun getCinema(coordinates:LatLng) {
+            //val userPosition = _state.value.userPosition
+
+            Log.d("getcinemacoord", (coordinates.latitude).toString())
             // Esegui la query Overpass API per recuperare i cinema vicini alla posizione dell'utente
             val query = """
                 [out:json];
-                node["amenity"="cinema"](around:${DISTANCE},${userPosition.latitude},${userPosition.longitude});
+                node["amenity"="cinema"](around:${DISTANCE},${coordinates.latitude},${coordinates.longitude});
                 out;
             """.trimIndent()
 
@@ -105,7 +110,6 @@ class cinemaVm : ViewModel() {
                 }
             })
         }
-    }
 }
 
 
@@ -136,5 +140,4 @@ private fun parseCinemaData(jsonData: String): List<Cinema> {
         // Gestisci l'eccezione se ci sono problemi nell'analisi dei dati JSON
     }
     return cinemaList
-}
-
+}}
