@@ -80,8 +80,6 @@ class SignupViewModel : ViewModel() {
         ) {
 
 
-
-
             // Create the user in Firebase
             firebaseAuth.createUserWithEmailAndPassword(mail, password)
                 .addOnCompleteListener { task ->
@@ -99,18 +97,11 @@ class SignupViewModel : ViewModel() {
                                     _state.update { it.copy(error = "Error updating user profile", loading = false) }
                                 }*/
                             }
-
                         writeNewUser(username, name, surname)
-
-
-
-
                     } else {
                         //_state.update { it.copy(error = task.exception?.message ?: "Error creating user", loading = false) }
                     }
                 }
-
-
         }
 
     }
@@ -124,4 +115,18 @@ private fun writeNewUser(userId: String, name: String, surname: String) {
     val user = User(name,surname)
 
     database.child("users").child(userId).setValue(user)
+}
+
+fun isUsernameAvailable(username: String, completion: (Boolean) -> Unit) {
+    val database = Firebase.database.reference
+    database.child("users").child(username).get()
+        .addOnSuccessListener {
+            // Username is available if the snapshot doesn't exist
+            completion(it.exists().not())
+        }
+        .addOnFailureListener {
+            // Handle error, e.g., log the error and return false
+            Log.e("Firebase", "Error checking username availability", it)
+            completion(false)
+        }
 }

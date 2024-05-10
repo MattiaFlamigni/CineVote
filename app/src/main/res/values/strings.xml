@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">CineVote</string>
 
-
+                <!-- TITLE STRINGS !-->
     <string name="login_title">Effettua il Login</string>
     <string name="registrati_title">Registrati</string>
     <string name="home_title">Catalogo</string>
@@ -9,6 +9,16 @@
     <string name="outNow_title">Ora al cinema</string>
     <string name="details_title">Dettaglio Film</string>
     <string name="search_title">Ricerca</string>
+
+
+
+                <!-- ERROR STRINGS !-->
+    <string name="user_error_strings">Nome utente gia utilizzato</string>
+
+
+
+
+
 
 
 

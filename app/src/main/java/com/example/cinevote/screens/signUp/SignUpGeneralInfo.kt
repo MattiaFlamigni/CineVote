@@ -1,10 +1,11 @@
 package com.example.cinevote.screens.signUp
 
-import android.util.Log
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -92,17 +93,19 @@ private fun SignUpGeneralForm(navController: NavHostController, actions: SignUPA
     var cognome by remember { mutableStateOf("") }
 
     var canEnable by remember { mutableStateOf(false) }
+    var userError by remember { mutableStateOf(false) }
 
     nome= TextInput(role = "Nome", onChangeAction = actions::setName)
     cognome = TextInput(role = "Cognome", onChangeAction = actions::setSurname)
-    username=TextInput(role = "username", onChangeAction = actions::setUsername)
-
+    username=TextInput(role = "username", onChangeAction = actions::setUsername, error=userError)
+    
+    Spacer(modifier = Modifier.padding(20.dp))
+    if(userError) {
+        Text(text = stringResource(id = R.string.user_error_strings))
+    }
 
 
     canEnable = !(username.isEmpty() || nome.isEmpty() || cognome.isEmpty())
-
-
-
 
     Row(
         modifier= Modifier
@@ -114,9 +117,19 @@ private fun SignUpGeneralForm(navController: NavHostController, actions: SignUPA
         SimpleButton(text = "Login", onClick = {navController.navigate(NavigationRoute.Login.route)}, modifier=Modifier.weight(1f), fontSize = 20.sp)
 
         SimpleButton(text = "Continua", onClick = {
-            Log.d("ennessima prova", state.name)
-            navController.navigate((NavigationRoute.SignUpMail.route))
-                                                  }, modifier=Modifier.weight(1.1f), fontSize = 20.sp, buttonEnabled = canEnable)
+
+            isUsernameAvailable(username) { isAvailable ->
+                if (isAvailable) {
+                    navController.navigate((NavigationRoute.SignUpMail.route))
+                    userError=false
+                } else {
+                    // Username is not available, show an error message
+                    userError=true
+                }
+            }
+
+
+        }, modifier=Modifier.weight(1.1f), fontSize = 20.sp, buttonEnabled = canEnable)
 
     }
 
