@@ -6,6 +6,15 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+
+// ...
+
+val firebaseAuth = FirebaseAuth.getInstance()
+
 
 data class SignupState(
     val name:String="",
@@ -13,6 +22,11 @@ data class SignupState(
     val username:String="",
     val mail :String ="",
     val password:String=""
+)
+
+data class User(
+    val name: String,
+    val surname:String,
 )
 
 interface SignUPActions{
@@ -65,8 +79,49 @@ class SignupViewModel : ViewModel() {
             password: String
         ) {
 
-            /*TODO */
+
+
+
+            // Create the user in Firebase
+            firebaseAuth.createUserWithEmailAndPassword(mail, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        // Update the user profile
+                        val user = firebaseAuth.currentUser
+                        user?.updateProfile(
+                            UserProfileChangeRequest.Builder()
+                            .setDisplayName("$name $surname")
+                            .build())
+                            ?.addOnCompleteListener { profileTask ->
+                                /*if (profileTask.isSuccessful) {
+                                    _state.update { it.copy(success = true, loading = false) }
+                                } else {
+                                    _state.update { it.copy(error = "Error updating user profile", loading = false) }
+                                }*/
+                            }
+
+                        writeNewUser(username, name, surname)
+
+
+
+
+                    } else {
+                        //_state.update { it.copy(error = task.exception?.message ?: "Error creating user", loading = false) }
+                    }
+                }
+
+
         }
 
     }
+}
+
+
+private fun writeNewUser(userId: String, name: String, surname: String) {
+
+    var database = Firebase.database.reference
+
+    val user = User(name,surname)
+
+    database.child("users").child(userId).setValue(user)
 }
