@@ -35,7 +35,6 @@ import com.example.cinevote.components.KeyBoard
 import com.example.cinevote.components.PasswordInput
 import com.example.cinevote.components.SimpleButton
 import com.example.cinevote.components.TextInput
-import com.example.cinevote.screens.auth.AuthStatus
 import com.example.cinevote.screens.auth.AuthViewModel
 
 @Composable
