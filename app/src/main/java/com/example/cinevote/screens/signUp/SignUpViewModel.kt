@@ -131,7 +131,7 @@ fun isUsernameAvailable(username: String, completion: (Boolean) -> Unit) {
 
 
     /*TODO: USE FIREBASE DATABASE TO CHECK IF USERNAME IS AVAILABLE*/
-    val database = Firebase.database.reference
+    /*val database = Firebase.database.reference
     database.child("users").child(username).get()
         .addOnSuccessListener {
             // Username is available if the snapshot doesn't exist
@@ -141,5 +141,27 @@ fun isUsernameAvailable(username: String, completion: (Boolean) -> Unit) {
             // Handle error, e.g., log the error and return false
             Log.e("Firebase", "Error checking username availability", it)
             completion(false)
+        }*/
+
+
+
+    val db = Firebase.firestore
+
+    db.collection("users")
+        .whereEqualTo("username", username)
+        .get()
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Se ci sono documenti restituiti dalla query, significa che l'username esiste già
+                if (task.result?.isEmpty == false) {
+                    completion(false)
+                } else {
+                    completion(true)
+                }
+            } else {
+                // Gestisci il fallimento dell'operazione
+                completion(false)
+                Log.e("TAG", "Errore durante il recupero dei documenti dalla collezione 'users'", task.exception)
+            }
         }
 }
