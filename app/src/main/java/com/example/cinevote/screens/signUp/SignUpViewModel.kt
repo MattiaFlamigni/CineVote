@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.update
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 // ...
@@ -27,6 +28,8 @@ data class SignupState(
 data class User(
     val name: String,
     val surname:String,
+    val username : String,
+    val mail : String
 )
 
 interface SignUPActions{
@@ -97,7 +100,7 @@ class SignupViewModel : ViewModel() {
                                     _state.update { it.copy(error = "Error updating user profile", loading = false) }
                                 }*/
                             }
-                        writeNewUser(username, name, surname)
+                        writeNewUser(username, name, surname, username, mail)
                     } else {
                         //_state.update { it.copy(error = task.exception?.message ?: "Error creating user", loading = false) }
                     }
@@ -108,16 +111,26 @@ class SignupViewModel : ViewModel() {
 }
 
 
-private fun writeNewUser(userId: String, name: String, surname: String) {
+private fun writeNewUser(userId: String, name: String, surname: String, username: String, mail:String) {
 
-    var database = Firebase.database.reference
+    /*var database = Firebase.database.reference
 
     val user = User(name,surname)
 
-    database.child("users").child(userId).setValue(user)
+    database.child("users").child(userId).setValue(user)*/
+
+    val db = Firebase.firestore
+    val user = User(name,surname, username, mail)
+
+    db.collection("users").add(user)
+
+
 }
 
 fun isUsernameAvailable(username: String, completion: (Boolean) -> Unit) {
+
+
+    /*TODO: USE FIREBASE DATABASE TO CHECK IF USERNAME IS AVAILABLE*/
     val database = Firebase.database.reference
     database.child("users").child(username).get()
         .addOnSuccessListener {

@@ -15,6 +15,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.cinevote.NavigationRoute
 import com.example.cinevote.R
+import com.example.cinevote.components.KeyBoard
 import com.example.cinevote.components.PasswordInput
 import com.example.cinevote.components.SimpleButton
 import com.example.cinevote.components.TextInput
@@ -40,6 +45,8 @@ fun LoginScreen(
     navController: NavHostController,
     auth: AuthViewModel
 ){
+
+    var error by remember { mutableStateOf(false) }
 
     Scaffold(
         containerColor= MaterialTheme.colorScheme.primaryContainer,
@@ -82,11 +89,11 @@ fun LoginScreen(
 
             )
 
-            TextInput("username", onChangeAction =actions::setUsername)
+            TextInput(/*TODO: KeyBoard.MAIL*/ "Mail", onChangeAction =actions::setMail, error = error)
             Spacer(modifier = Modifier.padding(top= 20.dp))
 
 
-            PasswordInput(onChangeAction =actions::setPassword)
+            PasswordInput(onChangeAction =actions::setPassword, error = error)
             Row(
                 modifier= Modifier
                     .fillMaxWidth()
@@ -99,13 +106,20 @@ fun LoginScreen(
                 SimpleButton(
                     text = "Accedi",
                     onClick = {
-                        val correctKey = actions.isKeyCorrect(state.username, state.password)
-                        if(correctKey){
-                            auth.changeState(AuthStatus.LOGGED)
-                            navController.navigate(NavigationRoute.HomeScreen.route)
+                        actions.isKeyCorrect(mail = state.mail, password = state.password) { isCorrect ->
+                            if (isCorrect) {
+                                // L'email e la password sono corrette
+                                navController.navigate(NavigationRoute.HomeScreen.route)
+                                Log.d("TAG", "Accesso consentito")
+                                error = false
+                            } else {
+                                // L'email e/o la password non sono corrette, fai qualcosa come mostrare un messaggio di errore
+                                Log.e("TAG", "Accesso non consentito")
+                                error = true
+                            }
 
-                            Log.d("loginstato", auth.state.value.status.toString())
-                        } },
+
+                        }},
                     modifier=Modifier.weight(1f), fontSize = 20.sp)
             }
 
