@@ -89,7 +89,7 @@ fun LoginScreen(
 
             )
 
-            TextInput(/*TODO: KeyBoard.MAIL*/ "Mail", onChangeAction =actions::setMail, error = error)
+            TextInput(role="Mail", onChangeAction =actions::setMail, error = error, type = KeyBoard.MAIL)
             Spacer(modifier = Modifier.padding(top= 20.dp))
 
 
