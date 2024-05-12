@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">CineVote</string>
 
+
+    <string name="Web_Client_ID">366608684761-oqr72k5ikfvrukgm1oummsnv45vsvs69.apps.googleusercontent.com</string>
+
                 <!-- TITLE STRINGS !-->
     <string name="login_title">Effettua il Login</string>
     <string name="registrati_title">Registrati</string>
