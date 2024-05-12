@@ -1,9 +1,7 @@
 package com.example.cinevote.screens.login
 
 import android.util.Log
-import android.view.RoundedCorner
 import androidx.compose.foundation.Image
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,14 +15,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ShapeDefaults
-import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -120,6 +111,12 @@ fun LoginScreen(
                 SimpleButton(
                     text = "Accedi",
                     onClick = {
+
+
+                        if( state.mail.isEmpty() || state.password.isEmpty()){
+                            error = true
+                            return@SimpleButton
+                        }
                         actions.isKeyCorrect(mail = state.mail, password = state.password) { isCorrect ->
                             if (isCorrect) {
                                 // L'email e la password sono corrette
@@ -137,7 +134,7 @@ fun LoginScreen(
                     modifier=Modifier.weight(1f), fontSize = 20.sp)
             }
 
-            LoginWithSocial()
+            LoginWithSocial(actions)
 
 
 
@@ -150,10 +147,12 @@ fun LoginScreen(
 
 
 @Composable
-private fun LoginWithSocial(){
+private fun LoginWithSocial(actions: LoginActions){
 
     Row(
-        modifier= Modifier.fillMaxWidth().padding(20.dp),
+        modifier= Modifier
+            .fillMaxWidth()
+            .padding(20.dp),
         horizontalArrangement = Arrangement.SpaceBetween
 
     ){
@@ -161,9 +160,10 @@ private fun LoginWithSocial(){
             painter = painterResource(id = R.drawable.google),
             contentDescription = "Google",
             modifier = Modifier
-                .size(60.dp).clip(CircleShape )
+                .size(60.dp)
+                .clip(CircleShape)
                 .clickable {
-                    /*TODO*/
+                    actions.loginGoogle()
                 }
         )
 
