@@ -13,6 +13,7 @@ import com.example.cinevote.screens.details.DetailScreen
 import com.example.cinevote.screens.HomeScreen
 import com.example.cinevote.screens.OutNowScreen
 import com.example.cinevote.screens.ReviewScreen
+import com.example.cinevote.screens.settings.SettingsScreen
 import com.example.cinevote.screens.signUp.SignUpGeneralScreen
 import com.example.cinevote.screens.WishListScreen
 import com.example.cinevote.screens.auth.AuthViewModel
@@ -23,6 +24,7 @@ import com.example.cinevote.screens.signUp.SignUpMailScreen
 import com.example.cinevote.screens.signUp.SignUpasswordScreen
 import com.example.cinevote.screens.mainScreen
 import com.example.cinevote.screens.searchScreen
+import com.example.cinevote.screens.settings.SettingsVm
 import com.example.cinevote.screens.signUp.SignupViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -40,8 +42,8 @@ sealed class NavigationRoute(val route:String){
     data object Ricerca : NavigationRoute("cerca")
     data object Detail : NavigationRoute("detail")
     data object Main : NavigationRoute("main")
-
     data object Cinema : NavigationRoute("cinema")
+    data object Settings : NavigationRoute("impostazioni")
 }
 
 @Composable
@@ -75,6 +77,11 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
         }
         composable(NavigationRoute.HomeScreen.route){
             HomeScreen(navController=navController)
+        }
+        composable(NavigationRoute.Settings.route){
+            val settingsVm = koinViewModel<SettingsVm>()
+            val state by settingsVm.state.collectAsState()
+            SettingsScreen(navController=navController, settingsVm.actions)
         }
         composable(NavigationRoute.WishList.route){
             WishListScreen(navController = navController)

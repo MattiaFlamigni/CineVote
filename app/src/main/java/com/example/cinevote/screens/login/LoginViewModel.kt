@@ -40,6 +40,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.firebase.auth.FirebaseUser
 
 data class LoginState (
     val mail:String="",
@@ -77,6 +78,7 @@ class LoginViewModel: ViewModel() {
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d("TAG", "signInWithEmail:success")
+                        val currentUser: FirebaseUser? = auth.currentUser
                         onCompleteListener(true)
                     } else {
                         // If sign in fails, display a message to the user.

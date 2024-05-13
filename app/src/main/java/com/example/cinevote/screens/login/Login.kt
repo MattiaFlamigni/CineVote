@@ -112,7 +112,6 @@ fun LoginScreen(
                     text = "Accedi",
                     onClick = {
 
-
                         if( state.mail.isEmpty() || state.password.isEmpty()){
                             error = true
                             return@SimpleButton
@@ -134,7 +133,7 @@ fun LoginScreen(
                     modifier=Modifier.weight(1f), fontSize = 20.sp)
             }
 
-            LoginWithSocial(actions)
+            LoginWithSocial(actions, navController)
 
 
 
@@ -147,7 +146,7 @@ fun LoginScreen(
 
 
 @Composable
-private fun LoginWithSocial(actions: LoginActions){
+private fun LoginWithSocial(actions: LoginActions, navController: NavHostController){
 
     Row(
         modifier= Modifier
@@ -163,7 +162,7 @@ private fun LoginWithSocial(actions: LoginActions){
                 .size(60.dp)
                 .clip(CircleShape)
                 .clickable {
-                    actions.loginGoogle()
+                    navController.navigate(NavigationRoute.HomeScreen.route)
                 }
         )
 
