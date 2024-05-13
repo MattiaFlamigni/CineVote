@@ -10,6 +10,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -26,7 +29,7 @@ import com.google.firebase.ktx.Firebase
 @Composable
 fun SettingsScreen(
     navController : NavHostController,
-    action: SettingsAction
+    state:SettingsStatus
 ){
 
     Scaffold(
@@ -36,14 +39,18 @@ fun SettingsScreen(
         Column(
             modifier = Modifier.padding(innerPadding)
         ) {
-            ShowProfile(action)
+            ShowProfile(state)
         }
     }
 }
 
 
 @Composable
-private fun ShowProfile(action: SettingsAction){
+private fun ShowProfile(state: SettingsStatus){
+    var username by remember { mutableStateOf("") }
+
+
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -56,9 +63,15 @@ private fun ShowProfile(action: SettingsAction){
         )
 
 
+        Text(
+            text =state.username,
+            fontFamily = FontFamily.Default,
+            fontSize = 30.sp,
+            color = MaterialTheme.colorScheme.onBackground
+        )
 
         Text(
-            text = action.setName(),
+            text = state.name,
             fontFamily = FontFamily.Default,
             fontSize = 30.sp,
             color = MaterialTheme.colorScheme.onBackground
