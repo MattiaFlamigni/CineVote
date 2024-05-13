@@ -58,7 +58,7 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.9.0")
     implementation( "androidx.credentials:credentials:<latest version>")
     implementation ("androidx.credentials:credentials-play-services-auth:<latest version>")
-    implementation ("com.google.android.libraries.identity.googleid:googleid:<latest version>")
+    //implementation ("com.google.android.libraries.identity.googleid:googleid:10.0.0")
     implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
     implementation("com.google.firebase:firebase-analytics")

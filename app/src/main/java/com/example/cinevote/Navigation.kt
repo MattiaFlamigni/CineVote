@@ -81,7 +81,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
         composable(NavigationRoute.Settings.route){
             val settingsVm = koinViewModel<SettingsVm>()
             val state by settingsVm.state.collectAsState()
-            SettingsScreen(navController=navController, settingsVm.actions)
+            SettingsScreen(navController=navController, state)
         }
         composable(NavigationRoute.WishList.route){
             WishListScreen(navController = navController)
