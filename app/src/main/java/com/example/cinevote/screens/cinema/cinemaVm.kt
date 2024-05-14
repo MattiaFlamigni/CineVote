@@ -1,13 +1,8 @@
 package com.example.cinevote.screens.cinema
 
-import android.Manifest
+
 import android.util.Log
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
-import com.example.cinevote.util.LocationService
-import com.example.cinevote.util.PermissionStatus
-import com.example.cinevote.util.rememberPermission
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -12,7 +12,6 @@ import androidx.navigation.NavHostController
 import com.example.cinevote.NavigationRoute
 import com.example.cinevote.components.FilmCard
 import com.example.cinevote.components.TopBar
-import com.example.cinevote.components.bottomAppBar
 
 
 @Composable
