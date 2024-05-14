@@ -12,11 +12,26 @@
     <string name="outNow_title">Ora al cinema</string>
     <string name="details_title">Dettaglio Film</string>
     <string name="search_title">Ricerca</string>
+    <string name="cinema_title">Cinema nelle vicinanze</string>
 
 
 
                 <!-- ERROR STRINGS !-->
     <string name="user_error_strings">Nome utente gia utilizzato</string>
+
+
+
+
+                <!--SETTINGS SCREEN GENERAL STRINGS!-->
+    <string name="Impostazioni_tema_option">Impostazioni tema</string>
+    <string name="Logout_option">Logout</string>
+
+
+                <!--CINEMA NELLE VICINANZE GENERAL STRINGS!-->
+    <string name="Nessun_cinema">Nessun cinema trovato nelle vicinanze</string>
+
+
+
 
 
 
