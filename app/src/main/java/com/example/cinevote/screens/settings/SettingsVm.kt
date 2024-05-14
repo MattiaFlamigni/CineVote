@@ -16,7 +16,7 @@ data class SettingsStatus(
 )
 
 interface SettingsAction {
-    fun setName():String
+    fun logOut()
 }
 
 class SettingsVm : ViewModel() {
@@ -37,6 +37,14 @@ class SettingsVm : ViewModel() {
             val name = auth.currentUser?.displayName?:""
             _state.update { it.copy(username=username, name = name) }
         }
+    }
+
+    val action = object : SettingsAction {
+        override fun logOut() {
+            auth.signOut()
+
+        }
+
     }
 
 
