@@ -51,7 +51,7 @@ fun OutNowScreen(
         bottomBar = { bottomAppBar(navController) },
         content = {innerPadding->
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 128.dp),
+            columns = GridCells.Adaptive(minSize = 200.dp),
             modifier=Modifier.padding(innerPadding),
         ){
 
@@ -61,6 +61,7 @@ fun OutNowScreen(
 
             for(film in state.filmList){
                 Log.d("path", film.title)
+                Log.d("path", film.releaseDate)
                 Log.d("path", film.posterUrl)
                 item(){
                 Card(

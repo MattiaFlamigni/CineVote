@@ -55,6 +55,8 @@ dependencies {
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("com.google.android.gms:play-services-auth:21.0.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation ("com.jakewharton.threetenabp:threetenabp:1.3.0")
+
     implementation("androidx.activity:activity-compose:1.9.0")
     implementation( "androidx.credentials:credentials:<latest version>")
     implementation ("io.coil-kt:coil-compose:2.3.0")

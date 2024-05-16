@@ -18,11 +18,13 @@ import com.example.cinevote.database.Firestore
 
 import com.example.cinevote.ui.theme.CineVoteTheme
 import com.example.cinevote.util.LocationService
+import com.jakewharton.threetenabp.AndroidThreeTen
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AndroidThreeTen.init(this)
 
         setContent {
             CineVoteTheme {
