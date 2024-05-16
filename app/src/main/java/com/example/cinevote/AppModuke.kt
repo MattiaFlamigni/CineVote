@@ -3,6 +3,7 @@ package com.example.cinevote
 
 import com.example.cinevote.screens.cinema.cinemaVm
 import com.example.cinevote.screens.login.LoginViewModel
+import com.example.cinevote.screens.outNow.OutNowVM
 import com.example.cinevote.screens.settings.SettingsVm
 import com.example.cinevote.screens.signUp.SignupViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -17,4 +18,5 @@ val appModule = module {
     viewModel {  LoginViewModel() }
     viewModel {  cinemaVm() }
     viewModel {  SettingsVm() }
+    viewModel {  OutNowVM() }
 }

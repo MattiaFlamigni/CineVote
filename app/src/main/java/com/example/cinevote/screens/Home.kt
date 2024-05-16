@@ -49,7 +49,7 @@ fun HomeScreen(navController: NavHostController){
 
 
                     for(genre in loadGenres()) {
-                        FilmCard(genre) {}
+                        //FilmCard(genre, {})
                     }
                 }
             }

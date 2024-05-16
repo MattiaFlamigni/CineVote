@@ -83,7 +83,7 @@ class cinemaVm : ViewModel() {
                 override fun onResponse(call: Call, response: Response) {
 
                     if (response.isSuccessful) {
-                        val body = response.body()
+                        val body = response.body
                         if (body != null) {
                             val jsonData = body.string()
                             // Analizza i dati JSON ricevuti e aggiorna lo stato

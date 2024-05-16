@@ -57,6 +57,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.9.0")
     implementation( "androidx.credentials:credentials:<latest version>")
+    implementation ("io.coil-kt:coil-compose:2.3.0")
     implementation ("androidx.credentials:credentials-play-services-auth:<latest version>")
     //implementation ("com.google.android.libraries.identity.googleid:googleid:10.0.0")
     implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")

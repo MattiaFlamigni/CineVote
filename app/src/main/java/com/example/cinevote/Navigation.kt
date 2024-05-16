@@ -23,6 +23,7 @@ import com.example.cinevote.screens.login.LoginViewModel
 import com.example.cinevote.screens.signUp.SignUpMailScreen
 import com.example.cinevote.screens.signUp.SignUpasswordScreen
 import com.example.cinevote.screens.mainScreen
+import com.example.cinevote.screens.outNow.OutNowVM
 import com.example.cinevote.screens.searchScreen
 import com.example.cinevote.screens.settings.SettingsVm
 import com.example.cinevote.screens.signUp.SignupViewModel
@@ -87,7 +88,9 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
             WishListScreen(navController = navController)
         }
         composable(NavigationRoute.OutNow.route){
-            OutNowScreen(navController = navController)
+            val outNowVm = koinViewModel<OutNowVM>()
+            val state by outNowVm.state.collectAsState()
+            OutNowScreen(navController = navController,state=state, action = outNowVm.action)
         }
         composable(NavigationRoute.Review.route){
             ReviewScreen(navController = navController)

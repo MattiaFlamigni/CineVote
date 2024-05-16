@@ -29,7 +29,7 @@ fun WishListScreen(navController: NavHostController){
         ){
 
             items(LoadWishList().size) {
-                FilmCard(onClick = {navController.navigate(NavigationRoute.Detail.route)})
+                //FilmCard(onClick = {navController.navigate(NavigationRoute.Detail.route)})
             }
 
         }
