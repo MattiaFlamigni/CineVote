@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.cinevote.screens.cinema.Cinema
 import java.time.LocalDate
 import com.example.cinevote.screens.cinema.DISTANCE
+import com.example.cinevote.util.TMDBService
 
 import java.time.format.DateTimeFormatter
 import com.squareup.okhttp.OkHttpClient
@@ -49,12 +50,14 @@ data class Film(
 
 class OutNowVM : ViewModel() {
 
+    private val tmdb = TMDBService()
+
     private val _state = MutableStateFlow(OutNowStatus())
     val state = _state.asStateFlow()
 
     val action = object : FilmAction {
         override fun getFilmList() {
-
+            /*
             //val url="https://overpass-api.de/api/interpreter?data=[out:json];node[amenity=cinema](around:100000,40.7128,-74.00);out;"
             val request: okhttp3.Request = okhttp3.Request.Builder()
                 .url("https://api.themoviedb.org/3/movie/now_playing?language=it&page=1")
@@ -93,7 +96,21 @@ class OutNowVM : ViewModel() {
                         // Gestisci questa situazione di conseguenza
                     }
                 }
-            })
+            }
+        )*/
+
+            val url= "https://api.themoviedb.org/3/movie/now_playing?language=it&page=1"
+            tmdb.fetchFilmData(
+                url,
+                onSuccess = {filmList ->
+                    _state.update { it.copy(filmList = filmList) }
+                },
+                {}
+            )
+
+
+
+
         }
     }
 }
