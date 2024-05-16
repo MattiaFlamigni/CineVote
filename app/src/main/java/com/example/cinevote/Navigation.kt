@@ -11,7 +11,7 @@ import androidx.navigation.compose.composable
 import com.example.cinevote.screens.cinema.CinemaScreen
 import com.example.cinevote.screens.details.DetailScreen
 import com.example.cinevote.screens.HomeScreen
-import com.example.cinevote.screens.OutNowScreen
+import com.example.cinevote.screens.outNow.OutNowScreen
 import com.example.cinevote.screens.ReviewScreen
 import com.example.cinevote.screens.settings.SettingsScreen
 import com.example.cinevote.screens.signUp.SignUpGeneralScreen

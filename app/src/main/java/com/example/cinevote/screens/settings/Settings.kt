@@ -5,9 +5,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -62,7 +68,6 @@ private fun ShowProfile(state: SettingsStatus){
 
         )
 
-
         Text(
             text =state.username,
             fontFamily = FontFamily.Default,
@@ -73,10 +78,14 @@ private fun ShowProfile(state: SettingsStatus){
         Text(
             text = state.name,
             fontFamily = FontFamily.Default,
-            fontSize = 30.sp,
+            fontSize = 15.sp,
             color = MaterialTheme.colorScheme.onBackground
         )
-        Button(onClick = { /*TODO*/ }) {
+        Button(
+
+            onClick = { /*TODO*/ },
+            enabled = state.username == "Utente non registrato",
+        ) {
             Text("Edit profile")
         }
     }
@@ -118,5 +127,8 @@ private fun ShowOption(action: SettingsAction, navController: NavHostController)
         }
     }
 }
+
+
+
 
 

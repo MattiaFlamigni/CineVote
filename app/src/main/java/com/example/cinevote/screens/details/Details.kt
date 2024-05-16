@@ -25,11 +25,14 @@ import androidx.compose.material.icons.rounded.Face
 import androidx.compose.material.icons.sharp.Star
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,6 +42,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -89,10 +96,6 @@ fun DetailScreen(navController : NavHostController){
                     ) {
                         IconToggle(initialIcon = Icons.Default.FavoriteBorder, finalIcon = Icons.Default.Favorite, { /*TODO*/},{/*TODO*/}  )
                         IconToggle(initialIcon = Icons.Outlined.CheckCircle, finalIcon = Icons.Default.CheckCircle, {/*TODO*/}, {/*TODO*/} )
-                        IconButton(onClick = {/*TODO*/}) {
-                            Icon(Icons.Default.Star, "info")
-                        }
-
                     }
 
 
@@ -146,7 +149,29 @@ fun DetailScreen(navController : NavHostController){
 
                     Spacer(modifier = Modifier.padding(top=15.dp))
 
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ){
+                        Button(
+                            modifier=Modifier.size(width=100.dp, height = 50.dp),
+                            colors = ButtonColors(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                contentColor = MaterialTheme.colorScheme.onPrimary,
+                                disabledContainerColor = Color.Transparent,
+                                disabledContentColor = Color.Transparent
+                                ),
+                            onClick = { /*TODO*/ },
+
+                            ) {
+                            Text(text = "Valuta")
+                        }
+                    }
+
+
                     ReviewRating(3)
+
+
 
                     Spacer(modifier = Modifier.padding(top=15.dp))
                 }

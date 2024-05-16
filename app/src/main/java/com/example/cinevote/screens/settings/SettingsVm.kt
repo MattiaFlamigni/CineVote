@@ -34,7 +34,7 @@ class SettingsVm : ViewModel() {
     private fun fetchUserData() {
         viewModelScope.launch {
             val username = firestore.actions.getDataFromMail("username")
-            val name = auth.currentUser?.displayName?:""
+            val name = auth.currentUser?.displayName?:"Utente non registrato"
             _state.update { it.copy(username=username, name = name) }
         }
     }

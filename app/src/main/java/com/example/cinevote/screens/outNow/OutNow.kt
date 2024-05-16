@@ -1,4 +1,4 @@
-package com.example.cinevote.screens
+package com.example.cinevote.screens.outNow
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
