@@ -38,6 +38,7 @@ class TMDBService {
                         val jsonData = body.string()
                         try {
                             val filmList = parseFilmData(jsonData)
+                            Log.d("Dimensioni", filmList.size.toString())
                             onSuccess(filmList)
                         } catch (e: Exception) {
                             // Gestisci eventuali errori nell'analisi dei dati JSON

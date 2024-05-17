@@ -57,56 +57,27 @@ class OutNowVM : ViewModel() {
 
     val action = object : FilmAction {
         override fun getFilmList() {
-            /*
-            //val url="https://overpass-api.de/api/interpreter?data=[out:json];node[amenity=cinema](around:100000,40.7128,-74.00);out;"
-            val request: okhttp3.Request = okhttp3.Request.Builder()
-                .url("https://api.themoviedb.org/3/movie/now_playing?language=it&page=1")
-                .get()
-                .addHeader("accept", "application/json")
-                .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMTNhOGQwMGFhYjU1MDIwN2FlMDBiMDliZDBlNDIxMyIsInN1YiI6IjY1ZjcxZWZkMjQyZjk0MDE3ZGNjZjQxNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ._wgFHK2BtHQEPT_EHs1T6sfwVtxLscm2NKYAlOzRCfo")
-                .build()
+
+            viewModelScope.launch {
 
 
-            val client = okhttp3.OkHttpClient()
-            client.newCall(request).enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                    // Gestisci il fallimento della richiesta
-                }
-
-                override fun onResponse(call: Call, response: Response) {
-
-                    if (response.isSuccessful) {
-                        val body = response.body
-                        if (body != null) {
-                            val jsonData = body.string()
-                            // Analizza i dati JSON ricevuti e aggiorna lo stato
-                            try {
-                                // Esempio di analisi dei dati JSON (dipende dalla struttura dei dati)
-                                val filmList = parseFilmData(jsonData)
-                                _state.update { it.copy(filmList = filmList) }
-                            } catch (e: Exception) {
-                                // Gestisci eventuali errori nell'analisi dei dati JSON
-                            }
-                        } else {
-                            // Il corpo della risposta è vuoto
-                            // Gestisci questa situazione di conseguenza
+                    val url = /*TODO: DATA DINAMICA*/
+                        "https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=false&language=it&page=1&primary_release_date.gte=2024-04-17&region=it&sort_by=popularity.desc&with_release_type=3"
+                    tmdb.fetchFilmData(
+                        url,
+                        onSuccess = { filmList ->
+                            _state.update { it.copy(filmList = filmList) }
+                        },
+                        onFailure = {
+                            Log.e("OutNowVM", "Errore nella richiesta")
                         }
-                    } else {
-                        // La richiesta non è stata eseguita con successo
-                        // Gestisci questa situazione di conseguenza
-                    }
-                }
+                    )
             }
-        )*/
 
-            val url= "https://api.themoviedb.org/3/movie/now_playing?language=it&page=1"
-            tmdb.fetchFilmData(
-                url,
-                onSuccess = {filmList ->
-                    _state.update { it.copy(filmList = filmList) }
-                },
-                {}
-            )
+
+
+
+
 
 
 
