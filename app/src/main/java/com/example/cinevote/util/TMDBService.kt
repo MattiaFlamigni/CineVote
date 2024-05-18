@@ -2,7 +2,7 @@ package com.example.cinevote.util
 
 
 import android.util.Log
-import com.example.cinevote.screens.outNow.Film
+import com.example.cinevote.data.Film
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Callback
@@ -70,6 +70,12 @@ private fun parseFilmData(jsonData: String): List<Film> {
             val plot = filmObject.getString("overview")
             val voteAverage = filmObject.getDouble("vote_average").toInt()
             val releaseDate = filmObject.getString("release_date")
+            val genreIDsArray = filmObject.getJSONArray("genre_ids")
+            val genreIDs = mutableListOf<Int>()
+            for (i in 0 until genreIDsArray.length()) {
+                val genreID = genreIDsArray.getInt(i)
+                genreIDs.add(genreID)
+            }
 
             // Ottieni la data di due mesi fa
             val dueMesiFa = LocalDate.now().minusMonths(2)
@@ -78,7 +84,7 @@ private fun parseFilmData(jsonData: String): List<Film> {
 
             // Se il film è uscito negli ultimi due mesi, aggiungilo alla lista
             if (releaseDateLocalDate.isAfter(dueMesiFa) || releaseDateLocalDate.isEqual(dueMesiFa)) {
-                val film = Film(title, posterPath, plot, voteAverage, releaseDate)
+                val film = Film(title, posterPath, plot, voteAverage, releaseDate, genreIDs)
                 filmList.add(film)
             }
         }

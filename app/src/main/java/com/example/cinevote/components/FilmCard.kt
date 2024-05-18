@@ -21,8 +21,13 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.cinevote.R
-import com.example.cinevote.screens.outNow.Film
+import com.example.cinevote.data.Film
 
+
+
+enum class Genre{
+    COMMEDIA
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

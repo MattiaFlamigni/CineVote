@@ -10,7 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.cinevote.screens.cinema.CinemaScreen
 import com.example.cinevote.screens.details.DetailScreen
-import com.example.cinevote.screens.HomeScreen
+import com.example.cinevote.screens.home.HomeScreen
 import com.example.cinevote.screens.outNow.OutNowScreen
 import com.example.cinevote.screens.ReviewScreen
 import com.example.cinevote.screens.settings.SettingsScreen
@@ -18,6 +18,7 @@ import com.example.cinevote.screens.signUp.SignUpGeneralScreen
 import com.example.cinevote.screens.WishListScreen
 import com.example.cinevote.screens.auth.AuthViewModel
 import com.example.cinevote.screens.cinema.cinemaVm
+import com.example.cinevote.screens.home.HomeVM
 import com.example.cinevote.screens.login.LoginScreen
 import com.example.cinevote.screens.login.LoginViewModel
 import com.example.cinevote.screens.signUp.SignUpMailScreen
@@ -77,7 +78,9 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
             SignUpasswordScreen(navController=navController, state = signUpState, actions = signUpVm.action)
         }
         composable(NavigationRoute.HomeScreen.route){
-            HomeScreen(navController=navController)
+            val homeVM = koinViewModel<HomeVM>()
+            val state by homeVM.state.collectAsState()
+            HomeScreen(navController =navController, state = state, actions = homeVM.action)
         }
         composable(NavigationRoute.Settings.route){
             val settingsVm = koinViewModel<SettingsVm>()

@@ -3,6 +3,7 @@ package com.example.cinevote.screens.outNow
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cinevote.data.Film
 
 import com.example.cinevote.screens.cinema.Cinema
 import java.time.LocalDate
@@ -36,17 +37,6 @@ interface FilmAction {
     fun getFilmList()
 }
 
-data class Film(
-    val title: String,
-    val posterPath: String,
-    val plot: String,
-    //val actors: List<String>,
-    val voteAverage: Int,
-    val releaseDate : String
-) {
-    val posterUrl: String
-        get() = "https://image.tmdb.org/t/p/w500$posterPath"
-}
 
 class OutNowVM : ViewModel() {
 
@@ -100,17 +90,16 @@ private fun parseFilmData(jsonData: String): List<Film> {
             val plot = filmObject.getString("overview")
             val voteAverage = filmObject.getDouble("vote_average").toInt()
             val releaseDate = filmObject.getString("release_date")
+            val genreIDsArray = filmObject.getJSONArray("genre_ids")
+            val genreIDs = mutableListOf<Int>()
+            for (i in 0 until genreIDsArray.length()) {
+                val genreID = genreIDsArray.getInt(i)
+                genreIDs.add(genreID)
+            }
 
 
 
-
-            // Ottieni la data di due mesi fa
-            val dueMesiFa = LocalDate.now().minusMonths(2)
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-            val releaseDateLocalDate = LocalDate.parse(releaseDate, formatter)
-
-
-            val film = Film(title, posterPath, plot, voteAverage, releaseDate)
+            val film = Film(title, posterPath, plot, voteAverage, releaseDate, genreIDs)
             filmList.add(film)
             /*if (releaseDateLocalDate.isAfter(dueMesiFa) || releaseDateLocalDate.isEqual(dueMesiFa)) {
 
