@@ -1,5 +1,17 @@
 package com.example.cinevote.data
 
+enum class Genre(val id:Int){
+    Action(28),
+    Adventure(12),
+    Animation(16),
+    Comedy(35),
+    Drama(18),
+    Horror(27),
+
+}
+
+
+
 class Film (
     val title: String,
     val posterPath: String,
@@ -27,6 +39,8 @@ class Film (
         return genreIDs.mapNotNull { genreIdToNameMap[it] }
     }
 }
+
+
 
 
 

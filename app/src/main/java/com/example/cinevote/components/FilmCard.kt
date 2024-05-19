@@ -43,7 +43,7 @@ fun FilmCard(film: Film, category: String = "", onClick:()->Unit, image:Painter 
 
 
         LazyRow {
-            items(1) {
+            items(100) {
                 Card(
                     modifier= Modifier.padding(10.dp),
                     colors= CardDefaults.cardColors(

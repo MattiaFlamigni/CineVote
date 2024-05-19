@@ -8,13 +8,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -34,7 +39,7 @@ import com.example.cinevote.R
 import com.example.cinevote.components.TopBar
 import com.example.cinevote.components.bottomAppBar
 import com.example.cinevote.data.Film
-import com.example.cinevote.screens.outNow.OutNowStatus
+import com.example.cinevote.data.Genre
 
 
 @Composable
@@ -43,9 +48,8 @@ fun HomeScreen(
     actions : HomeAction,
     state : HomeState
 ){
-    for(i in 0..3){
-        actions.getAll(i)
-    }
+
+
 
 
 
@@ -56,49 +60,68 @@ fun HomeScreen(
     ) {innerPadding->
         Surface(
 
-        ){
+        ) {
             LazyColumn(
                 modifier = Modifier
                     .padding(innerPadding)
                     .padding(start = 10.dp)
             ) {
-                item(){
+                item() {
                     TopCategory(navController, state, actions)
-                    }
 
-                    item {
-                        for (genre in loadGenres()) {
+                    for(genre in Genre.entries)   {
+
+                    
+
+                        actions.getFilmsByGenre(1,genre.id)
+
+                        TextButton(onClick = { /*TODO*/ }) {
                             Text(
-                                text = genre,
-                                fontFamily = FontFamily.Monospace,
-                                fontSize = 30.sp
+                                text = genre.name,
                             )
+                            Icon(Icons.Default.KeyboardArrowRight, "expand")
 
+                        }
 
-                            Card(
-                                modifier = Modifier.padding(10.dp).size(100.dp),
-                                colors = CardDefaults.cardColors(
-                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-                                ),
-                                onClick = { /*TODO*/ }
-                            ) {
-                                Image(
-                                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                                    contentDescription = "",
-                                    contentScale = ContentScale.Crop,
-                                    modifier = Modifier.fillMaxWidth()
-                                )
+                        LazyRow {
 
+                            val films = state.filmsByGenre[genre.id] ?: emptyList()
+
+                            items(films.size){index->
+                                val film = films[index]
+                                Card(
+                                    modifier= Modifier.padding(10.dp),
+                                    colors= CardDefaults.cardColors(
+                                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
+                                    onClick = { /*todo*/ }
+                                ){
+                                    Image(
+                                        painter = rememberAsyncImagePainter(model = film.posterUrl),
+                                        contentDescription = film.title,
+                                        //contentDescription = "",
+                                        //painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .size(100.dp)
+                                    )
+
+                                }
                             }
                         }
+
                     }
 
+
+
+
+
+
+                }
             }
-
         }
-
-
     }
 }
 
@@ -155,3 +178,5 @@ private fun TopCategory(navController: NavHostController, state: HomeState, acti
 fun loadGenres(): List<String> {
     return listOf("Commedia", "Horror", "Comico", "Thriller", "Prova")
 }
+
+
