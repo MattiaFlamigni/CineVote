@@ -1,13 +1,19 @@
 package com.example.cinevote
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.cinevote.screens.cinema.CinemaScreen
 import com.example.cinevote.screens.details.DetailScreen
 import com.example.cinevote.screens.home.HomeScreen
@@ -18,6 +24,8 @@ import com.example.cinevote.screens.signUp.SignUpGeneralScreen
 import com.example.cinevote.screens.WishListScreen
 import com.example.cinevote.screens.auth.AuthViewModel
 import com.example.cinevote.screens.cinema.cinemaVm
+import com.example.cinevote.screens.expandView.ExpandScreen
+import com.example.cinevote.screens.expandView.ExpandVM
 import com.example.cinevote.screens.home.HomeVM
 import com.example.cinevote.screens.login.LoginScreen
 import com.example.cinevote.screens.login.LoginViewModel
@@ -29,9 +37,10 @@ import com.example.cinevote.screens.searchScreen
 import com.example.cinevote.screens.settings.SettingsVm
 import com.example.cinevote.screens.signUp.SignupViewModel
 import org.koin.androidx.compose.koinViewModel
+import kotlin.math.exp
 
 
-sealed class NavigationRoute(val route:String){
+sealed class NavigationRoute(val route:String, val arguments: List<NamedNavArgument> = emptyList()){
     data object Login : NavigationRoute("Login")
     data object SignUpGeneral : NavigationRoute("SignUpGeneral")
     data object SignUpMail : NavigationRoute("SignUpMail")
@@ -46,6 +55,12 @@ sealed class NavigationRoute(val route:String){
     data object Main : NavigationRoute("main")
     data object Cinema : NavigationRoute("cinema")
     data object Settings : NavigationRoute("impostazioni")
+    /*data object Expand : NavigationRoute("expand/{genreid}", listOf(navArgument("genreid") { type = NavType.IntType })) {
+        fun buildRoute(genreid: Int) = "expand/$genreid"
+    }*/
+
+    data object Expand : NavigationRoute("expan")
+
 }
 
 @Composable
@@ -106,6 +121,26 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
         composable(NavigationRoute.Detail.route){
             DetailScreen(navController = navController)
         }
+
+
+        composable(NavigationRoute.Expand.route){
+            val expand = koinViewModel<ExpandVM>()
+            val state by expand.state.collectAsState()
+            ExpandScreen(navController = navController,state=state, action = expand.action, 28)
+        }
+
+        /*composable(
+            route = NavigationRoute.Expand.route,
+            arguments = listOf(navArgument("genreid") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val expandVM = koinViewModel<ExpandVM>()
+            val state by expandVM.state.collectAsState()
+
+            val genreId = backStackEntry.arguments?.getInt("genreid") ?: 0
+            Log.d("ExpandScreen", "Genre ID: $genreId")  // Debug log
+
+            ExpandScreen(navController = navController, action = expandVM.action, genre = genreId, status = state)
+        }*/
 
         composable(NavigationRoute.Main.route){
             val authviewModel = viewModel<AuthViewModel>()

@@ -75,7 +75,21 @@ fun HomeScreen(
 
                         actions.getFilmsByGenre(1,genre.id)
 
-                        TextButton(onClick = { /*TODO*/ }) {
+
+
+
+
+                        TextButton(
+                            onClick = {navController.navigate(NavigationRoute.Expand.route)}
+
+
+                            /*onClick = { navController.navigate(NavigationRoute.Expand.buildRoute(genre.id))
+
+                                Log.d("route",
+                                    navController.navigate(NavigationRoute.Expand.buildRoute(genre.id))
+                                        .toString())
+                            }*/
+                        ) {
                             Text(
                                 text = genre.name,
                             )

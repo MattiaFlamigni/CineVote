@@ -2,6 +2,7 @@ package com.example.cinevote
 
 
 import com.example.cinevote.screens.cinema.cinemaVm
+import com.example.cinevote.screens.expandView.ExpandVM
 import com.example.cinevote.screens.home.HomeVM
 import com.example.cinevote.screens.login.LoginViewModel
 import com.example.cinevote.screens.outNow.OutNowVM
@@ -21,4 +22,5 @@ val appModule = module {
     viewModel {  SettingsVm() }
     viewModel {  OutNowVM() }
     viewModel {  HomeVM() }
+    viewModel {  ExpandVM() }
 }

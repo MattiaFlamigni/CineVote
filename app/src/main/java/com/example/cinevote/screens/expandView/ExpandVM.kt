@@ -1,4 +1,4 @@
-package com.example.cinevote.screens.home
+package com.example.cinevote.screens.expandView
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -6,54 +6,29 @@ import androidx.lifecycle.viewModelScope
 import com.example.cinevote.data.Film
 import com.example.cinevote.screens.outNow.OutNowStatus
 import com.example.cinevote.util.TMDBService
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
-data class HomeState(
-    val topFilmList: List<Film> = emptyList(),
-    val loadCommedia: List<Film> = emptyList(),
-    val filmsByGenre: Map<Int, List<Film>> = emptyMap()
-)
+data class ExpandStatus(val extendedFilmList : List<Film> = emptyList())
 
-interface HomeAction{
-    fun getTop()
-    fun getFilmsByGenre(pages:Int, genre:Int)
+
+interface ExpandActions{
+    fun getFilm(genre:Int, pages:Int)
 }
 
-
-class HomeVM : ViewModel(){
-
-
+class ExpandVM : ViewModel() {
     private val tmdb = TMDBService()
-    private val _state = MutableStateFlow(HomeState())
+
+    private val _state = MutableStateFlow(ExpandStatus())
     val state = _state.asStateFlow()
 
 
-
-    val action = object : HomeAction {
-        override fun getTop() {
-
-
-            viewModelScope.launch {
-
-
-                val url = "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1"
-                tmdb.fetchFilmData(
-                    url,
-                    onSuccess = { filmList ->
-                        _state.update { it.copy(topFilmList = filmList) }
-                    },
-                    onFailure = {
-                        Log.e("OutNowVM", "Errore nella richiesta")
-                    }
-                )
-            }
-        }
-
-        override fun getFilmsByGenre(pages: Int, genre: Int) {
+    val action = object : ExpandActions {
+        override fun getFilm(genre: Int, pages : Int) {
             viewModelScope.launch {
                 try {
                     val allFilms = mutableListOf<Film>()
@@ -67,7 +42,7 @@ class HomeVM : ViewModel(){
                             onSuccess = { filmList ->
                                 allFilms.addAll(filmList)
                                 if (page == pages) {
-                                    updateFilmsByGenre(genre, allFilms)
+                                    _state.update { it.copy(extendedFilmList = allFilms) }
                                 }
                             },
                             onFailure = { error ->
@@ -81,17 +56,8 @@ class HomeVM : ViewModel(){
             }
         }
 
-
     }
 
 
-    private fun updateFilmsByGenre(genre: Int, newFilms: List<Film>) {
-        _state.update { currentState ->
-            val updatedMap = currentState.filmsByGenre.toMutableMap()
-            val existingFilms = updatedMap[genre] ?: emptyList()
-            updatedMap[genre] = existingFilms + newFilms
-            currentState.copy(filmsByGenre = updatedMap)
-        }
-    }
 
 }
