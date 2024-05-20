@@ -73,7 +73,7 @@ fun HomeScreen(
 
                     
 
-                        actions.getFilmsByGenre(1,genre.id)
+                        //actions.getFilmsByGenre(1,genre.id)
 
 
 

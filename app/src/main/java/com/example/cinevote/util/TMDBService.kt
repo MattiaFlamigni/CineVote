@@ -77,16 +77,9 @@ private fun parseFilmData(jsonData: String): List<Film> {
                 genreIDs.add(genreID)
             }
 
-            // Ottieni la data di due mesi fa
-            val dueMesiFa = LocalDate.now().minusMonths(2)
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-            val releaseDateLocalDate = LocalDate.parse(releaseDate, formatter)
 
-            // Se il film è uscito negli ultimi due mesi, aggiungilo alla lista
-            if (releaseDateLocalDate.isAfter(dueMesiFa) || releaseDateLocalDate.isEqual(dueMesiFa)) {
                 val film = Film(title, posterPath, plot, voteAverage, releaseDate, genreIDs)
                 filmList.add(film)
-            }
         }
     } catch (e: JSONException) {
         // Gestisci l'eccezione se ci sono problemi nell'analisi dei dati JSON

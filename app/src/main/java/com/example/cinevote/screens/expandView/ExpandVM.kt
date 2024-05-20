@@ -26,15 +26,14 @@ class ExpandVM : ViewModel() {
     private val _state = MutableStateFlow(ExpandStatus())
     val state = _state.asStateFlow()
 
-
     val action = object : ExpandActions {
-        override fun getFilm(genre: Int, pages : Int) {
+        override fun getFilm(genre: Int, pages: Int) {
             viewModelScope.launch {
                 try {
                     val allFilms = mutableListOf<Film>()
                     for (page in 1..pages) {
                         val url =
-                            "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=$page&sort_by=popularity.desc&with_genres=$genre"
+                            "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=$page&sort_by=popularity.desc"
                         Log.d("FilmViewModel", "Request URL: $url")
 
                         tmdb.fetchFilmData(
@@ -42,7 +41,7 @@ class ExpandVM : ViewModel() {
                             onSuccess = { filmList ->
                                 allFilms.addAll(filmList)
                                 if (page == pages) {
-                                    _state.update { it.copy(extendedFilmList = allFilms) }
+                                    _state.value = _state.value.copy(extendedFilmList = allFilms)
                                 }
                             },
                             onFailure = { error ->
@@ -55,8 +54,8 @@ class ExpandVM : ViewModel() {
                 }
             }
         }
-
     }
+
 
 
 

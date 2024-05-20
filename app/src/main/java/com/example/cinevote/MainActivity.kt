@@ -13,18 +13,30 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
-import com.example.cinevote.database.Firestore
+import com.example.cinevote.data.Film
+import com.example.cinevote.data.database.Firestore
+import com.example.cinevote.data.database.Room.FilmDAO
+import com.example.cinevote.data.repository.FilmRepository
 
 
 import com.example.cinevote.ui.theme.CineVoteTheme
 import com.example.cinevote.util.LocationService
+import com.example.cinevote.util.TMDBService
 import com.jakewharton.threetenabp.AndroidThreeTen
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidThreeTen.init(this)
+
+        val tmdb = TMDBService()
+
 
         setContent {
             CineVoteTheme {

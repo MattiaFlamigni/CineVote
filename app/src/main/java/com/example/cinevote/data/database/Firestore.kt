@@ -1,4 +1,4 @@
-package com.example.cinevote.database
+package com.example.cinevote.data.database
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth

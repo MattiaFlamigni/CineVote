@@ -12,13 +12,14 @@ enum class Genre(val id:Int){
 
 
 
-class Film (
+data class Film (
     val title: String,
     val posterPath: String,
     val plot: String,
     val voteAverage: Int,
     val releaseDate: String,
     val genreIDs: List<Int>
+
 ){
     val posterUrl: String
         get() = "https://image.tmdb.org/t/p/w500$posterPath"

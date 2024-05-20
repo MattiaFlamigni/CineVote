@@ -4,6 +4,11 @@ package com.example.cinevote.screens.login
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.cinevote.data.Film
+import com.example.cinevote.data.database.Room.FilmList
+import com.example.cinevote.data.repository.FilmRepository
+import com.example.cinevote.util.TMDBService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -14,6 +19,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 data class LoginState (
     val mail:String="",
@@ -25,10 +34,15 @@ interface LoginActions{
     fun setPassword(password:String)
     fun isKeyCorrect(mail: String, password: String, onCompleteListener: (Boolean) -> Unit)
     fun loginGoogle()
+
+
+    fun loadFilm()
 }
-class LoginViewModel: ViewModel() {
+class LoginViewModel(private val repository: FilmRepository): ViewModel() {
     private val _state= MutableStateFlow(LoginState())
     val state = _state.asStateFlow()
+
+
 
     val actions = object : LoginActions {
         override fun setMail(mail: String) {
@@ -63,6 +77,44 @@ class LoginViewModel: ViewModel() {
 
 
         override fun loginGoogle() {
+        }
+
+        var currentPage = 1
+        override fun loadFilm() {
+            val tmdb = TMDBService()
+
+            viewModelScope.launch {
+                for (page in 1..10) {
+                    tmdb.fetchFilmData(
+                        url = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=$page&sort_by=popularity.desc",
+                        onSuccess = { filmList ->
+                            filmList.forEach { filmData ->
+                                val film = FilmList(
+                                    title = filmData.title,
+                                    plot = filmData.plot,
+                                    posterPath = filmData.posterPath,
+                                    releaseDate = filmData.releaseDate,
+                                    genreIDs = filmData.genreIDs.toString(),
+                                    voteAverage = filmData.voteAverage
+                                )
+
+                                viewModelScope.launch {
+                                    withContext(Dispatchers.IO) {
+                                        repository.upsert(film)
+                                    }
+                                }
+
+
+                            }
+                        },
+                        onFailure = {
+                            Log.d("failure database", "failure database")
+                        }
+                    )
+                    // Introduce a delay to prevent hitting API rate limits
+                    delay(1000L)
+                }
+            }
         }
     }
 }
