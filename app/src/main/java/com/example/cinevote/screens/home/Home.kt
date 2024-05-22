@@ -21,6 +21,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
@@ -40,6 +46,9 @@ import com.example.cinevote.components.TopBar
 import com.example.cinevote.components.bottomAppBar
 import com.example.cinevote.data.Film
 import com.example.cinevote.data.Genre
+import com.example.cinevote.data.database.Room.FilmList
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -69,64 +78,87 @@ fun HomeScreen(
                 item() {
                     TopCategory(navController, state, actions)
 
-                    for(genre in Genre.entries)   {
-
-                    
-
-                        //actions.getFilmsByGenre(1,genre.id)
 
 
+                    LaunchedEffect(Unit) {
+                        actions.getFilmsByGenre(1, 28)
+                    }
 
 
 
-                        TextButton(
-                            onClick = {navController.navigate(NavigationRoute.Expand.route)}
 
 
-                            /*onClick = { navController.navigate(NavigationRoute.Expand.buildRoute(genre.id))
+                        for (genre in Genre.entries) {
+
+
+                            TextButton(
+                                onClick = {
+                                    navController.navigate(
+                                        NavigationRoute.Expand.buildRoute(
+                                            genre.id
+                                        )
+                                    )
+                                }
+
+
+                                /*onClick = { navController.navigate(NavigationRoute.Expand.buildRoute(genre.id))
 
                                 Log.d("route",
                                     navController.navigate(NavigationRoute.Expand.buildRoute(genre.id))
                                         .toString())
                             }*/
-                        ) {
-                            Text(
-                                text = genre.name,
-                            )
-                            Icon(Icons.Default.KeyboardArrowRight, "expand")
+                            ) {
+                                Text(
+                                    text = genre.name,
+                                )
+                                Icon(Icons.Default.KeyboardArrowRight, "expand")
 
-                        }
-
-                        LazyRow {
-
-                            val films = state.filmsByGenre[genre.id] ?: emptyList()
-
-                            items(films.size){index->
-                                val film = films[index]
-                                Card(
-                                    modifier= Modifier.padding(10.dp),
-                                    colors= CardDefaults.cardColors(
-                                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-                                    ),
-                                    onClick = { /*todo*/ }
-                                ){
-                                    Image(
-                                        painter = rememberAsyncImagePainter(model = film.posterUrl),
-                                        contentDescription = film.title,
-                                        //contentDescription = "",
-                                        //painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                                        contentScale = ContentScale.Crop,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .size(100.dp)
-                                    )
-
-                                }
                             }
+
+
+                            LazyRow {
+
+                                val films = state.filmsByGenre
+
+
+                                    items(films.size/4) { index ->
+
+                                        val genres = films[index].genreIDs.split(",")
+                                            .mapNotNull { it.trim().toIntOrNull() }
+
+
+                                        if (genres.contains(genre.id)) {
+
+
+                                            val film = films[index]
+                                            Card(
+                                                modifier = Modifier.padding(10.dp),
+                                                colors = CardDefaults.cardColors(
+                                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                                ),
+                                                onClick = { /*todo*/ }
+                                            ) {
+                                                Image(
+                                                    painter = rememberAsyncImagePainter(model = film.posterPath),
+                                                    contentDescription = film.title,
+                                                    //contentDescription = "",
+                                                    //painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                                                    contentScale = ContentScale.Crop,
+                                                    modifier = Modifier
+                                                        .fillMaxWidth()
+                                                        .size(100.dp)
+                                                )
+
+                                            }
+                                        }
+                                    }
+
+
+                            }
+
                         }
 
-                    }
 
 
 
