@@ -55,11 +55,11 @@ sealed class NavigationRoute(val route:String, val arguments: List<NamedNavArgum
     data object Main : NavigationRoute("main")
     data object Cinema : NavigationRoute("cinema")
     data object Settings : NavigationRoute("impostazioni")
-    /*data object Expand : NavigationRoute("expand/{genreid}", listOf(navArgument("genreid") { type = NavType.IntType })) {
+    data object Expand : NavigationRoute("expand/{genreid}", listOf(navArgument("genreid") { type = NavType.IntType })) {
         fun buildRoute(genreid: Int) = "expand/$genreid"
-    }*/
+    }
 
-    data object Expand : NavigationRoute("expan")
+    //data object Expand : NavigationRoute("expan")
 
 }
 
@@ -123,13 +123,13 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
         }
 
 
-        composable(NavigationRoute.Expand.route){
+        /*composable(NavigationRoute.Expand.route) {
             val expand = koinViewModel<ExpandVM>()
             val state by expand.state.collectAsState()
-            ExpandScreen(navController = navController,state=state, action = expand.action, 28)
-        }
+            //ExpandScreen(navController = navController,state=state, action = expand.action, 28)
+        }*/
 
-        /*composable(
+        composable(
             route = NavigationRoute.Expand.route,
             arguments = listOf(navArgument("genreid") { type = NavType.IntType })
         ) { backStackEntry ->
@@ -139,8 +139,8 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
             val genreId = backStackEntry.arguments?.getInt("genreid") ?: 0
             Log.d("ExpandScreen", "Genre ID: $genreId")  // Debug log
 
-            ExpandScreen(navController = navController, action = expandVM.action, genre = genreId, status = state)
-        }*/
+            ExpandScreen(navController = navController, action = expandVM.action, genre = genreId, state = state)
+        }
 
         composable(NavigationRoute.Main.route){
             val authviewModel = viewModel<AuthViewModel>()
