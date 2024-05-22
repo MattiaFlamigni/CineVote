@@ -3,32 +3,56 @@ package com.example.cinevote.screens.expandView
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cinevote.data.Film
-import com.example.cinevote.screens.outNow.OutNowStatus
+import com.example.cinevote.data.database.Room.FilmList
+import com.example.cinevote.data.repository.FilmRepository
 import com.example.cinevote.util.TMDBService
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 
-data class ExpandStatus(val extendedFilmList : List<Film> = emptyList())
+data class ExpandStatus(val extendedFilmList: List<FilmList> = emptyList())
 
 
 interface ExpandActions{
     fun getFilm(genre:Int, pages:Int)
 }
 
-class ExpandVM : ViewModel() {
+class ExpandVM(private val repository: FilmRepository) : ViewModel() {
     private val tmdb = TMDBService()
 
     private val _state = MutableStateFlow(ExpandStatus())
     val state = _state.asStateFlow()
+    private val tmdbBaseUrl = "https://image.tmdb.org/t/p/w500"
 
     val action = object : ExpandActions {
         override fun getFilm(genre: Int, pages: Int) {
             viewModelScope.launch {
+                repository.film.collect { filmList ->
+                    val filteredFilms = filmList.filter { film ->
+                        // Trasforma la stringa di generi in una lista di interi e controlla se contiene il genere desiderato
+                        val genres = film.genreIDs.split(",")
+                            .mapNotNull { it.trim().toIntOrNull() } // Pulisci la stringa e converti in Int
+                        genre in genres
+
+
+                    }.map { film ->
+
+
+                        film.copy(posterPath = "$tmdbBaseUrl${film.posterPath}")
+                    }
+                    _state.value = _state.value.copy(extendedFilmList = filteredFilms)
+                }
+            }
+
+
+
+
+
+
+
+            /*viewModelScope.launch {
                 try {
                     val allFilms = mutableListOf<Film>()
                     for (page in 1..pages) {
@@ -51,12 +75,7 @@ class ExpandVM : ViewModel() {
                     }
                 } catch (e: Exception) {
                     Log.e("FilmViewModel", "Eccezione nella coroutine: ${e.message}", e)
-                }
+                }*/
             }
         }
     }
-
-
-
-
-}

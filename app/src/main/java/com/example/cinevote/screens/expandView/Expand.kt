@@ -59,14 +59,14 @@ fun ExpandScreen(
                 modifier=Modifier.padding(innerPadding),
             ){
 
-                action.getFilm(genre, 3)
+                action.getFilm(genre, 10)
 
                 Log.d("film", state.extendedFilmList.size.toString())
 
                 for(film in state.extendedFilmList){
                     Log.d("path", film.title)
                     Log.d("path", film.releaseDate)
-                    Log.d("path", film.posterUrl)
+                    Log.d("path", film.posterPath)
                     item(){
                         Card(
                             modifier= Modifier.padding(10.dp),
@@ -78,7 +78,7 @@ fun ExpandScreen(
                         ){
                             Image(
                                 painter = rememberAsyncImagePainter(model = ImageRequest.Builder(LocalContext.current)
-                                    .data(film.posterUrl)
+                                    .data(film.posterPath)
                                     .size(coil.size.Size.ORIGINAL)
                                     .build()),
                                 contentDescription = film.title,
