@@ -24,6 +24,7 @@ import com.example.cinevote.screens.signUp.SignUpGeneralScreen
 import com.example.cinevote.screens.WishListScreen
 import com.example.cinevote.screens.auth.AuthViewModel
 import com.example.cinevote.screens.cinema.cinemaVm
+import com.example.cinevote.screens.details.DetailsVM
 import com.example.cinevote.screens.expandView.ExpandScreen
 import com.example.cinevote.screens.expandView.ExpandVM
 import com.example.cinevote.screens.home.HomeVM
@@ -51,7 +52,11 @@ sealed class NavigationRoute(val route:String, val arguments: List<NamedNavArgum
     data object Review : NavigationRoute("review")
 
     data object Ricerca : NavigationRoute("cerca")
-    data object Detail : NavigationRoute("detail")
+    //data object Detail : NavigationRoute("detail")
+
+    data object Detail : NavigationRoute("detail/{title}", listOf(navArgument("title") { type = NavType.StringType })) {
+        fun buildRoute(title: String) = "detail/$title"
+    }
     data object Main : NavigationRoute("main")
     data object Cinema : NavigationRoute("cinema")
     data object Settings : NavigationRoute("impostazioni")
@@ -118,8 +123,21 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
             searchScreen(navController = navController)
         }
 
-        composable(NavigationRoute.Detail.route){
+        /*composable(NavigationRoute.Detail.route){
             DetailScreen(navController = navController)
+        }*/
+
+        composable(
+            route = NavigationRoute.Detail.route,
+            arguments = listOf(navArgument("title") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val detailVm = koinViewModel<DetailsVM>()
+            val state by detailVm.state.collectAsState()
+
+            val title = backStackEntry.arguments?.getString("title") ?: ""
+            Log.d("ExpandScreen", "Genre ID: $title")  // Debug log
+
+            DetailScreen(navController = navController, action = detailVm.action, title = title, state = state)
         }
 
 

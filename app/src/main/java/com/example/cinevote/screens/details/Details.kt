@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
@@ -47,20 +48,32 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import coil.size.Size
 import com.example.cinevote.components.TopBar
 import com.example.cinevote.R
 import com.example.cinevote.components.bottomAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailScreen(navController : NavHostController){
+fun DetailScreen(
+    navController : NavHostController,
+    state: DetailState,
+    action: DetailAction,
+    title:String
+){
     var selectedChip by remember { mutableStateOf(ChipOption.TRAMA) }
+    action.showDetails(title)
+
 
     Scaffold(
         topBar = { TopBar(navController = navController, title= stringResource(R.string.details_title)) },
@@ -73,143 +86,184 @@ fun DetailScreen(navController : NavHostController){
             modifier = Modifier.fillMaxSize()
         ) {
 
-            Column(
+            LazyColumn(
                 modifier= Modifier
                     .padding(innerPadding)
                     .fillMaxWidth(),
             ) {
-
-                Row(
-
-                    horizontalArrangement = Arrangement.Center,
-
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .width(200.dp),
-
-                    ){
-
-                    GetImage()
-                    Column(
-                        horizontalAlignment = Alignment.End,
-                        modifier=Modifier.padding(start=20.dp, top=40.dp)
-                    ) {
-                        IconToggle(initialIcon = Icons.Default.FavoriteBorder, finalIcon = Icons.Default.Favorite, { /*TODO*/},{/*TODO*/}  )
-                        IconToggle(initialIcon = Icons.Outlined.CheckCircle, finalIcon = Icons.Default.CheckCircle, {/*TODO*/}, {/*TODO*/} )
-                    }
-
-
-                }
-
-                Column(
-
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .width(300.dp)
-                        .padding(start = 25.dp)
-                ) {
-
-                    Row(modifier = Modifier.fillMaxWidth()) {
-
-
-                        for (genre in getGenres()) {
-                            Text(
-                                text = genre,
-                                fontFamily = FontFamily.Default,
-                                fontSize = 20.sp,
-                                color=MaterialTheme.colorScheme.onPrimaryContainer
-                            )
-
-                            Text(
-                                text = "|",
-                                fontFamily = FontFamily.Default,
-                                fontSize = 20.sp,
-                                color=MaterialTheme.colorScheme.onPrimaryContainer
-                            )
-
-
-                        }
-                    }
-                    Spacer(modifier = Modifier.padding(top=15.dp))
-                    Text(
-                        text = getTitle(),
-                        fontFamily = FontFamily.Default,
-                        fontSize = 40.sp,
-                        lineHeight = 48.sp
-                    )
-
-                    Spacer(modifier = Modifier.padding(top=15.dp))
-
-                    Text(
-                        text = getYear().toString(),
-                        fontFamily = FontFamily.Default,
-                        fontSize = 20.sp,
-                        color=MaterialTheme.colorScheme.onPrimaryContainer
-                    )
-
-                    Spacer(modifier = Modifier.padding(top=15.dp))
+                item {
 
                     Row(
+
+                        horizontalArrangement = Arrangement.Center,
+
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .width(200.dp),
+
+                        ) {
+
+                        /*GetImage()*/
+                        //state.poster /*TODO:Coil for load image*/
+                        Image(
+                            painter = rememberAsyncImagePainter(
+                                model = ImageRequest.Builder(
+                                    LocalContext.current
+                                )
+                                    .data(state.poster)
+                                    .crossfade(true)
+                                    .size(Size.ORIGINAL)
+                                    .build()
+                            ),
+                            contentDescription = state.title,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxWidth().size(300.dp, 300.dp)
+                        )
+
+
+                        Column(
+                            horizontalAlignment = Alignment.End,
+                            modifier = Modifier.padding(start = 20.dp, top = 40.dp)
+                        ) {
+                            IconToggle(
+                                initialIcon = Icons.Default.FavoriteBorder,
+                                finalIcon = Icons.Default.Favorite,
+                                { /*TODO*/ },
+                                {/*TODO*/ })
+                            IconToggle(
+                                initialIcon = Icons.Outlined.CheckCircle,
+                                finalIcon = Icons.Default.CheckCircle,
+                                {/*TODO*/ },
+                                {/*TODO*/ })
+                        }
+
+
+                    }
+
+                    Column(
+
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .width(300.dp)
+                            .padding(start = 25.dp)
+                    ) {
+
+                        Row(modifier = Modifier.fillMaxWidth()) {
+
+
+                            for (genre in getGenres()) {
+                                Text(
+                                    text = genre,
+                                    fontFamily = FontFamily.Default,
+                                    fontSize = 20.sp,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+
+                                Text(
+                                    text = "|",
+                                    fontFamily = FontFamily.Default,
+                                    fontSize = 20.sp,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+
+
+                            }
+                        }
+                        Spacer(modifier = Modifier.padding(top = 15.dp))
+                        Text(
+                            text = state.title,
+                            fontFamily = FontFamily.Default,
+                            fontSize = 40.sp,
+                            lineHeight = 48.sp
+                        )
+
+                        Spacer(modifier = Modifier.padding(top = 15.dp))
+
+                        Text(
+                            text = "Anno: ${state.year}",
+                            fontFamily = FontFamily.Default,
+                            fontSize = 20.sp,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+
+                        Spacer(modifier = Modifier.padding(top = 15.dp))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Button(
+                                modifier = Modifier.size(width = 100.dp, height = 50.dp),
+                                colors = ButtonColors(
+                                    containerColor = MaterialTheme.colorScheme.primary,
+                                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                                    disabledContainerColor = Color.Transparent,
+                                    disabledContentColor = Color.Transparent
+                                ),
+                                onClick = { /*TODO*/ },
+
+                                ) {
+                                Text(text = "Valuta")
+                            }
+                        }
+
+
+                        ReviewRating(3)
+
+
+
+                        Spacer(modifier = Modifier.padding(top = 15.dp))
+                    }
+
+                    LazyRow(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
-                    ){
-                        Button(
-                            modifier=Modifier.size(width=100.dp, height = 50.dp),
-                            colors = ButtonColors(
-                                containerColor = MaterialTheme.colorScheme.primary,
-                                contentColor = MaterialTheme.colorScheme.onPrimary,
-                                disabledContainerColor = Color.Transparent,
-                                disabledContentColor = Color.Transparent
-                                ),
-                            onClick = { /*TODO*/ },
-
+                    ) {
+                        item {
+                            AssistChipExample(
+                                "trama",
+                                Icons.Default.Info,
+                                selectedChip == ChipOption.TRAMA
                             ) {
-                            Text(text = "Valuta")
+                                selectedChip = ChipOption.TRAMA
+                            }
+
+                        }
+                        item {
+                            AssistChipExample(
+                                "Cast",
+                                Icons.Default.Person,
+                                selectedChip == ChipOption.CAST
+                            ) {
+                                selectedChip = ChipOption.CAST
+                            }
+
+                        }
+                        item {
+                            AssistChipExample(
+                                "Recensioni",
+                                Icons.Default.Star,
+                                selectedChip == ChipOption.RECENSIONI
+                            ) {
+                                selectedChip = ChipOption.RECENSIONI
+                            }
                         }
                     }
 
 
-                    ReviewRating(3)
-
-
-
-                    Spacer(modifier = Modifier.padding(top=15.dp))
-                }
-
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ){
-                    item {
-                        AssistChipExample("trama", Icons.Default.Info, selectedChip==ChipOption.TRAMA){
-                            selectedChip = ChipOption.TRAMA
+                    // Contenuto basato sul chip selezionato
+                    when (selectedChip) {
+                        ChipOption.TRAMA -> {
+                            Text("trama")
                         }
 
-                    }
-                    item{
-                        AssistChipExample("Cast", Icons.Default.Person, selectedChip==ChipOption.CAST){
-                            selectedChip = ChipOption.CAST
+                        ChipOption.CAST -> {
+                            Text("cast")
                         }
 
-                    }
-                    item{
-                        AssistChipExample("Recensioni", Icons.Default.Star, selectedChip==ChipOption.RECENSIONI){
-                            selectedChip = ChipOption.RECENSIONI
+                        ChipOption.RECENSIONI -> {
+                            Text("recensioni")
                         }
-                    }
-                }
-
-
-                // Contenuto basato sul chip selezionato
-                when(selectedChip) {
-                    ChipOption.TRAMA -> {
-                        Text("trama")
-                    }
-                    ChipOption.CAST -> {
-                        Text("cast")
-                    }
-                    ChipOption.RECENSIONI -> {
-                        Text("recensioni")
                     }
                 }
             }

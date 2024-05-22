@@ -13,4 +13,6 @@ class FilmRepository(private val filmDAO: FilmDAO) {
     suspend fun delete(filmList: FilmList) = filmDAO.delete(filmList)
 
     suspend fun addFilm(filmList: FilmList) = filmDAO.addFilm(filmList)
+
+    suspend fun getFilmFromTitle(title: String) = filmDAO.getFilmFromTitle(title)
 }

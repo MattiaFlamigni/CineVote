@@ -19,5 +19,8 @@ interface FilmDAO{
     @Insert
     suspend fun addFilm(film:FilmList)
 
+    @Query("SELECT * FROM FilmList WHERE title = :title")
+    suspend fun getFilmFromTitle(title: String): FilmList
+
 
 }

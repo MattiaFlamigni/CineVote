@@ -77,9 +77,7 @@ fun HomeScreen(
                             TextButton(
                                 onClick = {
                                     navController.navigate(
-                                        NavigationRoute.Expand.buildRoute(
-                                            genre.id
-                                        )
+                                        NavigationRoute.Expand.buildRoute(genre.id)
                                     )
                                 }
 
@@ -176,7 +174,7 @@ private fun TopCategory(navController: NavHostController, state: HomeState, acti
                             modifier = Modifier
                                 .padding(10.dp)
                                 .size(200.dp),
-                            onClick = { navController.navigate(NavigationRoute.Detail.route) },
+                            onClick = { navController.navigate(NavigationRoute.Detail.buildRoute(film.title)) },
                             colors = CardDefaults.cardColors(
                                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                                 contentColor = MaterialTheme.colorScheme.onTertiaryContainer

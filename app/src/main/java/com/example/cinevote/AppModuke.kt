@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.example.cinevote.data.database.Room.CineVoteDatabase
 import com.example.cinevote.data.repository.FilmRepository
 import com.example.cinevote.screens.cinema.cinemaVm
+import com.example.cinevote.screens.details.DetailsVM
 import com.example.cinevote.screens.expandView.ExpandVM
 import com.example.cinevote.screens.home.HomeVM
 import com.example.cinevote.screens.login.LoginViewModel
@@ -34,5 +35,6 @@ val appModule = module {
     viewModel {  SettingsVm() }
     viewModel {  OutNowVM() }
     viewModel {  HomeVM(get()) }
+    viewModel {  DetailsVM(get()) }
     viewModel {  ExpandVM(get()) }
 }
