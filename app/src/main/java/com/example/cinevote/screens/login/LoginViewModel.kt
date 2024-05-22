@@ -84,7 +84,7 @@ class LoginViewModel(private val repository: FilmRepository): ViewModel() {
             val tmdb = TMDBService()
 
             viewModelScope.launch {
-                for (page in 1..10) {
+                for (page in 1..100) {
                     tmdb.fetchFilmData(
                         url = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=$page&sort_by=popularity.desc",
                         onSuccess = { filmList ->
