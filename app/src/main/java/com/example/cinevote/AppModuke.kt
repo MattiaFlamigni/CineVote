@@ -33,6 +33,6 @@ val appModule = module {
     viewModel {  cinemaVm() }
     viewModel {  SettingsVm() }
     viewModel {  OutNowVM() }
-    viewModel {  HomeVM() }
-    viewModel {  ExpandVM() }
+    viewModel {  HomeVM(get()) }
+    viewModel {  ExpandVM(get()) }
 }
