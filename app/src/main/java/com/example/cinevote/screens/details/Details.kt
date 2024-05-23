@@ -22,7 +22,6 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.CheckCircle
-import androidx.compose.material.icons.rounded.Face
 import androidx.compose.material.icons.sharp.Star
 import androidx.compose.material.icons.twotone.Star
 import androidx.compose.material3.AssistChip
@@ -30,7 +29,6 @@ import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -194,7 +192,7 @@ fun DetailScreen(
 
 
                         //ReviewRating(3) alternative:
-                        getVote()
+                        GetVote(global = state.vote) /*TODO: LEGGERE VALUTAZIONE UTENTE*/
 
 
                         Spacer(modifier = Modifier.padding(top = 15.dp))
@@ -341,7 +339,7 @@ private fun ReviewRating(index:Int) {
 
 
 @Composable
-private fun getVote(){
+private fun GetVote(global: Int) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -368,7 +366,7 @@ private fun getVote(){
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "2/5",
+                    text = "$global/10",
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
