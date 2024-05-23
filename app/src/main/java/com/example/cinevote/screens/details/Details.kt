@@ -1,7 +1,6 @@
 package com.example.cinevote.screens.details
 
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -24,10 +24,14 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.rounded.Face
 import androidx.compose.material.icons.sharp.Star
+import androidx.compose.material.icons.twotone.Star
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -42,6 +46,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -96,22 +101,8 @@ fun DetailScreen(
 
                         ) {
 
-                        /*GetImage()*/
-                        //state.poster /*TODO:Coil for load image*/
-                        Image(
-                            painter = rememberAsyncImagePainter(
-                                model = ImageRequest.Builder(
-                                    LocalContext.current
-                                )
-                                    .data(state.poster)
-                                    .crossfade(true)
-                                    .size(Size.ORIGINAL)
-                                    .build()
-                            ),
-                            contentDescription = state.title,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxWidth().size(300.dp, 300.dp)
-                        )
+                        GetImage(state.poster, state.title)
+
 
 
                         Column(
@@ -183,7 +174,7 @@ fun DetailScreen(
 
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center
+                            horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Button(
                                 modifier = Modifier.size(width = 100.dp, height = 50.dp),
@@ -194,6 +185,7 @@ fun DetailScreen(
                                     disabledContentColor = Color.Transparent
                                 ),
                                 onClick = { /*TODO*/ },
+                                shape = RectangleShape
 
                                 ) {
                                 Text(text = "Valuta")
@@ -201,8 +193,8 @@ fun DetailScreen(
                         }
 
 
-                        ReviewRating(3)
-
+                        //ReviewRating(3) alternative:
+                        getVote()
 
 
                         Spacer(modifier = Modifier.padding(top = 15.dp))
@@ -307,6 +299,27 @@ private fun IconToggle(initialIcon:ImageVector, finalIcon:ImageVector, firstClic
     }
 }
 
+
+@Composable
+private fun GetImage(poster: String, title:String) {
+    Image(
+        painter = rememberAsyncImagePainter(
+            model = ImageRequest.Builder(
+                LocalContext.current
+            )
+                .data(poster)
+                .crossfade(true)
+                .size(Size.ORIGINAL)
+                .build()
+        ),
+        contentDescription = title,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .fillMaxWidth()
+            .size(300.dp, 300.dp)
+    )
+}
+
 private fun getGenres(): List<String> {
     return listOf("Fantasy", "Avventura")
 }
@@ -319,11 +332,78 @@ private fun ReviewRating(index:Int) {
     Row {
         repeat(5) {current->
             Icon(
-                imageVector = if (current < index) Icons.Sharp.Star else Icons.Rounded.Face,
+                imageVector = if (current < index) Icons.Sharp.Star else Icons.TwoTone.Star,
                 contentDescription = null
             )
         }
     }
+}
+
+
+@Composable
+private fun getVote(){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        // Valutazione globale
+        Card(
+            modifier = Modifier
+                .weight(1f)
+                .padding(8.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+            )
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Valutazione Globale",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "2/5",
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            }
+        }
+
+        // Valutazione utente
+        Card(
+            modifier = Modifier
+                .weight(1f)
+                .padding(8.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+            )
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Valutazione Utente",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "3/5",
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            }
+        }
+    }
+
 }
 
 
