@@ -118,7 +118,7 @@ fun HomeScreen(
                                                     containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                                                     contentColor = MaterialTheme.colorScheme.onTertiaryContainer
                                                 ),
-                                                onClick = { /*todo*/ }
+                                                onClick = { navController.navigate(NavigationRoute.Detail.buildRoute(film.title)) }
                                             ) {
                                                 Image(
                                                     painter = rememberAsyncImagePainter(model = film.posterPath),
