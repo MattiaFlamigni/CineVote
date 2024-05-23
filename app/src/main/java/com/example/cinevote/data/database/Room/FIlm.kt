@@ -13,5 +13,4 @@ data class FilmList(
     @ColumnInfo val voteAverage: Int,
     @ColumnInfo val releaseDate: String,
     @ColumnInfo val genreIDs : String,
-
 )

@@ -41,7 +41,7 @@ class HomeVM(private val repository: FilmRepository) : ViewModel(){
             viewModelScope.launch {
 
 
-                val url = "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1"
+                val url = "https://api.themoviedb.org/3/movie/popular?language=it&region=it"
                 tmdb.fetchFilmData(
                     url,
                     onSuccess = { filmList ->

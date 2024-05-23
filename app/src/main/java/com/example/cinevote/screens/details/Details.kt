@@ -1,6 +1,7 @@
 package com.example.cinevote.screens.details
 
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -58,6 +59,7 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.example.cinevote.components.TopBar
 import com.example.cinevote.R
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -68,7 +70,13 @@ fun DetailScreen(
     title:String
 ){
     var selectedChip by remember { mutableStateOf(ChipOption.TRAMA) }
-    action.showDetails(title)
+    try {
+        action.showDetails(title)
+    }catch (e:Exception){
+        Log.d("Inesistente", "Non presente nel db" )
+        action.loadFromDb(title)
+        action.showDetails(title)
+    }
 
 
     Scaffold(
