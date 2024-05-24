@@ -5,31 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinevote.data.Film
 
-import com.example.cinevote.screens.cinema.Cinema
-import java.time.LocalDate
-import com.example.cinevote.screens.cinema.DISTANCE
 import com.example.cinevote.util.TMDBService
 
-import java.time.format.DateTimeFormatter
-import com.squareup.okhttp.OkHttpClient
-import com.squareup.okhttp.Request
-
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.Call
-import java.time.*
-import okhttp3.Callback
-import okhttp3.Response
 import org.json.JSONException
 import org.json.JSONObject
-import java.io.IOException
-import java.net.URLEncoder
-import java.sql.Date
-import java.util.Calendar
 
 data class OutNowStatus(val filmList: List<Film> = emptyList())
 
@@ -88,7 +71,7 @@ private fun parseFilmData(jsonData: String): List<Film> {
             val title = filmObject.getString("title")
             val posterPath = filmObject.getString("poster_path")
             val plot = filmObject.getString("overview")
-            val voteAverage = filmObject.getDouble("vote_average").toInt()
+            val voteAverage = filmObject.getInt("vote_average").toFloat()
             val releaseDate = filmObject.getString("release_date")
             val genreIDsArray = filmObject.getJSONArray("genre_ids")
             val genreIDs = mutableListOf<Int>()

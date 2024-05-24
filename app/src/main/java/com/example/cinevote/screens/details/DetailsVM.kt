@@ -1,12 +1,10 @@
 package com.example.cinevote.screens.details
 
-import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinevote.data.database.Room.FilmList
 import com.example.cinevote.data.repository.FilmRepository
-import com.example.cinevote.screens.home.HomeState
 import com.example.cinevote.util.TMDBService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,8 +15,8 @@ import kotlinx.coroutines.withContext
 data class DetailState(
     val title:String="",
     val genres: String="" /*TODO*/,
-    val plot : String="",
-    val vote: Int=0,
+    val plot: String="",
+    val vote: Float ,
     val year: Int=0,
     val poster: String=""
 )
@@ -29,7 +27,7 @@ interface DetailAction{
 }
 
 class DetailsVM(private val repository: FilmRepository) : ViewModel(){
-    private val _state = MutableStateFlow(DetailState())
+    private val _state = MutableStateFlow(DetailState(vote = 0.00F))
     val state = _state.asStateFlow()
     private val tmdbBaseUrl = "https://image.tmdb.org/t/p/w500"
     private val tmdb = TMDBService()
@@ -48,11 +46,13 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel(){
                 val year = filmDetails.releaseDate.substring(0, 4)
 
 
+
+
                 _state.value = _state.value.copy(
                     title = filmDetails.title,
                     genres = filmDetails.genreIDs, // TODO: Converti IDs in nomi dei generi se necessario
                     plot = filmDetails.plot,
-                    vote = filmDetails.voteAverage,
+                    vote = String.format("%.1f", filmDetails.voteAverage).replace(",", ".").toFloat(),
                     poster = "$tmdbBaseUrl${filmDetails.posterPath}",
                     year = year.toInt()
                 )
@@ -75,11 +75,11 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel(){
 
                         val film = FilmList(
                             title = filmData.title,
-                            posterPath=filmData.posterPath,
-                            plot= filmData.plot,
-                            voteAverage=filmData.voteAverage,
-                            releaseDate=filmData.releaseDate,
-                            genreIDs= filmData.genreIDs.toString()
+                            posterPath =filmData.posterPath,
+                            plot = filmData.plot,
+                            voteAverage =filmData.voteAverage,
+                            releaseDate =filmData.releaseDate,
+                            genreIDs = filmData.genreIDs.toString()
 
                         )
 

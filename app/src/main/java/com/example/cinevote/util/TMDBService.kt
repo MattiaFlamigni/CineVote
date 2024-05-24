@@ -11,8 +11,6 @@ import okhttp3.Response
 import java.io.IOException
 import org.json.JSONException
 import org.json.JSONObject
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 class TMDBService {
 
@@ -70,7 +68,7 @@ private fun parseFilmData(jsonData: String): List<Film> {
             val title = filmObject.getString("title")
             val posterPath = filmObject.getString("poster_path")
             val plot = filmObject.getString("overview")
-            val voteAverage = filmObject.getDouble("vote_average").toInt()
+            val voteAverage = filmObject.getDouble("vote_average").toFloat()
             val releaseDate = filmObject.getString("release_date")
             val genreIDsArray = filmObject.getJSONArray("genre_ids")
             val genreIDs = mutableListOf<Int>()

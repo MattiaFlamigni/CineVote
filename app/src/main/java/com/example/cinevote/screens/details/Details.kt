@@ -59,7 +59,6 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.example.cinevote.components.TopBar
 import com.example.cinevote.R
-import kotlinx.coroutines.delay
 
 
 @Composable
@@ -347,7 +346,7 @@ private fun ReviewRating(index:Int) {
 
 
 @Composable
-private fun GetVote(global: Int) {
+private fun GetVote(global: Float) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
