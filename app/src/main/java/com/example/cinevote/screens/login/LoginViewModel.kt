@@ -89,6 +89,7 @@ class LoginViewModel(private val repository: FilmRepository): ViewModel() {
                         onSuccess = { filmList ->
                             filmList.forEach { filmData ->
                                 val film = FilmList(
+                                    filmID = filmData.id,
                                     title = filmData.title,
                                     plot = filmData.plot,
                                     posterPath = filmData.posterPath,

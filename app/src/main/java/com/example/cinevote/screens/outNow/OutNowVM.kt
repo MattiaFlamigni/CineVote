@@ -68,6 +68,7 @@ private fun parseFilmData(jsonData: String): List<Film> {
         val resultsArray = jsonObject.getJSONArray("results")
         for (i in 0 until resultsArray.length()) {
             val filmObject = resultsArray.getJSONObject(i)
+            val id = filmObject.getInt("id")
             val title = filmObject.getString("title")
             val posterPath = filmObject.getString("poster_path")
             val plot = filmObject.getString("overview")
@@ -82,7 +83,7 @@ private fun parseFilmData(jsonData: String): List<Film> {
 
 
 
-            val film = Film(title, posterPath, plot, voteAverage, releaseDate, genreIDs)
+            val film = Film(id, title, posterPath, plot, voteAverage, releaseDate, genreIDs)
             filmList.add(film)
             /*if (releaseDateLocalDate.isAfter(dueMesiFa) || releaseDateLocalDate.isEqual(dueMesiFa)) {
 

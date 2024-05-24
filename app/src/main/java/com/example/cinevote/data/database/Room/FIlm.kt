@@ -6,7 +6,9 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class FilmList(
+
     @PrimaryKey val title: String,
+    @ColumnInfo val filmID : Int,
     @ColumnInfo val posterPath: String,
     @ColumnInfo val plot: String,
     @ColumnInfo val voteAverage: Float,

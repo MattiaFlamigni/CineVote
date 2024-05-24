@@ -74,6 +74,7 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel(){
                     filmList.forEach { filmData ->
 
                         val film = FilmList(
+                            filmID = filmData.id,
                             title = filmData.title,
                             posterPath =filmData.posterPath,
                             plot = filmData.plot,
