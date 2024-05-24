@@ -51,6 +51,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -221,7 +222,7 @@ fun DetailScreen(
                         }
                         item {
                             AssistChipExample(
-                                "Cast",
+                                "Cast", /*TODO*/
                                 Icons.Default.Person,
                                 selectedChip == ChipOption.CAST
                             ) {
@@ -230,7 +231,7 @@ fun DetailScreen(
 
                         }
                         item {
-                            AssistChipExample(
+                            AssistChipExample( /*TODO*/
                                 "Recensioni",
                                 Icons.Default.Star,
                                 selectedChip == ChipOption.RECENSIONI
@@ -244,7 +245,16 @@ fun DetailScreen(
                     // Contenuto basato sul chip selezionato
                     when (selectedChip) {
                         ChipOption.TRAMA -> {
-                            Text("trama")
+                            Text(
+                                text = state.plot,
+                                fontFamily = FontFamily.Serif,
+                                fontSize = 24.sp,
+                                modifier = Modifier
+                                    .padding(horizontal = 24.dp, vertical = 16.dp),
+                                letterSpacing = 1.sp,
+                                lineHeight = 30.sp,
+                                textAlign = TextAlign.Justify
+                            )
                         }
 
                         ChipOption.CAST -> {
@@ -254,7 +264,12 @@ fun DetailScreen(
                         ChipOption.RECENSIONI -> {
                             Text("recensioni")
                         }
+
+
+
                     }
+
+                    Spacer(modifier = Modifier.padding(bottom = 400.dp))
                 }
             }
 
