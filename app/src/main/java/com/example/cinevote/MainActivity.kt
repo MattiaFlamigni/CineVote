@@ -17,6 +17,7 @@ import com.example.cinevote.data.Film
 import com.example.cinevote.data.database.Firestore
 import com.example.cinevote.data.database.Room.FilmDAO
 import com.example.cinevote.data.repository.FilmRepository
+import com.example.cinevote.screens.login.LoginActions
 
 
 import com.example.cinevote.ui.theme.CineVoteTheme
@@ -30,12 +31,16 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 
-class MainActivity : ComponentActivity() {
+class MainActivity() : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidThreeTen.init(this)
 
+
         val tmdb = TMDBService()
+
+
 
 
         setContent {

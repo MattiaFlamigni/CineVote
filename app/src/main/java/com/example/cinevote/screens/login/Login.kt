@@ -34,6 +34,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.cinevote.NavigationRoute
 import com.example.cinevote.R
@@ -42,6 +43,10 @@ import com.example.cinevote.components.PasswordInput
 import com.example.cinevote.components.SimpleButton
 import com.example.cinevote.components.TextInput
 import com.example.cinevote.screens.auth.AuthViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
@@ -124,6 +129,11 @@ fun LoginScreen(
                                 navController.navigate(NavigationRoute.HomeScreen.route)
                                 Log.d("TAG", "Accesso consentito")
                                 error = false
+
+                                val scope = CoroutineScope(Dispatchers.Main)
+                                scope.launch {
+                                    delay(1000L)
+                                }
                             } else {
                                 // L'email e/o la password non sono corrette, fai qualcosa come mostrare un messaggio di errore
                                 Log.e("TAG", "Accesso non consentito")
