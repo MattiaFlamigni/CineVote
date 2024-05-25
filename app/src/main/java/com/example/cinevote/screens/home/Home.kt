@@ -35,12 +35,13 @@ import com.example.cinevote.R
 import com.example.cinevote.components.TopBar
 import com.example.cinevote.components.bottomAppBar
 import com.example.cinevote.data.Genre
+import com.example.cinevote.screens.login.LoginActions
 
 @Composable
 fun HomeScreen(
     navController: NavHostController,
     actions : HomeAction,
-    state : HomeState
+    state : HomeState,
 ){
 
 

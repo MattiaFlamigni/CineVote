@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Favorite
@@ -58,32 +61,37 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
-import com.example.cinevote.components.TopBar
 import com.example.cinevote.R
+import com.example.cinevote.components.TopBar
 
 
 @Composable
 fun DetailScreen(
-    navController : NavHostController,
+    navController: NavHostController,
     state: DetailState,
     action: DetailAction,
-    title:String
-){
+    title: String
+) {
     var selectedChip by remember { mutableStateOf(ChipOption.TRAMA) }
     try {
         action.showDetails(title)
-    }catch (e:Exception){
-        Log.d("Inesistente", "Non presente nel db" )
+    } catch (e: Exception) {
+        Log.d("Inesistente", "Non presente nel db")
         action.loadFromDb(title)
         action.showDetails(title)
     }
 
 
     Scaffold(
-        topBar = { TopBar(navController = navController, title= stringResource(R.string.details_title)) },
+        topBar = {
+            TopBar(
+                navController = navController,
+                title = stringResource(R.string.details_title)
+            )
+        },
         containerColor = MaterialTheme.colorScheme.background,
 
-    ) {innerPadding->
+        ) { innerPadding ->
         Surface(
             tonalElevation = 8.dp,
             shape = MaterialTheme.shapes.medium,
@@ -91,7 +99,7 @@ fun DetailScreen(
         ) {
 
             LazyColumn(
-                modifier= Modifier
+                modifier = Modifier
                     .padding(innerPadding)
                     .fillMaxWidth(),
             ) {
@@ -193,7 +201,7 @@ fun DetailScreen(
                                 onClick = { /*TODO*/ },
                                 shape = RectangleShape
 
-                                ) {
+                            ) {
                                 Text(text = "Valuta")
                             }
                         }
@@ -210,7 +218,9 @@ fun DetailScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        item {
+
+                        item() {
+
                             AssistChipExample(
                                 "trama",
                                 Icons.Default.Info,
@@ -218,9 +228,10 @@ fun DetailScreen(
                             ) {
                                 selectedChip = ChipOption.TRAMA
                             }
-
                         }
-                        item {
+
+                        item() {
+
                             AssistChipExample(
                                 "Cast", /*TODO*/
                                 Icons.Default.Person,
@@ -228,9 +239,10 @@ fun DetailScreen(
                             ) {
                                 selectedChip = ChipOption.CAST
                             }
-
                         }
-                        item {
+
+
+                        item() {
                             AssistChipExample( /*TODO*/
                                 "Recensioni",
                                 Icons.Default.Star,
@@ -239,6 +251,7 @@ fun DetailScreen(
                                 selectedChip = ChipOption.RECENSIONI
                             }
                         }
+
                     }
 
 
@@ -258,13 +271,60 @@ fun DetailScreen(
                         }
 
                         ChipOption.CAST -> {
-                            Text("cast")
+                            val tmdbBaseUrl = "https://image.tmdb.org/t/p/w500"
+                            val id = action.getIdFromTitle(title) { id ->
+                                Log.d("porcodio", id.toString())
+                                action.loadActor(id)
+                            }
+
+
+                            // Dividi gli attori in gruppi di tre per riga
+                            val actorsInRows = state.actorListState.chunked(3)
+
+                            // Itera sui gruppi di attori
+                            actorsInRows.forEach { rowOfActors ->
+                                Row(
+                                    horizontalArrangement = Arrangement.SpaceEvenly,
+                                    modifier = Modifier.fillMaxWidth().padding(8.dp)
+                                ) {
+                                    // Itera sugli attori nella riga corrente
+                                    rowOfActors.forEach { actor ->
+                                        Column(
+                                            horizontalAlignment = Alignment.CenterHorizontally
+                                        ) {
+                                            Image(
+                                                painter = rememberAsyncImagePainter(model = "$tmdbBaseUrl${actor.profilePic}"),
+                                                contentDescription = actor.name,
+                                                contentScale = ContentScale.Crop,
+                                                modifier = Modifier.size(100.dp)
+                                            )
+                                            Spacer(modifier = Modifier.height(4.dp))
+                                            Text(
+                                                text = actor.name,
+                                                style = MaterialTheme.typography.labelLarge,
+                                                textAlign = TextAlign.Center,
+                                                maxLines = 1
+                                            )
+                                            Text(
+                                                text = actor.job,
+                                                style = MaterialTheme.typography.labelLarge,
+                                                textAlign = TextAlign.Center,
+                                                maxLines = 1
+                                            )
+                                        }
+                                    }
+                                }
+                                // Aggiungi uno spazio tra le righe di attori
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
+
+
+
                         }
 
                         ChipOption.RECENSIONI -> {
                             Text("recensioni")
                         }
-
 
 
                     }
@@ -277,7 +337,6 @@ fun DetailScreen(
 
     }
 }
-
 
 
 @Composable
@@ -303,7 +362,12 @@ private fun AssistChipExample(
 }
 
 @Composable
-private fun IconToggle(initialIcon:ImageVector, finalIcon:ImageVector, firstClick:()->Unit, lastClick:()->Unit){
+private fun IconToggle(
+    initialIcon: ImageVector,
+    finalIcon: ImageVector,
+    firstClick: () -> Unit,
+    lastClick: () -> Unit
+) {
     var isAdded by remember { mutableStateOf(false) }
 
     IconButton(
@@ -321,7 +385,7 @@ private fun IconToggle(initialIcon:ImageVector, finalIcon:ImageVector, firstClic
 
 
 @Composable
-private fun GetImage(poster: String, title:String) {
+private fun GetImage(poster: String, title: String) {
     Image(
         painter = rememberAsyncImagePainter(
             model = ImageRequest.Builder(
@@ -346,11 +410,11 @@ private fun getGenres(): List<String> {
 
 
 @Composable
-private fun ReviewRating(index:Int) {
+private fun ReviewRating(index: Int) {
 
 
     Row {
-        repeat(5) {current->
+        repeat(5) { current ->
             Icon(
                 imageVector = if (current < index) Icons.Sharp.Star else Icons.TwoTone.Star,
                 contentDescription = null

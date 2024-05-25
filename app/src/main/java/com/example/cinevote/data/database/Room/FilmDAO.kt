@@ -22,5 +22,7 @@ interface FilmDAO{
     @Query("SELECT * FROM FilmList WHERE title = :title")
     suspend fun getFilmFromTitle(title: String): FilmList
 
+    @Query("SELECT filmID FROM FilmList Where title=:title")
+    suspend fun getTitleById(title:String):Int
 
 }

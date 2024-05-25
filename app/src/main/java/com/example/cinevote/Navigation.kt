@@ -28,6 +28,7 @@ import com.example.cinevote.screens.details.DetailsVM
 import com.example.cinevote.screens.expandView.ExpandScreen
 import com.example.cinevote.screens.expandView.ExpandVM
 import com.example.cinevote.screens.home.HomeVM
+import com.example.cinevote.screens.login.LoginActions
 import com.example.cinevote.screens.login.LoginScreen
 import com.example.cinevote.screens.login.LoginViewModel
 import com.example.cinevote.screens.signUp.SignUpMailScreen

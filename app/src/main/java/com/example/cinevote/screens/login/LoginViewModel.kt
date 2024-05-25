@@ -2,6 +2,7 @@ package com.example.cinevote.screens.login
 
 
 
+import android.os.Parcelable
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,7 +29,7 @@ data class LoginState (
     val password:String=""
 )
 
-interface LoginActions{
+interface LoginActions {
     fun setMail(mail:String)
     fun setPassword(password:String)
     fun isKeyCorrect(mail: String, password: String, onCompleteListener: (Boolean) -> Unit)

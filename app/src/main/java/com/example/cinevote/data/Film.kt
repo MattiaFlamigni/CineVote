@@ -19,7 +19,7 @@ data class Film(
     val plot: String,
     val voteAverage: Float,
     val releaseDate: String,
-    val genreIDs: List<Int>
+    val genreIDs: List<Int>,
 
 ){
     val posterUrl: String

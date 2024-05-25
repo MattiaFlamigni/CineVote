@@ -3,12 +3,14 @@ package com.example.cinevote.screens.details
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cinevote.data.Actors
 import com.example.cinevote.data.database.Room.FilmList
 import com.example.cinevote.data.repository.FilmRepository
 import com.example.cinevote.util.TMDBService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -18,12 +20,17 @@ data class DetailState(
     val plot: String="",
     val vote: Float ,
     val year: Int=0,
-    val poster: String=""
+    val poster: String="",
+
+    val actorListState: List<Actors> = emptyList()
 )
 
 interface DetailAction{
     fun showDetails(title:String)
     fun loadFromDb(title:String)
+    fun loadActor(id: Int)
+
+    fun getIdFromTitle(title: String, callback: (Int) -> Unit)
 }
 
 class DetailsVM(private val repository: FilmRepository) : ViewModel(){
@@ -31,6 +38,7 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel(){
     val state = _state.asStateFlow()
     private val tmdbBaseUrl = "https://image.tmdb.org/t/p/w500"
     private val tmdb = TMDBService()
+
 
 
 
@@ -96,6 +104,58 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel(){
                 },
                 onFailure = {}
             )
+        }
+
+        override fun loadActor(id: Int) {
+            viewModelScope.launch {
+                try {
+                    val actorList = withContext(Dispatchers.IO) {
+                        tmdb.fetchActorFromFilmID(
+                            url = "https://api.themoviedb.org/3/movie/$id/credits",
+                            onSuccess = {actorList->
+
+                                Log.d("OnSuccess", actorList.size.toString())
+
+                                actorList.forEach {actor->
+
+                                    Log.d("actor", actor.name)
+
+                                    _state.value = _state.value.copy(
+                                        actorListState = actorList
+                                    )
+
+
+
+
+
+                                }
+
+
+                            },
+                            onFailure = {e->
+                                Log.e("loadActor", "Errore nella richiesta HTTP", e)
+
+                            }
+                        )
+                    }
+
+
+                } catch (e: Exception) {
+                    // Gestisci eventuali eccezioni qui
+                    Log.e("loadActor", "Errore durante il caricamento dell'attore", e)
+                }
+            }
+        }
+
+
+//bug precedente: La richiesta era asincrona, veniva restituito il valore di default prima che la richiesta fosse stata completata
+        override fun getIdFromTitle(title: String, callback: (Int) -> Unit) {
+            viewModelScope.launch {
+                val id = withContext(Dispatchers.IO) {
+                    repository.getTitleById(title)
+                }
+                callback(id)
+            }
         }
     }
 }
