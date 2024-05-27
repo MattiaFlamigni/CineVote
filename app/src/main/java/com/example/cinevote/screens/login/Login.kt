@@ -117,7 +117,7 @@ fun LoginScreen(
                     text = "Accedi",
                     onClick = {
 
-                        //actions.loadFilm()
+                        actions.loadFilm()
 
                         if( state.mail.isEmpty() || state.password.isEmpty()){
                             error = true
