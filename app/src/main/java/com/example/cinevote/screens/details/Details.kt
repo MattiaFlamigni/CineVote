@@ -218,9 +218,9 @@ fun DetailScreen(
 
                                 onClick = {
 
-                                    val id = action.getIdFromTitle(title) { id ->
+                                    action.getIdFromTitle(title) { id ->
 
-                                        val key = action.getKeyTrailer(id) { key ->
+                                        action.getKeyTrailer(id) { key ->
                                             if (key.isNotEmpty()) {
                                                 val videoUrl =
                                                     "https://www.youtube.com/watch?v=$key"
@@ -310,7 +310,7 @@ fun DetailScreen(
 
                         ChipOption.CAST -> {
                             val tmdbBaseUrl = "https://image.tmdb.org/t/p/w500"
-                            val id = action.getIdFromTitle(title) { id ->
+                            action.getIdFromTitle(title) { id ->
                                 action.loadActor(id)
                             }
 
