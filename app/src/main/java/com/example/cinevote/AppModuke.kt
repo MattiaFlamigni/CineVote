@@ -3,6 +3,7 @@ package com.example.cinevote
 
 import androidx.room.Room
 import com.example.cinevote.data.database.Room.CineVoteDatabase
+import com.example.cinevote.data.database.Room.MIGRATION_1_2
 import com.example.cinevote.data.repository.FilmRepository
 import com.example.cinevote.screens.cinema.cinemaVm
 import com.example.cinevote.screens.details.DetailsVM
@@ -12,6 +13,7 @@ import com.example.cinevote.screens.login.LoginViewModel
 import com.example.cinevote.screens.outNow.OutNowVM
 import com.example.cinevote.screens.settings.SettingsVm
 import com.example.cinevote.screens.signUp.SignupViewModel
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -20,10 +22,12 @@ val appModule = module {
     //single { get<Context>().dataStore }
     single {
         Room.databaseBuilder(
-            get(),
+            androidContext(),
             CineVoteDatabase::class.java,
-            "todo-list"
-        ).build()
+            "cinevote_database"
+        )
+            .fallbackToDestructiveMigration()  // Cancella il database esistente se non esiste una migrazione appropriata
+            .build()
     }
 
 
