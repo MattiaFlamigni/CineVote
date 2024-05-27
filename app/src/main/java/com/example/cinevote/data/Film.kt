@@ -13,13 +13,13 @@ enum class Genre(val id:Int){
 
 
 data class Film(
-    val id : Int,
+    val id: Int,
     val title: String,
     val posterPath: String,
     val plot: String,
     val voteAverage: Float,
     val releaseDate: String,
-    val genreIDs: List<Int>,
+    val genreIDs: MutableList<Int>
 
 ){
     val posterUrl: String

@@ -10,7 +10,6 @@ import com.example.cinevote.util.TMDBService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -31,6 +30,8 @@ interface DetailAction{
     fun loadActor(id: Int)
 
     fun getIdFromTitle(title: String, callback: (Int) -> Unit)
+
+    fun getKeyTrailer(id: Int, callback: (String) -> Unit)
 }
 
 class DetailsVM(private val repository: FilmRepository) : ViewModel(){
@@ -156,6 +157,14 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel(){
                 }
                 callback(id)
             }
+        }
+
+        override fun getKeyTrailer(id: Int, callback: (String) -> Unit) {
+            tmdb.fetchTrailerFilm(id, onSuccess = { trailerKey ->
+                callback(trailerKey)
+            }, onFailure = {
+                // Gestire il caso in cui il recupero del trailer fallisce
+            })
         }
     }
 }

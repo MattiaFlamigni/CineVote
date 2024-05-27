@@ -1,11 +1,12 @@
 package com.example.cinevote.screens.details
 
 
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,8 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Favorite
@@ -204,6 +203,45 @@ fun DetailScreen(
                             ) {
                                 Text(text = "Valuta")
                             }
+
+
+                            val ctx = LocalContext.current
+
+                            Button(
+                                modifier = Modifier.size(width = 100.dp, height = 50.dp),
+                                colors = ButtonColors(
+                                    containerColor = MaterialTheme.colorScheme.primary,
+                                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                                    disabledContainerColor = Color.Transparent,
+                                    disabledContentColor = Color.Transparent
+                                ),
+
+                                onClick = {
+
+                                    val id = action.getIdFromTitle(title) { id ->
+
+                                        val key = action.getKeyTrailer(id) { key ->
+                                            if (key.isNotEmpty()) {
+                                                val videoUrl =
+                                                    "https://www.youtube.com/watch?v=$key"
+                                                Log.d("URIYOUTUBE", videoUrl)
+
+                                                val intent =
+                                                    Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl))
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                                ctx.startActivity(intent)
+                                            }
+
+                                        }
+
+
+                                    }
+                                },
+                                shape = RectangleShape
+
+                            ) {
+                                Text(text = "Trailer")
+                            }
                         }
 
 
@@ -219,7 +257,7 @@ fun DetailScreen(
                         horizontalArrangement = Arrangement.Center
                     ) {
 
-                        item() {
+                        item {
 
                             AssistChipExample(
                                 "trama",
@@ -230,7 +268,7 @@ fun DetailScreen(
                             }
                         }
 
-                        item() {
+                        item {
 
                             AssistChipExample(
                                 "Cast", /*TODO*/
@@ -242,7 +280,7 @@ fun DetailScreen(
                         }
 
 
-                        item() {
+                        item {
                             AssistChipExample( /*TODO*/
                                 "Recensioni",
                                 Icons.Default.Star,
@@ -273,7 +311,6 @@ fun DetailScreen(
                         ChipOption.CAST -> {
                             val tmdbBaseUrl = "https://image.tmdb.org/t/p/w500"
                             val id = action.getIdFromTitle(title) { id ->
-                                Log.d("porcodio", id.toString())
                                 action.loadActor(id)
                             }
 
@@ -285,7 +322,9 @@ fun DetailScreen(
                             actorsInRows.forEach { rowOfActors ->
                                 Row(
                                     horizontalArrangement = Arrangement.SpaceEvenly,
-                                    modifier = Modifier.fillMaxWidth().padding(8.dp)
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(8.dp)
                                 ) {
                                     // Itera sugli attori nella riga corrente
                                     rowOfActors.forEach { actor ->
@@ -317,7 +356,6 @@ fun DetailScreen(
                                 // Aggiungi uno spazio tra le righe di attori
                                 Spacer(modifier = Modifier.height(8.dp))
                             }
-
 
 
                         }

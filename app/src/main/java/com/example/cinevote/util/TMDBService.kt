@@ -95,6 +95,47 @@ class TMDBService {
     }
 
 
+
+
+
+    fun fetchTrailerFilm(id:Int, onSuccess: (String) -> Unit, onFailure: (IOException) -> Unit) {
+        val request: Request = Request.Builder()
+            .url("https://api.themoviedb.org/3/movie/$id/videos?language=it")
+            .get()
+            .addHeader("accept", "application/json")
+            .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMTNhOGQwMGFhYjU1MDIwN2FlMDBiMDliZDBlNDIxMyIsInN1YiI6IjY1ZjcxZWZkMjQyZjk0MDE3ZGNjZjQxNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ._wgFHK2BtHQEPT_EHs1T6sfwVtxLscm2NKYAlOzRCfo")
+            .build()
+
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                onFailure(e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    val body = response.body
+                    if (body != null) {
+                        val jsonData = body.string()
+                        try {
+                            val url = parseTrailerData(jsonData)
+                            onSuccess(url)
+                        } catch (e: Exception) {
+                            // Gestisci eventuali errori nell'analisi dei dati JSON
+                            onFailure(IOException(e))
+                        }
+                    } else {
+                        // Il corpo della risposta è vuoto
+                        onFailure(IOException("Response body is null"))
+                    }
+                } else {
+                    // La richiesta non è stata eseguita con successo
+                    onFailure(IOException("Request was not successful"))
+                }
+            }
+        })
+    }
+
 }
 
 
@@ -156,5 +197,26 @@ private fun parseActorData(jsonData: String): List<Actors> {
     }
     return actors
 }
+
+
+private fun parseTrailerData(jsonData: String): String {
+    var id : String =""
+    try {
+        val jsonObject = JSONObject(jsonData)
+        val castArray = jsonObject.getJSONArray("results")
+        for (i in 0 until castArray.length()) {
+            val trailerObj = castArray.getJSONObject(i)
+            val key = trailerObj.getString("key")
+
+            id=key
+        }
+    } catch (e: JSONException) {
+        // Gestisci l'eccezione se ci sono problemi nell'analisi dei dati JSON
+        Log.e("OutNowVM", "Errore nell'analisi dei dati JSON: ${e.message}")
+    }
+    return id
+}
+
+
 
 
