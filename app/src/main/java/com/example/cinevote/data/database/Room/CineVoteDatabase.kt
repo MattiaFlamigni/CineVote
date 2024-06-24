@@ -6,9 +6,10 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 
-@Database(entities = [FilmList::class], version = 2)
+@Database(entities = [FilmList::class, Review::class], version = 3)
 abstract class CineVoteDatabase : RoomDatabase() {
     abstract fun FilmDAO() : FilmDAO
+    abstract fun ReviewDAO() : ReviewDAO
 }
 
 

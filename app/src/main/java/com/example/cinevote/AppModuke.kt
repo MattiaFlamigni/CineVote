@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.example.cinevote.data.database.Room.CineVoteDatabase
 import com.example.cinevote.data.database.Room.MIGRATION_1_2
 import com.example.cinevote.data.repository.FilmRepository
+import com.example.cinevote.data.repository.reviewRepository
 import com.example.cinevote.screens.cinema.cinemaVm
 import com.example.cinevote.screens.details.DetailsVM
 import com.example.cinevote.screens.expandView.ExpandVM
@@ -33,6 +34,7 @@ val appModule = module {
 
 
     single { FilmRepository(get<CineVoteDatabase>().FilmDAO()) }
+    single { reviewRepository(get<CineVoteDatabase>().ReviewDAO())}
     viewModel {  SignupViewModel() }
 
     viewModel {  LoginViewModel(get()) }
