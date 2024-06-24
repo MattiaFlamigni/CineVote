@@ -113,11 +113,17 @@ fun LoginScreen(
             ){
                 SimpleButton(text = "Registrati", onClick = {navController.navigate(NavigationRoute.SignUpGeneral.route)}, modifier=Modifier.weight(1f), fontSize = 20.sp)
 
+
+                val scope = CoroutineScope(Dispatchers.Main)
+
                 SimpleButton(
+
                     text = "Accedi",
                     onClick = {
 
-                        actions.loadFilm()
+                        scope.launch { actions.loadFilm() }
+
+
 
                         if( state.mail.isEmpty() || state.password.isEmpty()){
                             error = true
@@ -130,7 +136,7 @@ fun LoginScreen(
                                 Log.d("TAG", "Accesso consentito")
                                 error = false
 
-                                val scope = CoroutineScope(Dispatchers.Main)
+
                                 scope.launch {
                                     delay(1000L)
                                 }

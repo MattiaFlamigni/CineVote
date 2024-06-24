@@ -1,7 +1,6 @@
-package com.example.cinevote.screens
+package com.example.cinevote.screens.review
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Face
@@ -31,17 +31,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import coil.size.Size
 import com.example.cinevote.components.TopBar
 import com.example.cinevote.R
 import com.example.cinevote.components.bottomAppBar
+import com.example.cinevote.screens.details.DetailAction
+import com.example.cinevote.screens.details.DetailState
 
 @Composable
-fun ReviewScreen(navController : NavHostController){
+fun ReviewScreen(navController : NavHostController, title:String, state: ReviewState,
+                 action: ReviewAction,){
     Scaffold(
         topBar = { TopBar(navController = navController) },
         bottomBar = { bottomAppBar(navController) },
@@ -50,88 +58,102 @@ fun ReviewScreen(navController : NavHostController){
     ) {innerPadding->
 
 
+        action.setYear(title)
 
 
-        Column(
+
+        LazyColumn(
             modifier= Modifier
                 .padding(innerPadding)
                 .fillMaxWidth(),
         ) {
+            item {
 
-            Row(
+                Row(
 
-                horizontalArrangement = Arrangement.Center,
+                    horizontalArrangement = Arrangement.Center,
 
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .width(200.dp),
-
-                ){
-
-                GetImage()
-
-            }
-
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .width(300.dp)
-            ) {
-                Column(
-                    modifier= Modifier
-                        .width(300.dp)
+                    modifier = Modifier
                         .fillMaxWidth()
-                ){
-                    Row() {
+                        .width(200.dp),
 
+                    ) {
 
-                        for (genre in getGenres()) {
-                            Text(
-                                text = genre,
-                                fontFamily = FontFamily.Default,
-                                fontSize = 20.sp,
-                                color=MaterialTheme.colorScheme.onPrimaryContainer
-                            )
-
-                            Text(
-                                text = "|",
-                                fontFamily = FontFamily.Default,
-                                fontSize = 20.sp,
-                                color=MaterialTheme.colorScheme.onPrimaryContainer
-                            )
-
-
-                        }
-                    }
-                    Spacer(modifier = Modifier.padding(top=15.dp))
-                    Text(
-                        text = getTitle(),
-                        fontFamily = FontFamily.Default,
-                        fontSize = 40.sp,
-                        lineHeight = 48.sp
+                    Image(
+                        painter = rememberAsyncImagePainter(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(state.image)
+                                .size(Size.ORIGINAL)
+                                .build()
+                        ),
+                        contentDescription = title,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxWidth()
                     )
-
-                    Spacer(modifier = Modifier.padding(top=15.dp))
-
-                    Text(
-                        text = getYear().toString(),
-                        fontFamily = FontFamily.Default,
-                        fontSize = 20.sp,
-                        color=MaterialTheme.colorScheme.onPrimaryContainer
-                    )
-
-                    Spacer(modifier = Modifier.padding(top=15.dp))
-                    
-                    ReviewRating()
-
-                    Spacer(modifier = Modifier.padding(top=15.dp))
-
-                    DescriptionTextField()
-
 
                 }
 
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .width(300.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .width(300.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Row() {
+
+
+                            for (genre in getGenres()) {
+                                Text(
+                                    text = genre,
+                                    fontFamily = FontFamily.Default,
+                                    fontSize = 20.sp,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+
+                                Text(
+                                    text = "|",
+                                    fontFamily = FontFamily.Default,
+                                    fontSize = 20.sp,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+
+
+                            }
+                        }
+                        Spacer(modifier = Modifier.padding(top = 15.dp))
+                        Text(
+                            text = title,
+                            fontFamily = FontFamily.Default,
+                            fontSize = 40.sp,
+                            lineHeight = 48.sp
+                        )
+
+                        Spacer(modifier = Modifier.padding(top = 15.dp))
+
+                        Text(
+                            text = state.year.toString(),
+                            fontFamily = FontFamily.Default,
+                            fontSize = 20.sp,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+
+                        Spacer(modifier = Modifier.padding(top = 15.dp))
+
+                        ReviewRating()
+
+                        Spacer(modifier = Modifier.padding(top = 15.dp))
+
+                        DescriptionTextField()
+
+
+                    }
+
+                }
             }
 
 
@@ -142,20 +164,6 @@ fun ReviewScreen(navController : NavHostController){
 
         }
     }
-}
-
-
-
-@Composable
-private fun GetImage(){
-
-
-        Image(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
-            contentDescription = "image",
-            modifier = Modifier.size(300.dp, 300.dp)
-        )
-
 }
 
 private fun getGenres(): List<String> {

@@ -11,6 +11,7 @@ import com.example.cinevote.screens.expandView.ExpandVM
 import com.example.cinevote.screens.home.HomeVM
 import com.example.cinevote.screens.login.LoginViewModel
 import com.example.cinevote.screens.outNow.OutNowVM
+import com.example.cinevote.screens.review.reviewVM
 import com.example.cinevote.screens.settings.SettingsVm
 import com.example.cinevote.screens.signUp.SignupViewModel
 import org.koin.android.ext.koin.androidContext
@@ -41,4 +42,5 @@ val appModule = module {
     viewModel {  HomeVM(get()) }
     viewModel {  DetailsVM(get()) }
     viewModel {  ExpandVM(get()) }
+    viewModel {  reviewVM(get()) }
 }

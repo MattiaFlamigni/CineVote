@@ -4,8 +4,6 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NamedNavArgument
@@ -18,7 +16,7 @@ import com.example.cinevote.screens.cinema.CinemaScreen
 import com.example.cinevote.screens.details.DetailScreen
 import com.example.cinevote.screens.home.HomeScreen
 import com.example.cinevote.screens.outNow.OutNowScreen
-import com.example.cinevote.screens.ReviewScreen
+import com.example.cinevote.screens.review.ReviewScreen
 import com.example.cinevote.screens.settings.SettingsScreen
 import com.example.cinevote.screens.signUp.SignUpGeneralScreen
 import com.example.cinevote.screens.WishListScreen
@@ -28,18 +26,17 @@ import com.example.cinevote.screens.details.DetailsVM
 import com.example.cinevote.screens.expandView.ExpandScreen
 import com.example.cinevote.screens.expandView.ExpandVM
 import com.example.cinevote.screens.home.HomeVM
-import com.example.cinevote.screens.login.LoginActions
 import com.example.cinevote.screens.login.LoginScreen
 import com.example.cinevote.screens.login.LoginViewModel
 import com.example.cinevote.screens.signUp.SignUpMailScreen
 import com.example.cinevote.screens.signUp.SignUpasswordScreen
 import com.example.cinevote.screens.mainScreen
 import com.example.cinevote.screens.outNow.OutNowVM
+import com.example.cinevote.screens.review.reviewVM
 import com.example.cinevote.screens.searchScreen
 import com.example.cinevote.screens.settings.SettingsVm
 import com.example.cinevote.screens.signUp.SignupViewModel
 import org.koin.androidx.compose.koinViewModel
-import kotlin.math.exp
 
 
 sealed class NavigationRoute(val route:String, val arguments: List<NamedNavArgument> = emptyList()){
@@ -50,7 +47,10 @@ sealed class NavigationRoute(val route:String, val arguments: List<NamedNavArgum
     data object HomeScreen : NavigationRoute("Home")
     data object WishList : NavigationRoute("wishList")
     data object OutNow : NavigationRoute("outNow")
-    data object Review : NavigationRoute("review")
+    //data object Review : NavigationRoute("review")
+    data object Review : NavigationRoute("review/{title}", listOf(navArgument("title") { type = NavType.StringType })) {
+        fun buildRoute(title: String) = "review/$title"
+    }
 
     data object Ricerca : NavigationRoute("cerca")
     //data object Detail : NavigationRoute("detail")
@@ -116,9 +116,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
             val state by outNowVm.state.collectAsState()
             OutNowScreen(navController = navController,state=state, action = outNowVm.action)
         }
-        composable(NavigationRoute.Review.route){
-            ReviewScreen(navController = navController)
-        }
+
 
         composable(NavigationRoute.Ricerca.route){
             searchScreen(navController = navController)
@@ -127,6 +125,19 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
         /*composable(NavigationRoute.Detail.route){
             DetailScreen(navController = navController)
         }*/
+
+
+
+        composable(
+            route = NavigationRoute.Review.route,
+            arguments= listOf(navArgument("title") { type = NavType.StringType })
+        ){backStackEntry ->
+            val settingsVm = koinViewModel<reviewVM>()
+            val state by settingsVm.state.collectAsState()
+            val title = backStackEntry.arguments?.getString("title") ?: ""
+            ReviewScreen(navController = navController, state = state, action = settingsVm.action, title =title)
+        }
+
 
         composable(
             route = NavigationRoute.Detail.route,

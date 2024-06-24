@@ -60,6 +60,7 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
+import com.example.cinevote.NavigationRoute
 import com.example.cinevote.R
 import com.example.cinevote.components.TopBar
 
@@ -197,7 +198,10 @@ fun DetailScreen(
                                     disabledContainerColor = Color.Transparent,
                                     disabledContentColor = Color.Transparent
                                 ),
-                                onClick = { /*TODO*/ },
+                                onClick = {
+                                            navController.navigate(NavigationRoute.Review.buildRoute(state.title))
+
+                                          },
                                 shape = RectangleShape
 
                             ) {
