@@ -1,5 +1,6 @@
 package com.example.cinevote.screens.review
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,7 +56,7 @@ fun ReviewScreen(navController : NavHostController, title:String, state: ReviewS
         topBar = { TopBar(navController = navController) },
         bottomBar = { bottomAppBar(navController) },
         containerColor = MaterialTheme.colorScheme.secondaryContainer,
-        floatingActionButton = { floatingActButton() }
+        floatingActionButton = { floatingActButton(action, title ) }
     ) {innerPadding->
 
 
@@ -144,23 +146,17 @@ fun ReviewScreen(navController : NavHostController, title:String, state: ReviewS
 
                         Spacer(modifier = Modifier.padding(top = 15.dp))
 
-                        ReviewRating()
+                        ReviewRating(state, action)
 
                         Spacer(modifier = Modifier.padding(top = 15.dp))
 
-                        DescriptionTextField()
+                        DescriptionTextField(action)
 
 
                     }
 
                 }
             }
-
-
-
-
-
-
 
         }
     }
@@ -179,13 +175,16 @@ private fun getTitle():String{
 }
 
 @Composable
-private fun ReviewRating() {
+private fun ReviewRating(state: ReviewState, action: ReviewAction) {
     var selectedStars by remember { mutableStateOf(0) }
 
     Row {
         repeat(5) { index ->
             IconButton(
-                onClick = { selectedStars = index + 1 },
+                onClick = {
+                    selectedStars = index + 1
+                    action.setRating(selectedStars)
+                },
                 modifier = Modifier.padding(4.dp)
             ) {
                 Icon(
@@ -200,8 +199,9 @@ private fun ReviewRating() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun DescriptionTextField() {
+private fun DescriptionTextField(action:ReviewAction) {
     var description by remember { mutableStateOf("") }
+
 
    val containerColor = MaterialTheme.colorScheme.secondaryContainer
 
@@ -212,7 +212,10 @@ private fun DescriptionTextField() {
             disabledContainerColor = containerColor,
         ),
         value = description,
-        onValueChange = { description = it },
+        onValueChange = {
+            description = it
+            action.setDesc(it)
+        },
         placeholder = { Text("Inserisci la descrizione qui") },
         modifier = Modifier
             .fillMaxWidth()
@@ -224,9 +227,9 @@ private fun DescriptionTextField() {
 
 
 @Composable
-private fun floatingActButton(){
+private fun floatingActButton(action: ReviewAction, title:String){
     FloatingActionButton(
-        onClick = { /*TODO*/ },
+        onClick = { action.uploadReview(title) },
         containerColor = MaterialTheme.colorScheme.secondaryContainer,
         contentColor = MaterialTheme.colorScheme.onSecondaryContainer
     ) {
