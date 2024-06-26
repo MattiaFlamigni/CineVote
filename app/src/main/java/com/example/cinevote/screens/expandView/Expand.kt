@@ -74,7 +74,7 @@ fun ExpandScreen(
                                 containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                                 contentColor = MaterialTheme.colorScheme.onTertiaryContainer
                             ),
-                            onClick = {/*TODO*/}
+                            onClick = {navController.navigate(NavigationRoute.Detail.buildRoute(film.title))}
                         ){
                             Image(
                                 painter = rememberAsyncImagePainter(model = ImageRequest.Builder(LocalContext.current)
