@@ -75,6 +75,7 @@ fun DetailScreen(
     var selectedChip by remember { mutableStateOf(ChipOption.TRAMA) }
     try {
         action.showDetails(title)
+        action.hasReview(title)
     } catch (e: Exception) {
         Log.d("Inesistente", "Non presente nel db")
         action.loadFromDb(title)
@@ -191,12 +192,13 @@ fun DetailScreen(
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Button(
+                                enabled = state.isReviewd,
                                 modifier = Modifier.size(width = 100.dp, height = 50.dp),
                                 colors = ButtonColors(
                                     containerColor = MaterialTheme.colorScheme.primary,
                                     contentColor = MaterialTheme.colorScheme.onPrimary,
-                                    disabledContainerColor = Color.Transparent,
-                                    disabledContentColor = Color.Transparent
+                                    disabledContainerColor = Color.Gray,
+                                    disabledContentColor = Color.White
                                 ),
                                 onClick = {
                                             navController.navigate(NavigationRoute.Review.buildRoute(state.title))
@@ -205,7 +207,11 @@ fun DetailScreen(
                                 shape = RectangleShape
 
                             ) {
-                                Text(text = "Valuta")
+                                if(state.isReviewd){
+                                    Text(text = "Valuta")
+                                }else {
+                                    Text("Valutato")
+                                }
                             }
 
 
@@ -250,7 +256,7 @@ fun DetailScreen(
 
 
                         //ReviewRating(3) alternative:
-                        GetVote(global = state.vote) /*TODO: LEGGERE VALUTAZIONE UTENTE*/
+                        GetVote(global = state.vote, state)
 
 
                         Spacer(modifier = Modifier.padding(top = 15.dp))
@@ -467,7 +473,7 @@ private fun ReviewRating(index: Int) {
 
 
 @Composable
-private fun GetVote(global: Float) {
+private fun GetVote(global: Float, state: DetailState) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -522,7 +528,11 @@ private fun GetVote(global: Float) {
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "3/5",
+                    text = if (state.userVote > 0) {
+                        "${state.userVote.toString()}/5"
+                    } else {
+                        "-"
+                    },
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )

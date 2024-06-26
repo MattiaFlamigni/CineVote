@@ -4,13 +4,20 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinevote.data.Actors
+import com.example.cinevote.data.database.Firestore
 import com.example.cinevote.data.database.Room.FilmList
 import com.example.cinevote.data.repository.FilmRepository
+import com.example.cinevote.screens.signUp.firebaseAuth
 import com.example.cinevote.util.TMDBService
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 data class DetailState(
@@ -20,6 +27,8 @@ data class DetailState(
     val vote: Float ,
     val year: Int=0,
     val poster: String="",
+    val isReviewd : Boolean = false,
+    val userVote : Int=-1,
 
     val actorListState: List<Actors> = emptyList()
 )
@@ -32,6 +41,8 @@ interface DetailAction{
     fun getIdFromTitle(title: String, callback: (Int) -> Unit)
 
     fun getKeyTrailer(id: Int, callback: (String) -> Unit)
+
+    fun hasReview(title:String)
 }
 
 class DetailsVM(private val repository: FilmRepository) : ViewModel(){
@@ -166,5 +177,36 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel(){
                 // Gestire il caso in cui il recupero del trailer fallisce
             })
         }
+
+        override fun hasReview(title: String) {
+            val db = FirebaseFirestore.getInstance()
+
+            viewModelScope.launch {
+                val mail = firebaseAuth.currentUser?.email
+                try {
+                    val query = db.collection("users").whereEqualTo("mail", mail).get().await()
+                    if (query.isEmpty) {
+                        _state.value = state.value.copy(isReviewd = false)
+                        return@launch
+                    }
+
+                    val username = query.documents[0].getString("username")
+                    val query2 = db.collection("review").whereEqualTo("autore", username).whereEqualTo("titolo", title).get().await()
+
+                    if (query2.isEmpty) {
+                        _state.value = state.value.copy(isReviewd = true)
+                    } else {
+                        _state.value = state.value.copy(isReviewd = false)
+                        val doc = query2.documents[0]
+                        val stelle = doc.getLong("stelle")?.toInt()?:0
+                        _state.value = state.value.copy(userVote = stelle)
+                    }
+                } catch (e: Exception) {
+                    Log.e("hasReview", "Error while checking review", e)
+                    _state.value = state.value.copy(isReviewd = false) // Gestione dell'errore, impostare a false di default
+                }
+            }
+        }
+
     }
 }
