@@ -18,13 +18,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.sharp.Star
 import androidx.compose.material.icons.twotone.Star
 import androidx.compose.material3.AssistChip
@@ -33,12 +36,16 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -65,6 +72,7 @@ import com.example.cinevote.R
 import com.example.cinevote.components.TopBar
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
     navController: NavHostController,
@@ -76,6 +84,7 @@ fun DetailScreen(
     try {
         action.showDetails(title)
         action.hasReview(title)
+        action.isFavorite(title)
     } catch (e: Exception) {
         Log.d("Inesistente", "Non presente nel db")
         action.loadFromDb(title)
@@ -85,9 +94,55 @@ fun DetailScreen(
 
     Scaffold(
         topBar = {
-            TopBar(
+            /*TopBar(
                 navController = navController,
                 title = stringResource(R.string.details_title)
+            )*/
+
+
+
+
+            CenterAlignedTopAppBar(
+                title={ Text(
+                    text=title,
+                    fontFamily = FontFamily.Default,
+                    fontSize = 30.sp,
+                    letterSpacing = 0.30.sp,
+                    color= Color.Black
+
+                ) },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = Color.Black
+                ),
+
+                navigationIcon = {
+
+
+                    if(title!= stringResource(id = R.string.home_title)) {
+                        IconButton(onClick = { navController.navigateUp() }) {
+                            Icon(Icons.AutoMirrored.Default.ArrowBack, "back")
+                        }
+                    }
+                },
+                actions = {
+
+
+                    if(state.isFavorite){
+                        IconButton(onClick = { action.addToWishList(title) }) {
+                            Icon(Icons.Default.Star, "star")
+                        }
+                    }else{
+                        IconButton(onClick = { action.addToWishList(title) }) {
+                            Icon(Icons.Outlined.Info, "star")
+                        }
+                    }
+
+
+
+
+
+                },
             )
         },
         containerColor = MaterialTheme.colorScheme.background,

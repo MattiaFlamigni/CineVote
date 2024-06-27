@@ -28,6 +28,7 @@ data class DetailState(
     val year: Int=0,
     val poster: String="",
     val isReviewd : Boolean = false,
+    val isFavorite : Boolean = false,
     val userVote : Int=-1,
 
     val actorListState: List<Actors> = emptyList()
@@ -43,9 +44,15 @@ interface DetailAction{
     fun getKeyTrailer(id: Int, callback: (String) -> Unit)
 
     fun hasReview(title:String)
+
+    fun addToWishList(title:String)
+
+    fun isFavorite(title:String)
 }
 
 class DetailsVM(private val repository: FilmRepository) : ViewModel(){
+
+    val db = FirebaseFirestore.getInstance()
     private val _state = MutableStateFlow(DetailState(vote = 0.00F))
     val state = _state.asStateFlow()
     private val tmdbBaseUrl = "https://image.tmdb.org/t/p/w500"
@@ -207,6 +214,52 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel(){
                 }
             }
         }
+
+        override fun addToWishList(title: String) {
+
+
+                val currentUser = firebaseAuth.currentUser?.email
+                val document = hashMapOf("title" to title, "user" to currentUser)
+
+                if (!state.value.isFavorite) {
+                    db.collection("favorites").add(document)
+                    _state.value = state.value.copy(isFavorite = true)
+                } else {
+                    viewModelScope.launch {
+                        var query = db.collection("favorites").whereEqualTo("user", currentUser)
+                            .whereEqualTo("title", title).get().await()
+
+                        for(document in query.documents){
+                            db.collection("favorites").document(document.id).delete()
+                        }
+                    }
+                    _state.value = state.value.copy(isFavorite = false)
+                }
+
+        }
+
+        override fun isFavorite(title: String) {
+            viewModelScope.launch {
+                try {
+                    val query = db.collection("favorites")
+                        .whereEqualTo("user", firebaseAuth.currentUser?.email)
+                        .whereEqualTo("title", title)
+                        .get()
+                        .await()
+
+                    if (!query.isEmpty) {
+                        _state.value = state.value.copy(isFavorite = true)
+                    } else {
+                        _state.value = state.value.copy(isFavorite = false)
+                    }
+                } catch (e: Exception) {
+                    _state.value = state.value.copy(isFavorite = false)
+                    Log.e("FAVORITE", "Error while checking favorite", e)
+                }
+            }
+        }
+
+
 
     }
 }

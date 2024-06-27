@@ -7,6 +7,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
@@ -67,6 +68,11 @@ fun TopBar(title:String="", navController: NavHostController){
                     Icon(Icons.Default.Favorite, "Likes")
                 }
             }
+            /*if(title == stringResource(id = R.string.details_title)){
+                IconButton(onClick = { /*TODO*/}) {
+                    Icon(Icons.Default.ThumbUp, "Likes") /*TODO: MODIFICARE ICONA*/
+                }
+            }*/
         },
     )
 }
