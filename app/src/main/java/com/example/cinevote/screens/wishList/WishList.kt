@@ -3,6 +3,7 @@ package com.example.cinevote.screens.wishList
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -11,6 +12,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -31,7 +33,9 @@ fun WishListScreen(
 ) {
 
 
-    action.loadFilm()
+    LaunchedEffect(key1 = true) {
+        action.loadFilm()
+    }
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
@@ -47,7 +51,7 @@ fun WishListScreen(
             ) {
                 items(state.favoriteFilmList) { film ->
                     Card(
-                        modifier = Modifier.padding(10.dp),
+                        modifier = Modifier.padding(10.dp).width(50.dp),
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                             contentColor = MaterialTheme.colorScheme.onTertiaryContainer
@@ -64,7 +68,7 @@ fun WishListScreen(
                                     .build()
                             ),
                             contentDescription = film.title,
-                            contentScale = ContentScale.Crop,
+                            contentScale = ContentScale.Fit,
                             modifier = Modifier.fillMaxWidth()
                         )
 
@@ -74,11 +78,6 @@ fun WishListScreen(
 
             }
         })
-}
-
-
-private fun LoadWishList(): List<String> {
-    return listOf("uno", "due", "tre", "quattro")
 }
 
 
