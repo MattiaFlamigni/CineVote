@@ -232,8 +232,9 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel(){
                         for(document in query.documents){
                             db.collection("favorites").document(document.id).delete()
                         }
+                        _state.value = state.value.copy(isFavorite = false)
                     }
-                    _state.value = state.value.copy(isFavorite = false)
+
                 }
 
         }
@@ -253,7 +254,7 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel(){
                         _state.value = state.value.copy(isFavorite = false)
                     }
                 } catch (e: Exception) {
-                    _state.value = state.value.copy(isFavorite = false)
+                    //_state.value = state.value.copy(isFavorite = false)
                     Log.e("FAVORITE", "Error while checking favorite", e)
                 }
             }
