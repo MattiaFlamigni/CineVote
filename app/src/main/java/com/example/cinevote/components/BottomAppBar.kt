@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 import com.example.cinevote.NavigationRoute
+import com.example.cinevote.R
 
 data class BottomNavigationItem(
     val title: String,
