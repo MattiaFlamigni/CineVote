@@ -15,6 +15,7 @@ import com.example.cinevote.screens.outNow.OutNowVM
 import com.example.cinevote.screens.review.reviewVM
 import com.example.cinevote.screens.settings.SettingsVm
 import com.example.cinevote.screens.signUp.SignupViewModel
+import com.example.cinevote.screens.wishList.WishListVM
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -45,4 +46,5 @@ val appModule = module {
     viewModel {  DetailsVM(get()) }
     viewModel {  ExpandVM(get()) }
     viewModel {  reviewVM(get()) }
+    viewModel {  WishListVM(get()) }
 }

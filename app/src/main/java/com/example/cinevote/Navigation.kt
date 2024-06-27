@@ -19,7 +19,7 @@ import com.example.cinevote.screens.outNow.OutNowScreen
 import com.example.cinevote.screens.review.ReviewScreen
 import com.example.cinevote.screens.settings.SettingsScreen
 import com.example.cinevote.screens.signUp.SignUpGeneralScreen
-import com.example.cinevote.screens.WishListScreen
+import com.example.cinevote.screens.wishList.WishListScreen
 import com.example.cinevote.screens.auth.AuthViewModel
 import com.example.cinevote.screens.cinema.cinemaVm
 import com.example.cinevote.screens.details.DetailsVM
@@ -36,6 +36,7 @@ import com.example.cinevote.screens.review.reviewVM
 import com.example.cinevote.screens.searchScreen
 import com.example.cinevote.screens.settings.SettingsVm
 import com.example.cinevote.screens.signUp.SignupViewModel
+import com.example.cinevote.screens.wishList.WishListVM
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -109,7 +110,9 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
             SettingsScreen(navController=navController, state= state, action = settingsVm.action)
         }
         composable(NavigationRoute.WishList.route){
-            WishListScreen(navController = navController)
+            val wishListVM = koinViewModel<WishListVM>()
+            val statee by wishListVM.state.collectAsState()
+            WishListScreen(navController = navController, state = statee, action = wishListVM.action)
         }
         composable(NavigationRoute.OutNow.route){
             val outNowVm = koinViewModel<OutNowVM>()
