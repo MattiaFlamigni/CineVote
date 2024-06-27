@@ -6,8 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.cinevote.data.Film
 import com.example.cinevote.data.database.Room.FilmList
 import com.example.cinevote.data.repository.FilmRepository
-import com.example.cinevote.screens.home.HomeState
-import com.example.cinevote.util.TMDBService
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,7 +17,7 @@ data class wishListState(
     val favoriteFilmList: List<FilmList> = emptyList()
 )
 
-interface WishListAction{
+interface WishListAction {
     fun loadFilm()
 }
 
@@ -30,24 +28,24 @@ class WishListVM(private val repository: FilmRepository) : ViewModel() {
     val db = FirebaseFirestore.getInstance()
 
 
-     val action = object : WishListAction {
+    val action = object : WishListAction {
         override fun loadFilm() {
             val tmpList: MutableList<String> = mutableListOf()
             val filmList: MutableList<FilmList> = mutableListOf()
-            val prova : Film
+            val prova: Film
 
 
             viewModelScope.launch {
                 val query = db.collection("favorites").get().await()
-                for(document in query.documents){
+                for (document in query.documents) {
                     val title = document.getString("title")
-                    title?.let{it->
+                    title?.let { it ->
                         tmpList.add(it)
                     }
 
                 }
 
-                for(filmTitle in tmpList){
+                for (filmTitle in tmpList) {
                     val film = repository.getFilmFromTitle(filmTitle)
                     filmList.add(film)
 
@@ -59,8 +57,6 @@ class WishListVM(private val repository: FilmRepository) : ViewModel() {
                 Log.d("listadifilmfavoriti", state.value.favoriteFilmList.toString())
 
             }
-
-
 
 
         }
