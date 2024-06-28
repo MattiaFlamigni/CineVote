@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinevote.data.Actors
+import com.example.cinevote.data.Review
 import com.example.cinevote.data.database.Firestore
 import com.example.cinevote.data.database.Room.FilmList
 import com.example.cinevote.data.repository.FilmRepository
@@ -21,16 +22,16 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 data class DetailState(
+    val reviewList : List<Review> = emptyList(),
     val title:String="",
     val genres: String="" /*TODO*/,
     val plot: String="",
-    val vote: Float ,
+    val vote: Float,
     val year: Int=0,
     val poster: String="",
     val isReviewd : Boolean = false,
     val isFavorite : Boolean = false,
     val userVote : Int=-1,
-
     val actorListState: List<Actors> = emptyList()
 )
 
@@ -48,6 +49,8 @@ interface DetailAction{
     fun addToWishList(title:String)
 
     fun isFavorite(title:String)
+
+    fun loadReview(title:String)
 }
 
 class DetailsVM(private val repository: FilmRepository) : ViewModel(){
@@ -260,6 +263,26 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel(){
             }
         }
 
+        override fun loadReview(title: String) {
+            val list : MutableList<Review> = mutableListOf()
+            viewModelScope.launch {
+                val query = db.collection("review").whereEqualTo("titolo", title).get().await()
+
+                    for (document in query.documents) {
+
+                        val descrizione = document.getString("descrizione") ?: ""
+                        val stelle = document.getLong("stelle")?.toInt() ?: 0
+                        val autore = document.getString("autore") ?: ""
+
+                        val review = Review(descrizione = descrizione, stelle = stelle, autore = autore, titolo = title)
+                        list.add(review)
+                    }
+                _state.value = state.value.copy(reviewList = list)
+
+                Log.d("caricamento recensioni", state.value.reviewList.toString())
+
+            }
+        }
 
 
     }

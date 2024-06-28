@@ -71,6 +71,7 @@ import coil.size.Size
 import com.example.cinevote.NavigationRoute
 import com.example.cinevote.R
 import com.example.cinevote.components.TopBar
+import com.example.cinevote.data.Review
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -86,6 +87,8 @@ fun DetailScreen(
         action.showDetails(title)
         action.hasReview(title)
         action.isFavorite(title)
+        action.loadReview(title)
+
     } catch (e: Exception) {
         Log.d("Inesistente", "Non presente nel db")
         action.loadFromDb(title)
@@ -337,7 +340,7 @@ fun DetailScreen(
                         item {
 
                             AssistChipExample(
-                                "Cast", /*TODO*/
+                                "Cast",
                                 Icons.Default.Person,
                                 selectedChip == ChipOption.CAST
                             ) {
@@ -362,7 +365,7 @@ fun DetailScreen(
                     // Contenuto basato sul chip selezionato
                     when (selectedChip) {
                         ChipOption.TRAMA -> {
-                            Text(
+                            /*Text(
                                 text = state.plot,
                                 fontFamily = FontFamily.Serif,
                                 fontSize = 24.sp,
@@ -371,7 +374,9 @@ fun DetailScreen(
                                 letterSpacing = 1.sp,
                                 lineHeight = 30.sp,
                                 textAlign = TextAlign.Justify
-                            )
+                            )*/
+
+                            PlotSection(plot =state.plot)
                         }
 
                         ChipOption.CAST -> {
@@ -427,7 +432,13 @@ fun DetailScreen(
                         }
 
                         ChipOption.RECENSIONI -> {
-                            Text("recensioni")
+                            //Text("recensioni"
+                            for(review in state.reviewList){
+                                ReviewCard(review = review)
+                            }
+
+
+
                         }
 
 
@@ -597,5 +608,102 @@ private fun GetVote(global: Float, state: DetailState) {
     }
 
 }
+
+
+
+@Composable
+fun ReviewCard(review: Review) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+        ),
+        elevation = CardDefaults.cardElevation(4.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = review.descrizione,
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RatingBar(rating = review.stelle)
+                Spacer(modifier = Modifier.width(16.dp))
+                Text(
+                    text = "Autore: ${review.autore}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun RatingBar(rating: Int) {
+    Row {
+        repeat(rating) {
+            Icon(
+                painter = painterResource(id = R.drawable.star),
+                contentDescription = "Filled star",
+                tint = Color.Yellow
+            )
+        }
+        repeat(5 - rating) {
+            Icon(
+                painter = painterResource(id = R.drawable.outlined_star),
+                contentDescription = "Empty star",
+                tint = Color.Gray
+            )
+        }
+    }
+}
+
+
+
+
+@Composable
+fun PlotSection(plot: String) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+        ),
+        elevation = CardDefaults.cardElevation(8.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_launcher_background), // Assicurati di avere un'icona adeguata
+                    contentDescription = "Plot Icon",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Trama",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = plot,
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
+    }
+}
+
 
 
