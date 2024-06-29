@@ -50,7 +50,7 @@ fun ExpandScreen(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = { TopBar(
             navController = navController,
-            title= stringResource(R.string.outNow_title)
+            title= ""
         )},
         bottomBar = { bottomAppBar(navController) },
         content = {innerPadding->

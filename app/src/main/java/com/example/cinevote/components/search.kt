@@ -15,31 +15,3 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun Search(){
-    var text by remember { mutableStateOf("") } // Query for SearchBar
-    var active by remember { mutableStateOf(false) } // Active state for SearchBar
-
-    SearchBar(modifier = Modifier.fillMaxWidth(),
-        query = text,
-        onQueryChange = {
-            text = it
-        },
-        onSearch = {
-            active = false
-        },
-        active = active,
-        onActiveChange = {
-            active = it
-        },
-        placeholder = {
-            Text(text = "Enter your query")
-        },
-
-        trailingIcon = {
-            Icon(imageVector = Icons.Default.Search, contentDescription = null)
-        }) {
-
-    }
-}

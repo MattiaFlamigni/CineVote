@@ -13,6 +13,7 @@ import com.example.cinevote.screens.home.HomeVM
 import com.example.cinevote.screens.login.LoginViewModel
 import com.example.cinevote.screens.outNow.OutNowVM
 import com.example.cinevote.screens.review.reviewVM
+import com.example.cinevote.screens.search.SearchVM
 import com.example.cinevote.screens.settings.SettingsVm
 import com.example.cinevote.screens.signUp.SignupViewModel
 import com.example.cinevote.screens.wishList.WishListVM
@@ -47,4 +48,6 @@ val appModule = module {
     viewModel {  ExpandVM(get()) }
     viewModel {  reviewVM(get()) }
     viewModel {  WishListVM(get()) }
+
+    viewModel {  SearchVM() }
 }

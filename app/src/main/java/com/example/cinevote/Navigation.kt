@@ -33,7 +33,8 @@ import com.example.cinevote.screens.signUp.SignUpasswordScreen
 import com.example.cinevote.screens.mainScreen
 import com.example.cinevote.screens.outNow.OutNowVM
 import com.example.cinevote.screens.review.reviewVM
-import com.example.cinevote.screens.searchScreen
+import com.example.cinevote.screens.search.SearchVM
+import com.example.cinevote.screens.search.searchScreen
 import com.example.cinevote.screens.settings.SettingsVm
 import com.example.cinevote.screens.signUp.SignupViewModel
 import com.example.cinevote.screens.wishList.WishListVM
@@ -122,7 +123,9 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
 
 
         composable(NavigationRoute.Ricerca.route){
-            searchScreen(navController = navController)
+            val searchVM = koinViewModel<SearchVM>()
+            val state by searchVM.state.collectAsState()
+            searchScreen(navController = navController, state = state, action = searchVM.action )
         }
 
         /*composable(NavigationRoute.Detail.route){
