@@ -7,10 +7,13 @@ import com.example.cinevote.data.Film
 import com.example.cinevote.data.database.Room.FilmList
 import com.example.cinevote.data.repository.FilmRepository
 import com.example.cinevote.util.TMDBService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 data class HomeState(
@@ -22,6 +25,8 @@ data class HomeState(
 interface HomeAction{
     fun getTop()
     fun getFilmsByGenre(pages:Int, genre:Int)
+
+    fun loadFilm()
 }
 
 
@@ -100,6 +105,44 @@ class HomeVM(private val repository: FilmRepository) : ViewModel(){
                     Log.e("FilmViewModel", "Eccezione nella coroutine: ${e.message}", e)
                 }
             }*/
+        }
+
+        override fun loadFilm() {
+            val tmdb = TMDBService()
+
+            viewModelScope.launch {
+                for (page in 1..100) {
+                    tmdb.fetchFilmData(
+                        url = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=it&page=$page&sort_by=popularity.desc&region=it",
+                        onSuccess = { filmList ->
+                            filmList.forEach { filmData ->
+                                val film = FilmList(
+                                    filmID = filmData.id,
+                                    title = filmData.title,
+                                    plot = filmData.plot,
+                                    posterPath = filmData.posterPath,
+                                    releaseDate = filmData.releaseDate,
+                                    genreIDs = filmData.genreIDs.toString(),
+                                    voteAverage = filmData.voteAverage
+                                )
+
+                                viewModelScope.launch {
+                                    withContext(Dispatchers.IO) {
+                                        repository.upsert(film)
+                                    }
+                                }
+
+
+                            }
+                        },
+                        onFailure = {
+                            Log.d("failure database", "failure database")
+                        }
+                    )
+                    // Introduce a delay to prevent hitting API rate limits
+                    delay(1000L)
+                }
+            }
         }
 
 

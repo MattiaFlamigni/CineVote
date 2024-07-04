@@ -49,7 +49,7 @@ fun LoadThumbnail(
 
         if (painter.state is AsyncImagePainter.State.Loading) {
             Image(
-                painter = painterResource(id = R.drawable.outlined_star),
+                painter = painterResource(id = R.drawable.star),
                 contentDescription = null,
                 modifier = modifier,
                 contentScale = ContentScale.Crop,
@@ -69,7 +69,7 @@ fun LoadThumbnail(
             modifier = modifier,
             contentScale = ContentScale.Crop,
             placeholder = painterResource(id = R.drawable.ic_launcher_background),
-            error = painterResource(id = R.drawable.star)
+            error = painterResource(id = R.drawable.google)
         )
     }
 }

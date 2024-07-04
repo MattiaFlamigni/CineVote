@@ -53,6 +53,8 @@ android {
 
 dependencies {
 
+    implementation("androidx.datastore:datastore-core-android:1.1.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose-android:2.8.3")
     val roomVersion = "2.6.1"
     implementation("androidx.room:room-runtime:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
@@ -96,12 +98,17 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.3")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.3")
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation("com.google.android.gms:play-services-location:21.2.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation ("io.insert-koin:koin-android:3.5.3")
     implementation("com.google.firebase:firebase-database:21.0.0")
+    implementation ("androidx.datastore:datastore-preferences:1.1.1")
     implementation("com.google.firebase:firebase-firestore-ktx:25.0.0")
-
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
 
 
 

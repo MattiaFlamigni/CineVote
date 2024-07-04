@@ -3,6 +3,7 @@ package com.example.cinevote
 
 import androidx.room.Room
 import com.example.cinevote.data.database.Room.CineVoteDatabase
+import android.content.Context
 import com.example.cinevote.data.database.Room.MIGRATION_1_2
 import com.example.cinevote.data.repository.FilmRepository
 import com.example.cinevote.data.repository.reviewRepository
@@ -15,15 +16,18 @@ import com.example.cinevote.screens.outNow.OutNowVM
 import com.example.cinevote.screens.review.reviewVM
 import com.example.cinevote.screens.search.SearchVM
 import com.example.cinevote.screens.settings.SettingsVm
+import com.example.cinevote.screens.settings.ThemeViewModel
 import com.example.cinevote.screens.signUp.SignupViewModel
 import com.example.cinevote.screens.wishList.WishListVM
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
+import androidx.datastore.preferences.preferencesDataStore
+import com.example.cinevote.screens.settings.theme.repositories.ThemeRepository
 import org.koin.dsl.module
 
-//val Context.dataStore by preferencesDataStore("theme")
+val Context.dataStore by preferencesDataStore("theme")
 val appModule = module {
-    //single { get<Context>().dataStore }
+    single { get<Context>().dataStore }
     single {
         Room.databaseBuilder(
             androidContext(),
@@ -50,4 +54,6 @@ val appModule = module {
     viewModel {  WishListVM(get()) }
 
     viewModel {  SearchVM() }
+    viewModel {  ThemeViewModel(get()) }
+    single { ThemeRepository(get()) }
 }

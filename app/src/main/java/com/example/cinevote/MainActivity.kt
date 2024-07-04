@@ -4,19 +4,25 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
+import com.example.cinevote.screens.settings.ThemeViewModel
+import com.example.cinevote.screens.settings.theme.model.Theme
 
 
 import com.example.cinevote.ui.theme.CineVoteTheme
 import com.example.cinevote.util.TMDBService
 import com.jakewharton.threetenabp.AndroidThreeTen
+import org.koin.androidx.compose.koinViewModel
 
 
 class MainActivity() : ComponentActivity() {
@@ -26,13 +32,32 @@ class MainActivity() : ComponentActivity() {
         AndroidThreeTen.init(this)
 
 
+
+
+
         val tmdb = TMDBService()
 
 
 
 
         setContent {
-            CineVoteTheme {
+            val themeViewModel = koinViewModel<ThemeViewModel>()
+            val themeState by themeViewModel.state.collectAsStateWithLifecycle()
+
+            CineVoteTheme(darkTheme = when (themeState.theme) {
+                Theme.Light -> false
+                Theme.Dark -> true
+                Theme.System -> isSystemInDarkTheme()
+            }) {
+
+                 /*darkTheme = when (themeState.theme) {
+                    Theme.Light -> false
+                    Theme.Dark -> true
+                    Theme.System -> isSystemInDarkTheme()
+                }*/
+
+
+
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
