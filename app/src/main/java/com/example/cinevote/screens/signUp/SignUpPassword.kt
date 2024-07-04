@@ -33,13 +33,16 @@ import com.example.cinevote.R
 
 import com.example.cinevote.components.PasswordInput
 import com.example.cinevote.components.SimpleButton
+import com.example.cinevote.screens.auth.AuthStatus
+import com.example.cinevote.screens.auth.AuthViewModel
 import java.util.regex.Pattern
 
 @Composable
 fun SignUpasswordScreen(
     state: SignupState,
     actions : SignUPActions,
-    navController:NavHostController
+    navController:NavHostController,
+    //auth: AuthViewModel
 ){
     Scaffold(
         modifier= Modifier.background(Color.White),
@@ -122,6 +125,7 @@ private fun SignUpPasswordForm(navController: NavHostController, actions: SignUP
         SimpleButton(
             text = "Registrati",
             onClick = {
+                //auth.changeState(AuthStatus.LOGIN)
                 navController.navigate(NavigationRoute.Login.route)
                 actions.createUser(state.name, state.surname, state.username, state.mail, state.password)
             },

@@ -13,8 +13,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
+import com.example.cinevote.screens.auth.AuthRepository
+import com.example.cinevote.screens.auth.AuthStatus
+import com.example.cinevote.screens.auth.AuthViewModel
 import com.example.cinevote.screens.settings.ThemeViewModel
 import com.example.cinevote.screens.settings.theme.model.Theme
 
@@ -31,11 +35,9 @@ class MainActivity() : ComponentActivity() {
         super.onCreate(savedInstanceState)
         AndroidThreeTen.init(this)
 
-
-
-
-
         val tmdb = TMDBService()
+
+
 
 
 

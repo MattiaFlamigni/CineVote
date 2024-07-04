@@ -42,6 +42,8 @@ import com.example.cinevote.components.KeyBoard
 import com.example.cinevote.components.PasswordInput
 import com.example.cinevote.components.SimpleButton
 import com.example.cinevote.components.TextInput
+import com.example.cinevote.screens.auth.AuthState
+import com.example.cinevote.screens.auth.AuthStatus
 import com.example.cinevote.screens.auth.AuthViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -53,7 +55,9 @@ fun LoginScreen(
     state: LoginState,
     actions: LoginActions,
     navController: NavHostController,
-    auth: AuthViewModel
+    authViewModel: AuthViewModel,
+    status: AuthState
+
 ){
 
     var error by remember { mutableStateOf(false) }
@@ -122,6 +126,8 @@ fun LoginScreen(
                     onClick = {
 
                         scope.launch { actions.loadFilm() }
+                        authViewModel.changeState(AuthStatus.LOGGED)
+                        Log.d("status",status.status.name )
 
 
 
@@ -131,6 +137,7 @@ fun LoginScreen(
                         }
                         actions.isKeyCorrect(mail = state.mail, password = state.password) { isCorrect ->
                             if (isCorrect) {
+                                //auth.changeState(AuthStatus.LOGGED)
                                 // L'email e la password sono corrette
                                 navController.navigate(NavigationRoute.HomeScreen.route)
                                 Log.d("TAG", "Accesso consentito")

@@ -90,9 +90,10 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
             //val LoginVm = viewModel<LoginViewModel>()
             val loginVm = koinViewModel<LoginViewModel>()
             val state by loginVm.state.collectAsState()
-            val authVm = viewModel<AuthViewModel>()
+            val authVm = koinViewModel<AuthViewModel>()
+            val authState by authVm.state.collectAsState()
 
-            LoginScreen(navController = navController, state=state, actions = loginVm.actions, auth= authVm )
+            LoginScreen(navController = navController, state=state, actions = loginVm.actions, authViewModel = authVm, status = authState )
         }
         composable(NavigationRoute.SignUpGeneral.route){
 
@@ -102,6 +103,7 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
             SignUpMailScreen(navController=navController, state=signUpState, actions=signUpVm.action)
         }
         composable(NavigationRoute.SignUpPassword.route){
+            //val authVm =koinViewModel<AuthViewModel>()
             SignUpasswordScreen(navController=navController, state = signUpState, actions = signUpVm.action)
         }
         composable(NavigationRoute.HomeScreen.route){
@@ -112,7 +114,8 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
         composable(NavigationRoute.Settings.route){
             val settingsVm = koinViewModel<SettingsVm>()
             val state by settingsVm.state.collectAsState()
-            SettingsScreen(navController=navController, state= state, action = settingsVm.action)
+            val authviewModel = koinViewModel<AuthViewModel>()
+            SettingsScreen(navController=navController, state= state, action = settingsVm.action, auth = authviewModel)
         }
         composable(NavigationRoute.WishList.route){
             val wishListVM = koinViewModel<WishListVM>()
@@ -190,8 +193,9 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
         }
 
         composable(NavigationRoute.Main.route){
-            val authviewModel = viewModel<AuthViewModel>()
-            mainScreen(navController = navController, authviewModel.state)
+            val authviewModel = koinViewModel<AuthViewModel>()
+            val state by authviewModel.state.collectAsState()
+            mainScreen(navController = navController, authviewModel)
         }
         composable(NavigationRoute.Cinema.route){
             val cinemaViewModel = koinViewModel<cinemaVm>()

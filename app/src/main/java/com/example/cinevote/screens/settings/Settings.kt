@@ -32,6 +32,8 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.cinevote.NavigationRoute
 import com.example.cinevote.R
 import com.example.cinevote.components.TopBar
+import com.example.cinevote.screens.auth.AuthStatus
+import com.example.cinevote.screens.auth.AuthViewModel
 import com.example.cinevote.screens.signUp.firebaseAuth
 import com.example.cinevote.util.LoadThumbnail
 import com.example.cinevote.util.PermissionStatus
@@ -41,7 +43,8 @@ import com.example.cinevote.util.rememberPermission
 fun SettingsScreen(
     navController: NavHostController,
     state: SettingsStatus,
-    action: SettingsAction
+    action: SettingsAction,
+    auth: AuthViewModel
 ) {
     action.getProfilePic(firebaseAuth.currentUser?.email ?: "")
 
@@ -56,7 +59,7 @@ fun SettingsScreen(
         ) {
             ShowProfile(state, action, null)
             Spacer(modifier = Modifier.height(20.dp))
-            ShowOption(action = action, navController = navController)
+            ShowOption(action = action, navController = navController, auth = auth)
         }
     }
 }
@@ -179,7 +182,7 @@ fun ShowProfile(state: SettingsStatus, action: SettingsAction, profileImageUri: 
 }
 
 @Composable
-private fun ShowOption(action: SettingsAction, navController: NavHostController) {
+private fun ShowOption(action: SettingsAction, navController: NavHostController, auth: AuthViewModel) {
     val options = listOf(SettingItem.IMPOSTAZIONI_TEMA, SettingItem.LOGOUT)
 
     Column(
@@ -193,6 +196,8 @@ private fun ShowOption(action: SettingsAction, navController: NavHostController)
                     when (option) {
                         SettingItem.LOGOUT -> {
                             action.logOut()
+                            auth.changeState(AuthStatus.LOGIN)
+
                             navController.navigate(NavigationRoute.Login.route)
                         }
 

@@ -4,7 +4,6 @@ package com.example.cinevote
 import androidx.room.Room
 import com.example.cinevote.data.database.Room.CineVoteDatabase
 import android.content.Context
-import com.example.cinevote.data.database.Room.MIGRATION_1_2
 import com.example.cinevote.data.repository.FilmRepository
 import com.example.cinevote.data.repository.reviewRepository
 import com.example.cinevote.screens.cinema.cinemaVm
@@ -22,12 +21,17 @@ import com.example.cinevote.screens.wishList.WishListVM
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.cinevote.screens.auth.AuthRepository
+import com.example.cinevote.screens.auth.AuthViewModel
 import com.example.cinevote.screens.settings.theme.repositories.ThemeRepository
 import org.koin.dsl.module
 
 val Context.dataStore by preferencesDataStore("theme")
+val Context.dataStore2 by preferencesDataStore("auth")
+
 val appModule = module {
     single { get<Context>().dataStore }
+    single {get<Context>().dataStore2}
     single {
         Room.databaseBuilder(
             androidContext(),
@@ -56,4 +60,19 @@ val appModule = module {
     viewModel {  SearchVM() }
     viewModel {  ThemeViewModel(get()) }
     single { ThemeRepository(get()) }
+
+    viewModel{AuthViewModel(get())}
+    single { AuthRepository(get()) }
+
+
+
+
+
+
+
+
+
+
 }
+
+
