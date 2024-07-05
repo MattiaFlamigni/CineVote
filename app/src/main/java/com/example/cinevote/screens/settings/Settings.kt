@@ -5,30 +5,36 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.GridLayout
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.app.ActivityCompat
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
+import coil.size.Size
 import com.example.cinevote.NavigationRoute
 import com.example.cinevote.R
 import com.example.cinevote.components.TopBar
@@ -38,7 +44,8 @@ import com.example.cinevote.screens.signUp.firebaseAuth
 import com.example.cinevote.util.LoadThumbnail
 import com.example.cinevote.util.PermissionStatus
 import com.example.cinevote.util.rememberPermission
-
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 @Composable
 fun SettingsScreen(
     navController: NavHostController,
@@ -46,20 +53,35 @@ fun SettingsScreen(
     action: SettingsAction,
     auth: AuthViewModel
 ) {
-    action.getProfilePic(firebaseAuth.currentUser?.email ?: "")
+    val email = firebaseAuth.currentUser?.email ?: ""
+    LaunchedEffect(email) {
+        action.getProfilePic(email)
+    }
+    action.getFilmReviewd()
 
     Scaffold(
         topBar = { TopBar(title = "Impostazioni", navController = navController) }
     ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-        ) {
-            ShowProfile(state, action, null)
-            Spacer(modifier = Modifier.height(20.dp))
-            ShowOption(action = action, navController = navController, auth = auth)
+        Surface() {
+            Column(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+            ) {
+                ShowProfile(state, action, null)
+                Spacer(modifier = Modifier.height(20.dp))
+                LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 100.dp)) {
+                    items(state.watchedMovie) { movie ->
+                        MovieItem(movie, navController)
+                    }
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+                ShowOption(action = action, navController = navController, auth = auth)
+                Spacer(modifier = Modifier.height(20.dp))
+
+
+            }
         }
     }
 }
@@ -181,8 +203,9 @@ fun ShowProfile(state: SettingsStatus, action: SettingsAction, profileImageUri: 
     }
 }
 
+
 @Composable
-private fun ShowOption(action: SettingsAction, navController: NavHostController, auth: AuthViewModel) {
+fun ShowOption(action: SettingsAction, navController: NavHostController, auth: AuthViewModel) {
     val options = listOf(SettingItem.IMPOSTAZIONI_TEMA, SettingItem.LOGOUT)
 
     Column(
@@ -218,6 +241,69 @@ private fun ShowOption(action: SettingsAction, navController: NavHostController,
         }
     }
 }
+/*
+@Composable
+fun MovieItem(movie: WatchedMovie) {
+
+    LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 100.dp) ) {
+        item() {
+            Image(
+                painter = rememberAsyncImagePainter(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(movie.posterUrl)
+                        .size(Size.ORIGINAL)
+                        .build()
+                ),
+                contentDescription = movie.title,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.size(100.dp)
+            )
+        }
+    }
+
+
+
+
+
+    /*Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(8.dp)
+            .clickable { /* azione da eseguire al click sul film */ }
+    ) {
+        Image(
+            painter = rememberAsyncImagePainter(model = ImageRequest.Builder(LocalContext.current)
+                .data(movie.posterUrl)
+                .size(Size.ORIGINAL)
+                .build()),
+            contentDescription = movie.title,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.size(100.dp)
+        )
+    }*/
+}*/@Composable
+fun MovieItem(movie: WatchedMovie, navController: NavHostController) {
+    Card(
+        modifier = Modifier
+            .padding(8.dp)
+            .aspectRatio(1f) // Aspect ratio 1:1 for square grid items
+            .clickable { navController.navigate(NavigationRoute.Detail.buildRoute(movie.title)) }
+            .size(100.dp)
+    ) {
+        Image(
+            painter = rememberImagePainter(
+                data = movie.posterUrl,
+                builder = {
+                    crossfade(true) // Crossfade animation between images
+                }
+            ),
+            contentDescription = movie.title,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.size(100.dp)
+        )
+    }
+}
+
 
 
 

@@ -7,7 +7,9 @@ import android.util.Log
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cinevote.data.Review
 import com.example.cinevote.data.database.Firestore
+import com.example.cinevote.data.repository.FilmRepository
 import com.example.cinevote.screens.signUp.firebaseAuth
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -17,11 +19,19 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
+
+data class WatchedMovie(
+    val title: String,
+    val posterUrl: String,
+)
+
 data class SettingsStatus(
     val name:String="",
     val surname:String="",
     val username:String="",
-    val path:Uri= Uri.EMPTY
+    val path:Uri= Uri.EMPTY,
+
+    val watchedMovie: List<WatchedMovie> = emptyList()
 )
 
 interface SettingsAction {
@@ -29,12 +39,17 @@ interface SettingsAction {
 
     fun updateProfileImage(uri:Uri)
     fun getProfilePic(mail:String)
+
+    fun getFilmReviewd()
+
 }
 
-class SettingsVm : ViewModel() {
+class SettingsVm(private val repository: FilmRepository) : ViewModel() {
 
+    private val tmdbBaseUrl = "https://image.tmdb.org/t/p/w500"
     val firestore = Firestore()
     val auth = FirebaseAuth.getInstance()
+    val db = FirebaseFirestore.getInstance()
 
     private val _state= MutableStateFlow(SettingsStatus())
     val state = _state.asStateFlow()
@@ -54,7 +69,6 @@ class SettingsVm : ViewModel() {
     val action = object : SettingsAction {
         override fun logOut() {
             auth.signOut()
-
         }
 
         override fun updateProfileImage(uri:Uri) {
@@ -82,7 +96,6 @@ class SettingsVm : ViewModel() {
         }
 
         override fun getProfilePic(mail: String) {
-            val db = FirebaseFirestore.getInstance()
 
             viewModelScope.launch {
                 val query = db.collection("profilePIC").whereEqualTo("user", mail).get().await()
@@ -92,6 +105,46 @@ class SettingsVm : ViewModel() {
                     Log.d("pathURI", state.value.path.toString())
                 }
             }
+        }
+
+        override fun getFilmReviewd() {
+            val list: MutableList<String> = mutableListOf()
+            val watchedMovie : MutableList<WatchedMovie> = mutableListOf()
+            viewModelScope.launch {
+                try {
+                    val query = db.collection("review").whereEqualTo("autore", state.value.username).get().await()
+                    for (document in query.documents) {
+                        val title = document.getString("titolo") ?: ""
+                        list.add(title)
+                    }
+
+                    Log.d("caricamentofilmrecensiti", state.value.watchedMovie.toString())
+                } catch (e: Exception) {
+                    Log.e("getFilmReviewed", "Error fetching reviews", e)
+                    // Handle the error appropriately (e.g., show a message to the user)
+                }
+
+
+                for(movie in list){
+                    val film = repository.getFilmFromTitle(movie)
+                    val watched = WatchedMovie(
+                        posterUrl = "${tmdbBaseUrl}${film.posterPath}",
+                        title = film.title
+                    )
+                    watchedMovie.add(watched)
+                }
+                _state.value = state.value.copy(watchedMovie = watchedMovie )
+                Log.d("watchedList", state.value.watchedMovie.toString())
+            }
+
+
+
+
+
+
+
+
+
         }
 
     }

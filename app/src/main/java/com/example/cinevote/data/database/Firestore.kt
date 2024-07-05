@@ -19,6 +19,7 @@ data class UserInfo(
 
 interface FirestoreAction{
     suspend fun getDataFromMail(data:String):String
+
 }
 
 class Firestore {

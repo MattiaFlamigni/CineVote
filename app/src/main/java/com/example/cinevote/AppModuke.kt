@@ -49,7 +49,7 @@ val appModule = module {
 
     viewModel {  LoginViewModel(get()) }
     viewModel {  cinemaVm() }
-    viewModel {  SettingsVm() }
+    viewModel {  SettingsVm(get()) }
     viewModel {  OutNowVM() }
     viewModel {  HomeVM(get()) }
     viewModel {  DetailsVM(get()) }
