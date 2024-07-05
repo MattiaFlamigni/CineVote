@@ -20,59 +20,49 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import com.example.cinevote.NavigationRoute
 import com.example.cinevote.R
 
+
 data class BottomNavigationItem(
     val title: String,
-    val selectedIcon: ImageVector,
-    val unselectedIcon:ImageVector,
-    val badgeCount: Int,
-    val route : ()->Unit
+    val iconId: Int, // Resource ID of the drawable icon
+    val selectedIconId: Int? = null, // Optional resource ID for selected icon
+    val badgeCount: Int = 0,
+    val route: () -> Unit
 )
-
-
-
-
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun bottomAppBar(navController: NavHostController){
+fun bottomAppBar(navController: NavHostController) {
 
     val items = listOf(
         BottomNavigationItem(
             title = NavigationRoute.HomeScreen.route,
-            selectedIcon = Icons.Filled.Home,
-            unselectedIcon = Icons.Outlined.Home,
-            badgeCount=0,
+            iconId = R.drawable.home_24dp_5f6368_fill0_wght400_grad0_opsz24,
+            selectedIconId = R.drawable.home_24dp_5f6368_fill1_wght400_grad0_opsz24,
             route = { navController.navigate(NavigationRoute.HomeScreen.route) }
         ),
         BottomNavigationItem(
             title = NavigationRoute.Ricerca.route,
-            selectedIcon = Icons.Filled.Search,
-            unselectedIcon = Icons.Outlined.Search,
-            badgeCount=0,
+            iconId = R.drawable.search_24dp_5f6368_fill0_wght400_grad0_opsz24,
             route = { navController.navigate(NavigationRoute.Ricerca.route) }
-
         ),
         BottomNavigationItem(
             title = NavigationRoute.OutNow.route,
-            selectedIcon = Icons.Filled.PlayArrow,
-            unselectedIcon = Icons.Outlined.PlayArrow,
-            badgeCount=0,
-            route = { navController.navigate(NavigationRoute.HomeScreen.route) }
+            iconId = R.drawable.movie_24dp_5f6368_fill0_wght400_grad0_opsz24,
+            selectedIconId = R.drawable.movie_24dp_5f6368_fill1_wght400_grad0_opsz24,
+            route = { navController.navigate(NavigationRoute.OutNow.route) }
         ),
         BottomNavigationItem(
             title = NavigationRoute.Cinema.route,
-            selectedIcon = Icons.Filled.Notifications,
-            unselectedIcon = Icons.Outlined.Notifications,
-            badgeCount=0,
+            iconId = R.drawable.location_on_24dp_5f6368_fill0_wght400_grad0_opsz24,
+            selectedIconId = R.drawable.location_on_24dp_5f6368_fill1_wght400_grad0_opsz24,
             route = { navController.navigate(NavigationRoute.Cinema.route) }
         ),
     )
-
 
     val currentBackStackEntry = navController.currentBackStackEntry
     val selectedRoute = currentBackStackEntry?.destination?.route ?: return
@@ -81,10 +71,7 @@ fun bottomAppBar(navController: NavHostController){
     NavigationBar {
         items.forEachIndexed { index, item ->
             NavigationBarItem(
-
-                onClick = {
-                    navController.navigate(item.title)
-                },
+                onClick = item.route,
                 selected = selectedIndex == index,
 
                 label = {
@@ -94,7 +81,7 @@ fun bottomAppBar(navController: NavHostController){
                 icon = {
                     BadgedBox(
                         badge = {
-                            if(item.badgeCount > 0) {
+                            if (item.badgeCount > 0) {
                                 Badge {
                                     Text(text = item.badgeCount.toString())
                                 }
@@ -102,9 +89,11 @@ fun bottomAppBar(navController: NavHostController){
                         }
                     ) {
                         Icon(
-                            imageVector = if (index == selectedIndex) {
-                                item.selectedIcon
-                            } else item.unselectedIcon,
+                            painter = painterResource(id = if (index == selectedIndex && item.selectedIconId != null) {
+                                item.selectedIconId!! // Use selected icon if provided
+                            } else {
+                                item.iconId
+                            } ),
                             contentDescription = item.title
                         )
                     }
@@ -113,8 +102,6 @@ fun bottomAppBar(navController: NavHostController){
         }
     }
 }
-
-
 
 
 
