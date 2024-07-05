@@ -217,6 +217,7 @@ fun ShowOption(action: SettingsAction, navController: NavHostController, auth: A
                         }
 
                         SettingItem.IMPOSTAZIONI_TEMA -> navController.navigate(NavigationRoute.ThemeScreen.route)
+                        SettingItem.RECENSIONI -> TODO()
                     }
                 },
                 modifier = Modifier
