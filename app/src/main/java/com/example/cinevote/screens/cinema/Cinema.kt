@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.cinevote.components.TopBar
+import com.example.cinevote.components.bottomAppBar
 import com.example.cinevote.util.LocationService
 import com.example.cinevote.util.PermissionStatus
 import com.example.cinevote.util.StartMonitoringResult
@@ -91,6 +92,7 @@ fun CinemaScreen(
     }
 
     Scaffold(
+        bottomBar = { bottomAppBar(navController = navController) },
         topBar = { TopBar(navController = navController, title = stringResource(id = R.string.cinema_title)) },
         modifier = Modifier.fillMaxWidth(),
     ) { innerPadding ->
