@@ -99,10 +99,16 @@ class SettingsVm(private val repository: FilmRepository) : ViewModel() {
 
             viewModelScope.launch {
                 val query = db.collection("profilePIC").whereEqualTo("user", mail).get().await()
-                for(document in query.documents){
-                    val path = document.getString("profilePicUri")?:""
-                    _state.value = state.value.copy(path = Uri.parse(path))
-                    Log.d("pathURI", state.value.path.toString())
+                if(query.isEmpty){
+                    _state.value = state.value.copy(path = Uri.parse(
+                        firebaseAuth.currentUser?.photoUrl?.path
+                        ?: ""))
+                }else {
+                    for (document in query.documents) {
+                        val path = document.getString("profilePicUri") ?: ""
+                        _state.value = state.value.copy(path = Uri.parse(path))
+                        Log.d("pathURI", state.value.path.toString())
+                    }
                 }
             }
         }
@@ -122,6 +128,7 @@ class SettingsVm(private val repository: FilmRepository) : ViewModel() {
                         val title = document.getString("titolo") ?: ""
                         list.add(title)
                     }
+
 
                     Log.d("caricamentofilmrecensiti", state.value.watchedMovie.toString())
                 } catch (e: Exception) {
