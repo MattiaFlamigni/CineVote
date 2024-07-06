@@ -18,7 +18,7 @@ data class wishListState(
 )
 
 interface WishListAction {
-    fun loadFilm()
+    fun loadFilm(mail:String)
 }
 
 class WishListVM(private val repository: FilmRepository) : ViewModel() {
@@ -29,14 +29,14 @@ class WishListVM(private val repository: FilmRepository) : ViewModel() {
 
 
     val action = object : WishListAction {
-        override fun loadFilm() {
+        override fun loadFilm(mail:String) {
             val tmpList: MutableList<String> = mutableListOf()
             val filmList: MutableList<FilmList> = mutableListOf()
             val prova: Film
 
 
             viewModelScope.launch {
-                val query = db.collection("favorites").get().await()
+                val query = db.collection("favorites").whereEqualTo("user", mail).get().await()
                 for (document in query.documents) {
                     val title = document.getString("title")
                     title?.let { it ->

@@ -112,7 +112,12 @@ class SettingsVm(private val repository: FilmRepository) : ViewModel() {
             val watchedMovie : MutableList<WatchedMovie> = mutableListOf()
             viewModelScope.launch {
                 try {
-                    val query = db.collection("review").whereEqualTo("autore", state.value.username).get().await()
+                    var query = db.collection("review").whereEqualTo("autore", state.value.username).get().await()
+                    var username=""
+                    if(query.isEmpty){
+                        username = firebaseAuth.currentUser?.displayName.toString()
+                        query = db.collection("review").whereEqualTo("autore", username).get().await()
+                    }
                     for (document in query.documents) {
                         val title = document.getString("titolo") ?: ""
                         list.add(title)

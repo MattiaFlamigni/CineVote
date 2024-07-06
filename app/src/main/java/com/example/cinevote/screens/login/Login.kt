@@ -1,5 +1,6 @@
 package com.example.cinevote.screens.login
 
+import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -36,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.cinevote.MainActivity
 import com.example.cinevote.NavigationRoute
 import com.example.cinevote.R
 import com.example.cinevote.components.KeyBoard
@@ -45,6 +48,7 @@ import com.example.cinevote.components.TextInput
 import com.example.cinevote.screens.auth.AuthState
 import com.example.cinevote.screens.auth.AuthStatus
 import com.example.cinevote.screens.auth.AuthViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -172,6 +176,8 @@ fun LoginScreen(
 
 @Composable
 private fun LoginWithSocial(actions: LoginActions, navController: NavHostController){
+    val ctx = LocalContext.current as MainActivity
+
 
     Row(
         modifier= Modifier
@@ -188,11 +194,29 @@ private fun LoginWithSocial(actions: LoginActions, navController: NavHostControl
                 .clip(CircleShape)
                 .clickable {
                     navController.navigate(NavigationRoute.HomeScreen.route)
+                    //signInGoogle()
+
+
+                  ctx.signInGoogle()
+
+
+
+
+
+
+
                 }
         )
 
     }
 }
+
+
+
+
+
+
+
 
 
 

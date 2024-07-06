@@ -23,6 +23,7 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.example.cinevote.NavigationRoute
 import com.example.cinevote.components.TopBar
+import com.example.cinevote.screens.signUp.firebaseAuth
 
 
 @Composable
@@ -34,7 +35,7 @@ fun WishListScreen(
 
 
     LaunchedEffect(key1 = true) {
-        action.loadFilm()
+        action.loadFilm(firebaseAuth.currentUser?.email.toString())
     }
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,

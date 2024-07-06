@@ -194,23 +194,28 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel(){
             viewModelScope.launch {
                 val mail = firebaseAuth.currentUser?.email
                 try {
+                    var username = ""
                     val query = db.collection("users").whereEqualTo("mail", mail).get().await()
                     if (query.isEmpty) {
-                        _state.value = state.value.copy(isReviewd = false)
-                        return@launch
-                    }
+                        /*_state.value = state.value.copy(isReviewd = false)
+                        return@launch*/
+                        username = firebaseAuth.currentUser?.displayName.toString()
+                    }else {
 
-                    val username = query.documents[0].getString("username")
-                    val query2 = db.collection("review").whereEqualTo("autore", username).whereEqualTo("titolo", title).get().await()
-
-                    if (query2.isEmpty) {
-                        _state.value = state.value.copy(isReviewd = true)
-                    } else {
-                        _state.value = state.value.copy(isReviewd = false)
-                        val doc = query2.documents[0]
-                        val stelle = doc.getLong("stelle")?.toInt()?:0
-                        _state.value = state.value.copy(userVote = stelle)
+                        username = query.documents[0].getString("username").toString()
                     }
+                        val query2 = db.collection("review").whereEqualTo("autore", username)
+                            .whereEqualTo("titolo", title).get().await()
+
+                        if (query2.isEmpty) {
+                            _state.value = state.value.copy(isReviewd = true)
+                        } else {
+                            _state.value = state.value.copy(isReviewd = false)
+                            val doc = query2.documents[0]
+                            val stelle = doc.getLong("stelle")?.toInt() ?: 0
+                            _state.value = state.value.copy(userVote = stelle)
+                        }
+
                 } catch (e: Exception) {
                     Log.e("hasReview", "Error while checking review", e)
                     _state.value = state.value.copy(isReviewd = false) // Gestione dell'errore, impostare a false di default

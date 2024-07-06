@@ -61,7 +61,12 @@ class reviewVM(private val repository: FilmRepository): ViewModel() {
             viewModelScope.launch {
                 val mail = firebaseAuth.currentUser?.email
                 val query = db.collection("users").whereEqualTo("mail", mail).get().await()
-                val username = query.documents[0].getString("username")
+                var username = ""
+                if(query.isEmpty){
+                    username = firebaseAuth.currentUser?.displayName.toString()
+                }else {
+                    username = query.documents[0].getString("username").toString()
+                }
 
 
                 val review = hashMapOf(

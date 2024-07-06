@@ -1,46 +1,53 @@
 package com.example.cinevote.screens.login
 
-
-
-import android.os.Parcelable
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.util.Log
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinevote.data.database.Room.FilmList
 import com.example.cinevote.data.repository.FilmRepository
 import com.example.cinevote.util.TMDBService
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseUser
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 data class LoginState (
-    val mail:String="",
-    val password:String=""
+    val mail: String = "",
+    val password: String = ""
 )
 
 interface LoginActions {
-    fun setMail(mail:String)
-    fun setPassword(password:String)
+    fun setMail(mail: String)
+    fun setPassword(password: String)
     fun isKeyCorrect(mail: String, password: String, onCompleteListener: (Boolean) -> Unit)
     fun loginGoogle()
-
-
     fun loadFilm()
 }
-class LoginViewModel(private val repository: FilmRepository): ViewModel() {
-    private val _state= MutableStateFlow(LoginState())
+
+class LoginViewModel(private val repository: FilmRepository, private val context: Context) : ViewModel() {
+    private val _state = MutableStateFlow(LoginState())
     val state = _state.asStateFlow()
+    private val auth: FirebaseAuth = Firebase.auth
+    private lateinit var googleSignInClient: GoogleSignInClient
 
 
 
@@ -58,25 +65,36 @@ class LoginViewModel(private val repository: FilmRepository): ViewModel() {
             password: String,
             onCompleteListener: (Boolean) -> Unit
         ) {
-            val auth: FirebaseAuth = Firebase.auth
-
             auth.signInWithEmailAndPassword(mail, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
                         Log.d("TAG", "signInWithEmail:success")
-                        val currentUser: FirebaseUser? = auth.currentUser
                         onCompleteListener(true)
                     } else {
-                        // If sign in fails, display a message to the user.
                         Log.w("TAG", "signInWithEmail:failure", task.exception)
                         onCompleteListener(false)
                     }
                 }
         }
 
-
         override fun loginGoogle() {
+            lateinit var mGoogleSignInClient: GoogleSignInClient
+            val Req_Code: Int = 123
+            lateinit var firebaseAuth: FirebaseAuth
+
+
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("366608684761")
+                .requestEmail()
+                .build()
+
+            googleSignInClient = GoogleSignIn.getClient(context, gso)
+
+            val activity = context as? Activity
+            val signInIntent = googleSignInClient.signInIntent
+            activity?.startActivityForResult(signInIntent, RC_SIGN_IN)
+
+            signInGoogle()
         }
 
         var currentPage = 1
@@ -104,41 +122,28 @@ class LoginViewModel(private val repository: FilmRepository): ViewModel() {
                                         repository.upsert(film)
                                     }
                                 }
-
-
                             }
                         },
                         onFailure = {
                             Log.d("failure database", "failure database")
                         }
                     )
-                    // Introduce a delay to prevent hitting API rate limits
                     delay(1000L)
                 }
             }
         }
     }
-}
+
+    private fun signInGoogle() {
 
 
-
-
-private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
-    try {
-        val account: GoogleSignInAccount? = completedTask.getResult(ApiException::class.java)
-        // L'accesso è stato eseguito correttamente, puoi utilizzare 'account' per ottenere informazioni sull'utente
-
-        // Esempio di utilizzo dei dati dell'account:
-        val idToken = account?.idToken // Ottieni l'idToken per l'autenticazione del backend
-        val email = account?.email // Ottieni l'email dell'utente
-
-        // Ora puoi utilizzare l'idToken per l'autenticazione lato server (se necessario)
-
-    } catch (e: ApiException) {
-        // L'accesso non è riuscito, gestisci l'errore appropriatamente
-        Log.w("TAG", "signInResult:failed code=" + e.statusCode)
     }
-}
 
+    companion object {
+        const val RC_SIGN_IN = 9001
+    }
+
+
+}
 
 

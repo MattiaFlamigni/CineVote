@@ -13,7 +13,7 @@ import com.google.firebase.ktx.Firebase
 
 // ...
 
-val firebaseAuth = FirebaseAuth.getInstance()
+var firebaseAuth = FirebaseAuth.getInstance()
 
 
 data class SignupState(

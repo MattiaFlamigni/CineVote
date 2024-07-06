@@ -47,7 +47,7 @@ val appModule = module {
     single { reviewRepository(get<CineVoteDatabase>().ReviewDAO())}
     viewModel {  SignupViewModel() }
 
-    viewModel {  LoginViewModel(get()) }
+    viewModel {  LoginViewModel(get(), get()) }
     viewModel {  cinemaVm() }
     viewModel {  SettingsVm(get()) }
     viewModel {  OutNowVM() }
