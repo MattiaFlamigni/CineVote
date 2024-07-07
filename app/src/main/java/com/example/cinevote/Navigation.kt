@@ -12,6 +12,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.cinevote.badge.BadgeScreen
+import com.example.cinevote.badge.BadgeViewModel
 import com.example.cinevote.screens.cinema.CinemaScreen
 import com.example.cinevote.screens.details.DetailScreen
 import com.example.cinevote.screens.home.HomeScreen
@@ -52,6 +54,7 @@ sealed class NavigationRoute(val route:String, val arguments: List<NamedNavArgum
     data object WishList : NavigationRoute("wishList")
 
     data object ThemeScreen : NavigationRoute("theme")
+    data object BadgeScreen : NavigationRoute("badge")
     data object OutNow : NavigationRoute("outNow")
     //data object Review : NavigationRoute("review")
     data object Review : NavigationRoute("review/{title}", listOf(navArgument("title") { type = NavType.StringType })) {
@@ -106,10 +109,16 @@ fun NavGraph(navController: NavHostController, modifier: Modifier =Modifier){
             //val authVm =koinViewModel<AuthViewModel>()
             SignUpasswordScreen(navController=navController, state = signUpState, actions = signUpVm.action)
         }
+
         composable(NavigationRoute.HomeScreen.route){
             val homeVM = koinViewModel<HomeVM>()
             val state by homeVM.state.collectAsState()
             HomeScreen(navController =navController, state = state, actions = homeVM.action)
+        }
+        composable(NavigationRoute.BadgeScreen.route){
+            val badgeVM = koinViewModel<BadgeViewModel>()
+            val state by badgeVM.state.collectAsState()
+            BadgeScreen(navController =navController, status = state, action = badgeVM.action)
         }
         composable(NavigationRoute.Settings.route){
             val settingsVm = koinViewModel<SettingsVm>()

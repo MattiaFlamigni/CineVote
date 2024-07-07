@@ -21,6 +21,7 @@ import com.example.cinevote.screens.wishList.WishListVM
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.cinevote.badge.BadgeViewModel
 import com.example.cinevote.screens.auth.AuthRepository
 import com.example.cinevote.screens.auth.AuthViewModel
 import com.example.cinevote.screens.settings.theme.repositories.ThemeRepository
@@ -47,6 +48,7 @@ val appModule = module {
     single { reviewRepository(get<CineVoteDatabase>().ReviewDAO())}
     viewModel {  SignupViewModel() }
 
+    viewModel { BadgeViewModel() }
     viewModel {  LoginViewModel(get(), get()) }
     viewModel {  cinemaVm() }
     viewModel {  SettingsVm(get()) }

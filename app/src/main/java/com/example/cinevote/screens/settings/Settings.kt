@@ -198,7 +198,7 @@ fun ShowProfile(state: SettingsStatus, action: SettingsAction, profileImageUri: 
 
 @Composable
 fun ShowOption(action: SettingsAction, navController: NavHostController, auth: AuthViewModel) {
-    val options = listOf(SettingItem.IMPOSTAZIONI_TEMA, SettingItem.LOGOUT)
+    val options = listOf(SettingItem.IMPOSTAZIONI_TEMA, SettingItem.LOGOUT, SettingItem.BADGE)
 
     Column(
         modifier = Modifier
@@ -218,6 +218,7 @@ fun ShowOption(action: SettingsAction, navController: NavHostController, auth: A
 
                         SettingItem.IMPOSTAZIONI_TEMA -> navController.navigate(NavigationRoute.ThemeScreen.route)
                         SettingItem.RECENSIONI -> TODO()
+                        SettingItem.BADGE -> navController.navigate(NavigationRoute.BadgeScreen.route)
                     }
                 },
                 modifier = Modifier
