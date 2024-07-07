@@ -43,11 +43,6 @@ fun HomeScreen(
     actions : HomeAction,
     state : HomeState,
 ){
-
-
-
-
-
     Scaffold(
         bottomBar = { bottomAppBar(navController) },
         topBar = { TopBar(title= stringResource(id = R.string.home_title),navController= navController)},
@@ -64,8 +59,10 @@ fun HomeScreen(
 
 
 
+
                     LaunchedEffect(Unit) {
                         actions.getFilmsByGenre(1, 28)
+                        actions.loadFilm()
                     }
 
 
