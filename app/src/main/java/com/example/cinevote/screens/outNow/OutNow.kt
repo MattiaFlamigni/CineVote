@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Card
@@ -51,7 +52,7 @@ fun OutNowScreen(
         bottomBar = { bottomAppBar(navController) },
         content = {innerPadding->
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 200.dp),
+            columns = GridCells.Fixed(2),
             modifier=Modifier.padding(innerPadding),
         ){
 
@@ -79,7 +80,7 @@ fun OutNowScreen(
                             .build()),
                         contentDescription = film.title,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth().size(300.dp)
                     )
 
                 }}
