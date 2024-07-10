@@ -62,6 +62,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -443,6 +444,10 @@ fun DetailScreen(
 
                         ChipOption.RECENSIONI -> {
                             //Text("recensioni"
+
+                            if(state.reviewList.isEmpty()){
+                                NoReviewsMessage()
+                            }
                             for(review in state.reviewList){
                                 ReviewCard(review = review)
                             }
@@ -712,6 +717,34 @@ fun PlotSection(plot: String) {
                 modifier = Modifier.padding(top = 8.dp)
             )
         }
+    }
+}
+
+
+@Composable
+fun NoReviewsMessage() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            imageVector = Icons.Default.Info,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(48.dp)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Nessuna recensione pubblicata",
+            style = MaterialTheme.typography.bodyMedium.copy(
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Bold
+            ),
+            textAlign = TextAlign.Center
+        )
     }
 }
 
