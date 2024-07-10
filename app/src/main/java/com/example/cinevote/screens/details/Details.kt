@@ -4,6 +4,7 @@ package com.example.cinevote.screens.details
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -82,6 +83,15 @@ fun DetailScreen(
     action: DetailAction,
     title: String
 ) {
+
+
+
+    BackHandler {
+        navController.navigate(NavigationRoute.HomeScreen.route) {
+            popUpTo(NavigationRoute.Detail.route) { inclusive = true }
+        }
+    }
+
     var selectedChip by remember { mutableStateOf(ChipOption.TRAMA) }
     try {
         action.showDetails(title)

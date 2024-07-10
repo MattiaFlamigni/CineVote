@@ -1,6 +1,7 @@
 package com.example.cinevote.screens.review
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -53,6 +54,9 @@ import com.example.cinevote.screens.details.DetailState
 @Composable
 fun ReviewScreen(navController : NavHostController, title:String, state: ReviewState,
                  action: ReviewAction,){
+
+
+
     Scaffold(
         topBar = { TopBar(navController = navController) },
         bottomBar = { bottomAppBar(navController) },
@@ -232,7 +236,10 @@ private fun floatingActButton(action: ReviewAction, title:String, navController 
     FloatingActionButton(
         onClick = {
             action.uploadReview(title)
-            navController.navigate(NavigationRoute.Detail.buildRoute(title))
+            navController.navigate(NavigationRoute.Detail.buildRoute(title)){
+                popUpTo(NavigationRoute.Review.route) { inclusive = true }
+                popUpTo(NavigationRoute.Detail.route) { inclusive = true }
+            }
                   },
         containerColor = MaterialTheme.colorScheme.secondaryContainer,
         contentColor = MaterialTheme.colorScheme.onSecondaryContainer
