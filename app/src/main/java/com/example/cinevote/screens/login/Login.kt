@@ -129,7 +129,7 @@ fun LoginScreen(
                     text = "Accedi",
                     onClick = {
 
-                        scope.launch { actions.loadFilm() }
+                        //scope.launch { actions.loadFilm() }
                         authViewModel.changeState(AuthStatus.LOGGED)
                         Log.d("status",status.status.name )
 
