@@ -60,7 +60,7 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel(){
     val state = _state.asStateFlow()
     private val tmdbBaseUrl = "https://image.tmdb.org/t/p/w500"
     private val tmdb = TMDBService()
-
+    val firestore = Firestore()
 
 
 
@@ -269,7 +269,7 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel(){
         }
 
         override fun loadReview(title: String) {
-            val list : MutableList<Review> = mutableListOf()
+            /*val list : MutableList<Review> = mutableListOf()
             viewModelScope.launch {
                 val query = db.collection("review").whereEqualTo("titolo", title).get().await()
 
@@ -286,7 +286,16 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel(){
 
                 Log.d("caricamento recensioni", state.value.reviewList.toString())
 
+            }*/
+
+
+            viewModelScope.launch {
+                val review = firestore.actions.hasReview(title)
+                _state.value = state.value.copy(reviewList = review)
+
             }
+
+
         }
 
 

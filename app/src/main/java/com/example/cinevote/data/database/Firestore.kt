@@ -1,6 +1,8 @@
 package com.example.cinevote.data.database
 
 import android.util.Log
+import com.example.cinevote.data.Review
+import com.example.cinevote.screens.signUp.firebaseAuth
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +22,7 @@ data class UserInfo(
 interface FirestoreAction{
     suspend fun getDataFromMail(data:String):String
 
+    suspend fun hasReview(title: String) : List<Review>
 }
 
 class Firestore {
@@ -57,6 +60,24 @@ class Firestore {
 
             // Se non è stato trovato un documento corrispondente all'utente o se l'email è vuota, restituisci una stringa vuota
             return ""
+        }
+
+        override suspend fun hasReview(title: String) : List<Review> {
+            val query = db.collection("review").whereEqualTo("titolo", title).get().await()
+            val list : MutableList<Review> = mutableListOf()
+
+
+            for (document in query.documents) {
+
+                val descrizione = document.getString("descrizione") ?: ""
+                val stelle = document.getLong("stelle")?.toInt() ?: 0
+                val autore = document.getString("autore") ?: ""
+
+                val review = Review(descrizione = descrizione, stelle = stelle, autore = autore, titolo = title)
+
+                list.add(review)
+            }
+            return list
         }
 
     }
