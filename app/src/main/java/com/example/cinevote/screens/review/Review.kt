@@ -43,6 +43,7 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
+import com.example.cinevote.NavigationRoute
 import com.example.cinevote.components.TopBar
 import com.example.cinevote.R
 import com.example.cinevote.components.bottomAppBar
@@ -56,7 +57,7 @@ fun ReviewScreen(navController : NavHostController, title:String, state: ReviewS
         topBar = { TopBar(navController = navController) },
         bottomBar = { bottomAppBar(navController) },
         containerColor = MaterialTheme.colorScheme.secondaryContainer,
-        floatingActionButton = { floatingActButton(action, title ) }
+        floatingActionButton = { floatingActButton(action, title, navController ) }
     ) {innerPadding->
 
 
@@ -227,9 +228,12 @@ private fun DescriptionTextField(action:ReviewAction) {
 
 
 @Composable
-private fun floatingActButton(action: ReviewAction, title:String){
+private fun floatingActButton(action: ReviewAction, title:String, navController : NavHostController){
     FloatingActionButton(
-        onClick = { action.uploadReview(title) },
+        onClick = {
+            action.uploadReview(title)
+            navController.navigate(NavigationRoute.Detail.buildRoute(title))
+                  },
         containerColor = MaterialTheme.colorScheme.secondaryContainer,
         contentColor = MaterialTheme.colorScheme.onSecondaryContainer
     ) {
