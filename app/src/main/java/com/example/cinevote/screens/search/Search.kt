@@ -103,7 +103,7 @@ fun searchScreen(navController:NavHostController, state : SearchStatus, action: 
             }) {
 
 
-            LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 200.dp)) {
+            LazyVerticalGrid(columns = GridCells.Fixed(2)) {
                 items(state.listfilm){film->
 
                     Card(
