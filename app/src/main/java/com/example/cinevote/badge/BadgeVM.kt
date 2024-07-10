@@ -47,6 +47,7 @@ class BadgeViewModel : ViewModel() {
     private val _state = MutableStateFlow(BadgeStatus())
     val state = _state.asStateFlow()
     private val firestore = Firestore()
+    private val auth = FirebaseAuth.getInstance()
 
     init {
         loadBadges()
@@ -58,7 +59,11 @@ class BadgeViewModel : ViewModel() {
 
         override fun checkBadgeReached(badge: Badge) {
             viewModelScope.launch{
-            val username = firestore.actions.getDataFromMail("username")
+            var username = firestore.actions.getDataFromMail("username")
+
+                if(username.isEmpty()){
+                    username = auth.currentUser?.displayName.toString()
+                }
 
                 // Implementa la logica per verificare se un badge è stato raggiunto
                 // Esempio: controlla se l'utente ha soddisfatto la condizione del badge
