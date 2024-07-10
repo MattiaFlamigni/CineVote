@@ -2,6 +2,7 @@ package com.example.cinevote.badge
 
 import android.media.Image
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
@@ -12,6 +13,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import com.example.cinevote.R
+import com.example.cinevote.data.Review
+import com.example.cinevote.data.database.Firestore
+import com.google.firebase.auth.FirebaseAuth
 
 data class Badge(
     val name: String,
@@ -36,12 +40,13 @@ data class BadgeStatus(
 )
 
 interface BadgeAction {
-    fun checkBadgeReached(badge: Badge): Boolean
+    fun checkBadgeReached(badge: Badge)
 }
 
 class BadgeViewModel : ViewModel() {
     private val _state = MutableStateFlow(BadgeStatus())
     val state = _state.asStateFlow()
+    private val firestore = Firestore()
 
     init {
         loadBadges()
@@ -51,35 +56,46 @@ class BadgeViewModel : ViewModel() {
     val action = object : BadgeAction {
 
 
-        override fun checkBadgeReached(badge: Badge): Boolean {
-            // Implementa la logica per verificare se un badge è stato raggiunto
-            // Esempio: controlla se l'utente ha soddisfatto la condizione del badge
-            val isReached = when (badge.type) {
-                BadgeType.WATCH_MOVIES -> {
-                    // Logica per controllare se l'utente ha guardato il numero di film richiesti
-                    true // Esempio di logica fittizia
-                }
+        override fun checkBadgeReached(badge: Badge) {
+            viewModelScope.launch{
+            val username = firestore.actions.getDataFromMail("username")
 
-                BadgeType.WRITE_REVIEWS -> {
-                    // Logica per controllare se l'utente ha scritto il numero di recensioni richieste
-                    false // Esempio di logica fittizia
-                }
+                // Implementa la logica per verificare se un badge è stato raggiunto
+                // Esempio: controlla se l'utente ha soddisfatto la condizione del badge
+                val isReached = when (badge.type) {
+                    BadgeType.WATCH_MOVIES -> {
+                        Log.d("username", username)
+                        firestore.actions.getReviewByUser(username).size >= 10
+                    }
 
-                BadgeType.EARN_POINTS -> {
-                    // Logica per controllare se l'utente ha guadagnato i punti richiesti
-                    false // Esempio di logica fittizia
-                }
-            }
+                    BadgeType.WRITE_REVIEWS -> {
+                        val list : MutableList<Review> = mutableListOf()
+                        val reviews = firestore.actions.getReviewByUser(username)
+                        for(review in reviews){
+                            if(review.descrizione.isNotEmpty()){
+                                list.add(review)
+                            }
+                        }
 
-            if (isReached) {
-                val updatedAchievedBadges = _state.value.achievedBadges.toMutableList().apply {
-                    if (!contains(badge)) {
-                        add(badge)
+                        list.size>=5
+                    }
+
+                    BadgeType.EARN_POINTS -> {
+                        // Logica per controllare se l'utente ha guadagnato i punti richiesti
+                        false // Esempio di logica fittizia
                     }
                 }
-                _state.value = _state.value.copy(achievedBadges = updatedAchievedBadges)
+
+                if (isReached) {
+                    val updatedAchievedBadges = _state.value.achievedBadges.toMutableList().apply {
+                        if (!contains(badge)) {
+                            add(badge)
+                        }
+                    }
+                    _state.value = _state.value.copy(achievedBadges = updatedAchievedBadges)
+                }
+
             }
-            return isReached
         }
     }
 

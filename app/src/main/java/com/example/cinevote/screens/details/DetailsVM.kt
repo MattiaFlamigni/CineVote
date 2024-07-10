@@ -290,7 +290,7 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel(){
 
 
             viewModelScope.launch {
-                val review = firestore.actions.hasReview(title)
+                val review = firestore.actions.loadReview(title)
                 _state.value = state.value.copy(reviewList = review)
 
             }

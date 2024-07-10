@@ -22,7 +22,10 @@ data class UserInfo(
 interface FirestoreAction{
     suspend fun getDataFromMail(data:String):String
 
-    suspend fun hasReview(title: String) : List<Review>
+    suspend fun loadReview(title: String) : List<Review>
+
+    suspend fun getReviewByUser(username: String) : List<Review>
+
 }
 
 class Firestore {
@@ -62,7 +65,7 @@ class Firestore {
             return ""
         }
 
-        override suspend fun hasReview(title: String) : List<Review> {
+        override suspend fun loadReview(title: String) : List<Review> {
             val query = db.collection("review").whereEqualTo("titolo", title).get().await()
             val list : MutableList<Review> = mutableListOf()
 
@@ -74,6 +77,24 @@ class Firestore {
                 val autore = document.getString("autore") ?: ""
 
                 val review = Review(descrizione = descrizione, stelle = stelle, autore = autore, titolo = title)
+
+                list.add(review)
+            }
+            return list
+        }
+
+        override suspend fun getReviewByUser(username: String): List<Review> {
+            val query = db.collection("review").whereEqualTo("autore", username).get().await()
+            val list : MutableList<Review> = mutableListOf()
+
+
+            for (document in query.documents) {
+
+                val descrizione = document.getString("descrizione") ?: ""
+                val stelle = document.getLong("stelle")?.toInt() ?: 0
+                val titolo = document.getString("titolo") ?: ""
+
+                val review = Review(descrizione = descrizione, stelle = stelle, autore = username, titolo = titolo)
 
                 list.add(review)
             }
