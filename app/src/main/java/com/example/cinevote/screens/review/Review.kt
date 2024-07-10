@@ -188,7 +188,7 @@ private fun ReviewRating(state: ReviewState, action: ReviewAction) {
                 modifier = Modifier.padding(4.dp)
             ) {
                 Icon(
-                    imageVector = if (index < selectedStars) Icons.Sharp.Star else Icons.Filled.Face,
+                    painter = if (index < selectedStars) painterResource(id = R.drawable.star) else painterResource(id= R.drawable.outlined_star),
                     contentDescription = null
                 )
             }
