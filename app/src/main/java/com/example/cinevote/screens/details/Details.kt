@@ -248,11 +248,11 @@ fun DetailScreen(
 
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                            horizontalArrangement = Arrangement.SpaceEvenly
                         ) {
                             Button(
                                 enabled = state.isReviewd,
-                                modifier = Modifier.size(width = 100.dp, height = 50.dp),
+                                modifier = Modifier.size(width = 150.dp, height = 50.dp),
                                 colors = ButtonColors(
                                     containerColor = MaterialTheme.colorScheme.primary,
                                     contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -277,7 +277,7 @@ fun DetailScreen(
                             val ctx = LocalContext.current
 
                             Button(
-                                modifier = Modifier.size(width = 100.dp, height = 50.dp),
+                                modifier = Modifier.size(width = 150.dp, height = 50.dp),
                                 colors = ButtonColors(
                                     containerColor = MaterialTheme.colorScheme.primary,
                                     contentColor = MaterialTheme.colorScheme.onPrimary,
