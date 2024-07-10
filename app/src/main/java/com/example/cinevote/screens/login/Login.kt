@@ -183,14 +183,13 @@ private fun LoginWithSocial(actions: LoginActions, navController: NavHostControl
         modifier= Modifier
             .fillMaxWidth()
             .padding(20.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.Center
 
     ){
         Image(
-            painter = painterResource(id = R.drawable.google),
+            painter = painterResource(id = R.drawable.android_neutral_rd_si),
             contentDescription = "Google",
             modifier = Modifier
-                .size(60.dp)
                 .clip(CircleShape)
                 .clickable {
                     navController.navigate(NavigationRoute.HomeScreen.route)
