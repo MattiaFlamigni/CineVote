@@ -38,6 +38,7 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -624,7 +625,7 @@ private fun GetVote(global: Float, state: DetailState) {
 
 }
 
-
+/*
 
 @Composable
 fun ReviewCard(review: Review) {
@@ -657,6 +658,46 @@ fun ReviewCard(review: Review) {
             }
         }
     }
+}*/
+
+
+@Composable
+fun ReviewCard(review: Review) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        ),
+        elevation = CardDefaults.cardElevation(2.dp),
+        shape = MaterialTheme.shapes.medium
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = review.descrizione,
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(bottom = 8.dp),
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Divider(color = MaterialTheme.colorScheme.primary, thickness = 1.dp)
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                RatingBar(rating = review.stelle)
+                Text(
+                    text = "Autore: ${review.autore}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -666,7 +707,7 @@ fun RatingBar(rating: Int) {
             Icon(
                 painter = painterResource(id = R.drawable.star),
                 contentDescription = "Filled star",
-                tint = Color.Yellow
+                tint = MaterialTheme.colorScheme.primary
             )
         }
         repeat(5 - rating) {
