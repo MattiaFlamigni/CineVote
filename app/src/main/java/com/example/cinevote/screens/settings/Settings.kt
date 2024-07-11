@@ -81,7 +81,7 @@ fun SettingsScreen(
                         LazyVerticalGrid(
                             columns = GridCells.Adaptive(minSize = 100.dp),
                             contentPadding = PaddingValues(vertical = 16.dp),
-                            modifier = Modifier.height(400.dp)
+                            modifier = Modifier.height(300.dp)
                         ) {
                             items(state.watchedMovie) { movie ->
                                 MovieItem(movie, navController)
@@ -313,7 +313,7 @@ fun MovieItem(movie: WatchedMovie, navController: NavHostController) {
             ),
             contentDescription = movie.title,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.size(100.dp)
+            modifier = Modifier.size(150.dp)
         )
     }
 }
