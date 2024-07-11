@@ -9,9 +9,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -49,31 +51,49 @@ fun SettingsScreen(
     Scaffold(
         topBar = { TopBar(title = "Impostazioni", navController = navController) }
     ) { innerPadding ->
-        Surface {
-            Column(
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            LazyColumn(
                 modifier = Modifier
                     .padding(innerPadding)
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
             ) {
-                ShowProfile(state, action, null)
-                Spacer(modifier = Modifier.height(20.dp))
-                Text(
-                    text = "Visti",
-                    fontFamily = FontFamily.SansSerif,
-                    fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 100.dp)) {
-                    items(state.watchedMovie) { movie ->
-                        MovieItem(movie, navController)
+                item {
+                    ShowProfile(state, action, null)
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Text(
+                        text = "Visti",
+                        fontFamily = FontFamily.SansSerif,
+                        fontSize = 20.sp,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+                }
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                    ) {
+                        LazyVerticalGrid(
+                            columns = GridCells.Adaptive(minSize = 100.dp),
+                            contentPadding = PaddingValues(vertical = 16.dp),
+                            modifier = Modifier.height(400.dp)
+                        ) {
+                            items(state.watchedMovie) { movie ->
+                                MovieItem(movie, navController)
+                            }
+                        }
                     }
                 }
-                Spacer(modifier = Modifier.height(20.dp))
-                ShowOption(action = action, navController = navController, auth = auth)
-                Spacer(modifier = Modifier.height(20.dp))
-
-
+                item {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    ShowOption(action = action, navController = navController, auth = auth)
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
             }
         }
     }
