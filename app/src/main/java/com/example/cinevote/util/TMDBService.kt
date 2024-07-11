@@ -98,6 +98,10 @@ class TMDBService {
 
 
 
+
+
+
+
     fun fetchTrailerFilm(id:Int, onSuccess: (String) -> Unit, onFailure: (IOException) -> Unit) {
         val request: Request = Request.Builder()
             .url("https://api.themoviedb.org/3/movie/$id/videos?language=it")

@@ -100,6 +100,7 @@ fun DetailScreen(
         action.hasReview(title)
         action.isFavorite(title)
         action.loadReview(title)
+        action.loadGenres(title)
 
     } catch (e: Exception) {
         Log.d("Inesistente", "Non presente nel db")
@@ -221,7 +222,8 @@ fun DetailScreen(
                         Row(modifier = Modifier.fillMaxWidth()) {
 
 
-                            for (genre in getGenres()) {
+                            val generi = state.genres
+                            for (genre in generi) {
                                 Text(
                                     text = genre,
                                     fontFamily = FontFamily.Default,
