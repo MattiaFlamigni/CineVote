@@ -3,13 +3,13 @@ package com.example.cinevote.screens.signUp
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 // ...
 
@@ -17,60 +17,59 @@ var firebaseAuth = FirebaseAuth.getInstance()
 
 
 data class SignupState(
-    val name:String="",
-    val surname:String="",
-    val username:String="",
-    val mail :String ="",
-    val password:String=""
+    val name: String = "",
+    val surname: String = "",
+    val username: String = "",
+    val mail: String = "",
+    val password: String = ""
 )
 
 data class User(
     val name: String,
-    val surname:String,
-    val username : String,
-    val mail : String
+    val surname: String,
+    val username: String,
+    val mail: String
 )
 
-interface SignUPActions{
-    fun setName(name:String)
-    fun setSurname(surname:String)
-    fun setUsername(username:String)
-    fun setMail(mail:String)
-    fun setPassword(password:String)
+interface SignUPActions {
+    fun setName(name: String)
+    fun setSurname(surname: String)
+    fun setUsername(username: String)
+    fun setMail(mail: String)
+    fun setPassword(password: String)
     fun createUser(
-        name:String,
-        surname:String,
-        username:String,
-        mail:String,
+        name: String,
+        surname: String,
+        username: String,
+        mail: String,
         password: String
     )
 }
+
 class SignupViewModel : ViewModel() {
     private val _state = MutableStateFlow(SignupState())
     val state = _state.asStateFlow()
 
 
-
-
-    val action= object :SignUPActions{
+    val action = object : SignUPActions {
         override fun setName(name: String) {
-            _state.update { it.copy(name=name) }
+            _state.update { it.copy(name = name) }
         }
 
         override fun setSurname(surname: String) {
-            _state.update { it.copy(surname=surname) }
+            _state.update { it.copy(surname = surname) }
         }
 
         override fun setUsername(username: String) {
-            _state.update { it.copy(username=username) }
+            _state.update { it.copy(username = username) }
         }
 
         override fun setMail(mail: String) {
-            _state.update { it.copy(mail=mail) }
+            _state.update { it.copy(mail = mail) }
         }
 
         override fun setPassword(password: String) {
-            _state.update { it.copy(password=password) }
+            _state.update { it.copy(password = password) }
         }
 
         override fun createUser(
@@ -90,8 +89,9 @@ class SignupViewModel : ViewModel() {
                         val user = firebaseAuth.currentUser
                         user?.updateProfile(
                             UserProfileChangeRequest.Builder()
-                            .setDisplayName("$name $surname")
-                            .build())
+                                .setDisplayName("$name $surname")
+                                .build()
+                        )
                             ?.addOnCompleteListener { profileTask ->
                                 /*if (profileTask.isSuccessful) {
                                     _state.update { it.copy(success = true, loading = false) }
@@ -110,7 +110,13 @@ class SignupViewModel : ViewModel() {
 }
 
 
-private fun writeNewUser(userId: String, name: String, surname: String, username: String, mail:String) {
+private fun writeNewUser(
+    userId: String,
+    name: String,
+    surname: String,
+    username: String,
+    mail: String
+) {
 
     /*var database = Firebase.database.reference
 
@@ -119,7 +125,7 @@ private fun writeNewUser(userId: String, name: String, surname: String, username
     database.child("users").child(userId).setValue(user)*/
 
     val db = Firebase.firestore
-    val user = User(name,surname, username, mail)
+    val user = User(name, surname, username, mail)
 
     db.collection("users").add(user)
 
@@ -143,7 +149,6 @@ fun isUsernameAvailable(username: String, completion: (Boolean) -> Unit) {
         }*/
 
 
-
     val db = Firebase.firestore
 
     db.collection("users")
@@ -160,7 +165,11 @@ fun isUsernameAvailable(username: String, completion: (Boolean) -> Unit) {
             } else {
                 // Gestisci il fallimento dell'operazione
                 completion(false)
-                Log.e("TAG", "Errore durante il recupero dei documenti dalla collezione 'users'", task.exception)
+                Log.e(
+                    "TAG",
+                    "Errore durante il recupero dei documenti dalla collezione 'users'",
+                    task.exception
+                )
             }
         }
 }

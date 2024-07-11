@@ -22,15 +22,15 @@ data class HomeState(
     val filmsByGenre: List<FilmList> = emptyList()
 )
 
-interface HomeAction{
+interface HomeAction {
     fun getTop()
-    fun getFilmsByGenre(pages:Int, genre:Int)
+    fun getFilmsByGenre(pages: Int, genre: Int)
 
     fun loadFilm()
 }
 
 
-class HomeVM(private val repository: FilmRepository) : ViewModel(){
+class HomeVM(private val repository: FilmRepository) : ViewModel() {
 
 
     private val tmdb = TMDBService()
@@ -70,14 +70,6 @@ class HomeVM(private val repository: FilmRepository) : ViewModel(){
                     _state.value = _state.value.copy(filmsByGenre = filmsWithBaseUrl)
                 }
             }
-
-
-
-
-
-
-
-
 
 
             /*viewModelScope.launch {
@@ -147,7 +139,6 @@ class HomeVM(private val repository: FilmRepository) : ViewModel(){
 
 
     }
-
 
 
 }

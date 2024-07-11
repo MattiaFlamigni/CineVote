@@ -3,7 +3,6 @@ package com.example.cinevote.screens.cinema
 
 import android.Manifest
 import android.content.Intent
-import com.example.cinevote.R
 import android.net.Uri
 import android.provider.Settings
 import android.util.Log
@@ -40,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.cinevote.R
 import com.example.cinevote.components.TopBar
 import com.example.cinevote.components.bottomAppBar
 import com.example.cinevote.util.LocationService
@@ -51,7 +51,7 @@ import com.google.android.gms.maps.model.LatLng
 
 @Composable
 fun CinemaScreen(
-    navController : NavHostController,
+    navController: NavHostController,
     state: CinemaStatus,
     action: CinemaAction,
 ) {
@@ -82,6 +82,7 @@ fun CinemaScreen(
             PermissionStatus.Unknown -> {}
         }
     }
+
     fun requestLocation() {
         if (locationPermission.status.isGranted) {
             val res = locationService.requestCurrentLocation()
@@ -93,7 +94,12 @@ fun CinemaScreen(
 
     Scaffold(
         bottomBar = { bottomAppBar(navController = navController) },
-        topBar = { TopBar(navController = navController, title = stringResource(id = R.string.cinema_title)) },
+        topBar = {
+            TopBar(
+                navController = navController,
+                title = stringResource(id = R.string.cinema_title)
+            )
+        },
         modifier = Modifier.fillMaxWidth(),
     ) { innerPadding ->
         LazyColumn(
@@ -108,7 +114,7 @@ fun CinemaScreen(
 
                 Button(
                     onClick = { requestLocation() }
-                ){
+                ) {
                     Text(text = "Load cinema")
                 }
 
@@ -117,8 +123,8 @@ fun CinemaScreen(
                 Log.d("coordinates", latitude.toString())
 
 
-                if(locationPermission.status.isGranted){
-                    if(latitude==0.00 && longitude==0.00){
+                if (locationPermission.status.isGranted) {
+                    if (latitude == 0.00 && longitude == 0.00) {
                         requestLocation()
                     }
                 }
@@ -140,10 +146,6 @@ fun CinemaScreen(
                 //actions.invoke()
 
 
-
-
-
-
                 if (state.cinemaList.isEmpty()) {
                     Text(
                         text = stringResource(id = R.string.Nessun_cinema),
@@ -154,17 +156,20 @@ fun CinemaScreen(
                     // Loop through the list of cinemas and display them
                     state.cinemaList.forEach { cinema ->
                         OutlinedCardExample(cinema.name, cinema.address, cinema.city, onClick = {
-                            val uri = Uri.parse("geo:${cinema.latitude},${cinema.longitude}?q=${Uri.encode(cinema.name+cinema.city)}")
-                            val intent = Intent(Intent.ACTION_VIEW).apply { data=uri }
-                            if(intent.resolveActivity(ctx.packageManager)!=null){
+                            val uri = Uri.parse(
+                                "geo:${cinema.latitude},${cinema.longitude}?q=${
+                                    Uri.encode(cinema.name + cinema.city)
+                                }"
+                            )
+                            val intent = Intent(Intent.ACTION_VIEW).apply { data = uri }
+                            if (intent.resolveActivity(ctx.packageManager) != null) {
                                 ctx.startActivity(intent)
                             }
                         })
                     }
                 }
 
-        }
-
+            }
 
 
         }
@@ -236,13 +241,11 @@ fun CinemaScreen(
     }
 
 
-
-
 }
 
 
 @Composable
-private fun OutlinedCardExample(name: String, address: String, city:String, onClick:()->Unit ) {
+private fun OutlinedCardExample(name: String, address: String, city: String, onClick: () -> Unit) {
 
     Card(
         onClick = onClick,
@@ -254,7 +257,7 @@ private fun OutlinedCardExample(name: String, address: String, city:String, onCl
             .padding(20.dp),
 
 
-    ) {
+        ) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
@@ -287,7 +290,7 @@ private fun OutlinedCardExample(name: String, address: String, city:String, onCl
 }
 
 @Composable
-private fun ViewCinema(){
+private fun ViewCinema() {
     val ctx = LocalContext.current
     val sendIntent = Intent().apply {
         action = Intent.ACTION_SEND

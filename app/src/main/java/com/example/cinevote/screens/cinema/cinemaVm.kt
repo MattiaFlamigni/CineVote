@@ -18,9 +18,10 @@ import java.io.IOException
 import java.net.URLEncoder
 
 const val DISTANCE = 15000
+
 data class CinemaStatus(
-    val userPosition : LatLng,
-    val cinemaList : List<Cinema> = emptyList()
+    val userPosition: LatLng,
+    val cinemaList: List<Cinema> = emptyList()
 )
 
 data class Cinema(
@@ -28,25 +29,19 @@ data class Cinema(
     val name: String,
     val latitude: Double,
     val longitude: Double,
-    val address:String,
-    val city:String
+    val address: String,
+    val city: String
 )
 
 
-interface CinemaAction{
+interface CinemaAction {
     fun setUserPosition(latLng: LatLng)
-    fun getCinema(coordinates:LatLng)
+    fun getCinema(coordinates: LatLng)
 }
 
 class cinemaVm : ViewModel() {
-    private val _state= MutableStateFlow(CinemaStatus(LatLng(44.4949, 11.3426 )))
+    private val _state = MutableStateFlow(CinemaStatus(LatLng(44.4949, 11.3426)))
     val state = _state.asStateFlow()
-
-
-
-
-
-
 
 
     val actions = object : CinemaAction {
@@ -56,7 +51,7 @@ class cinemaVm : ViewModel() {
 
         }
 
-        override fun getCinema(coordinates:LatLng) {
+        override fun getCinema(coordinates: LatLng) {
             //val userPosition = _state.value.userPosition
 
             Log.d("getcinemacoord", (coordinates.latitude).toString())
@@ -68,7 +63,8 @@ class cinemaVm : ViewModel() {
             """.trimIndent()
 
             // Effettua la richiesta HTTP per eseguire la query
-            val url = "https://overpass-api.de/api/interpreter?data=${URLEncoder.encode(query, "UTF-8")}"
+            val url =
+                "https://overpass-api.de/api/interpreter?data=${URLEncoder.encode(query, "UTF-8")}"
 
             Log.d("URL", url)
 
@@ -105,34 +101,35 @@ class cinemaVm : ViewModel() {
                 }
             })
         }
-}
-
-
-private fun parseCinemaData(jsonData: String): List<Cinema> {
-    val cinemaList = mutableListOf<Cinema>()
-    try {
-
-        val jsonObject = JSONObject(jsonData)
-        val elements = jsonObject.getJSONArray("elements")
-        for (i in 0 until elements.length()) {
-            val element = elements.getJSONObject(i)
-            val tags = element.getJSONObject("tags")
-            if (tags.has("name")) {
-                val id = element.getString("id")
-                val name = tags.getString("name")
-                val latitude = element.getDouble("lat")
-                val longitude = element.getDouble("lon")
-                val housenumber = tags.optString("addr:housenumber", "")
-                val street = tags.optString("addr:street","")
-                val city = tags.optString("addr:city","")
-                val address = "$street $housenumber"
-
-                val cinema = Cinema(id, name, latitude, longitude, address, city)
-                cinemaList.add(cinema)
-            }
-        }
-    } catch (e: JSONException) {
-        // Gestisci l'eccezione se ci sono problemi nell'analisi dei dati JSON
     }
-    return cinemaList
-}}
+
+
+    private fun parseCinemaData(jsonData: String): List<Cinema> {
+        val cinemaList = mutableListOf<Cinema>()
+        try {
+
+            val jsonObject = JSONObject(jsonData)
+            val elements = jsonObject.getJSONArray("elements")
+            for (i in 0 until elements.length()) {
+                val element = elements.getJSONObject(i)
+                val tags = element.getJSONObject("tags")
+                if (tags.has("name")) {
+                    val id = element.getString("id")
+                    val name = tags.getString("name")
+                    val latitude = element.getDouble("lat")
+                    val longitude = element.getDouble("lon")
+                    val housenumber = tags.optString("addr:housenumber", "")
+                    val street = tags.optString("addr:street", "")
+                    val city = tags.optString("addr:city", "")
+                    val address = "$street $housenumber"
+
+                    val cinema = Cinema(id, name, latitude, longitude, address, city)
+                    cinemaList.add(cinema)
+                }
+            }
+        } catch (e: JSONException) {
+            // Gestisci l'eccezione se ci sono problemi nell'analisi dei dati JSON
+        }
+        return cinemaList
+    }
+}

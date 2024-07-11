@@ -34,31 +34,23 @@ class OutNowVM : ViewModel() {
             viewModelScope.launch {
 
 
-                    val url = /*TODO: DATA DINAMICA*/
-                        "https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=false&language=it&page=1&primary_release_date.gte=2024-04-17&region=it&sort_by=popularity.desc&with_release_type=3"
-                    tmdb.fetchFilmData(
-                        url,
-                        onSuccess = { filmList ->
-                            _state.update { it.copy(filmList = filmList) }
-                        },
-                        onFailure = {
-                            Log.e("OutNowVM", "Errore nella richiesta")
-                        }
-                    )
+                val url = /*TODO: DATA DINAMICA*/
+                    "https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=false&language=it&page=1&primary_release_date.gte=2024-04-17&region=it&sort_by=popularity.desc&with_release_type=3"
+                tmdb.fetchFilmData(
+                    url,
+                    onSuccess = { filmList ->
+                        _state.update { it.copy(filmList = filmList) }
+                    },
+                    onFailure = {
+                        Log.e("OutNowVM", "Errore nella richiesta")
+                    }
+                )
             }
-
-
-
-
-
-
-
 
 
         }
     }
 }
-
 
 
 private fun parseFilmData(jsonData: String): List<Film> {
@@ -80,7 +72,6 @@ private fun parseFilmData(jsonData: String): List<Film> {
                 val genreID = genreIDsArray.getInt(i)
                 genreIDs.add(genreID)
             }
-
 
 
             val film = Film(id, title, posterPath, plot, voteAverage, releaseDate, genreIDs)

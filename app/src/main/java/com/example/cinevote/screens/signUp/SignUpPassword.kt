@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -30,24 +29,21 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.cinevote.NavigationRoute
 import com.example.cinevote.R
-
 import com.example.cinevote.components.PasswordInput
 import com.example.cinevote.components.SimpleButton
-import com.example.cinevote.screens.auth.AuthStatus
-import com.example.cinevote.screens.auth.AuthViewModel
 import java.util.regex.Pattern
 
 @Composable
 fun SignUpasswordScreen(
     state: SignupState,
-    actions : SignUPActions,
-    navController:NavHostController,
+    actions: SignUPActions,
+    navController: NavHostController,
     //auth: AuthViewModel
-){
+) {
     Scaffold(
-        modifier= Modifier.background(Color.White),
+        modifier = Modifier.background(Color.White),
         containerColor = MaterialTheme.colorScheme.primaryContainer
-    ) {innerPadding->
+    ) { innerPadding ->
         Column(
 
             modifier = Modifier
@@ -79,10 +75,15 @@ fun SignUpasswordScreen(
 
 
 @Composable
-private fun SignUpPasswordForm(navController: NavHostController, actions: SignUPActions, state : SignupState){
+private fun SignUpPasswordForm(
+    navController: NavHostController,
+    actions: SignUPActions,
+    state: SignupState
+) {
 
     var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") } ; var passwordError by remember { mutableStateOf(false) }
+    var confirmPassword by remember { mutableStateOf("") }
+    var passwordError by remember { mutableStateOf(false) }
     var canEnable by remember { mutableStateOf(false) }
 
     password = PasswordInput(error = passwordError, {})
@@ -92,19 +93,19 @@ private fun SignUpPasswordForm(navController: NavHostController, actions: SignUP
 
 
 
-    passwordError = if(confirmPassword!=password && password.isNotEmpty()){
+    passwordError = if (confirmPassword != password && password.isNotEmpty()) {
         Text(text = "Le password non corrispondono")
         true
-    }else if(!isValidPassword(password) && confirmPassword.isNotEmpty()){
+    } else if (!isValidPassword(password) && confirmPassword.isNotEmpty()) {
         Text(text = "Password non valida")
         true
-    }else{
+    } else {
         false
     }
 
     canEnable = !(passwordError || password.isEmpty() || confirmPassword.isEmpty())
 
-    Spacer(modifier = Modifier.padding(top=30.dp))
+    Spacer(modifier = Modifier.padding(top = 30.dp))
     val message = checkPasswordRequirements(password = password)
     Text(message)
 
@@ -115,21 +116,28 @@ private fun SignUpPasswordForm(navController: NavHostController, actions: SignUP
 
 
     Row(
-        modifier= Modifier
+        modifier = Modifier
             .fillMaxWidth()
             .padding(top = 20.dp),
         horizontalArrangement = Arrangement.SpaceBetween
 
-    ){
+    ) {
 
         SimpleButton(
             text = "Registrati",
             onClick = {
                 //auth.changeState(AuthStatus.LOGIN)
                 navController.navigate(NavigationRoute.Login.route)
-                actions.createUser(state.name, state.surname, state.username, state.mail, state.password)
+                actions.createUser(
+                    state.name,
+                    state.surname,
+                    state.username,
+                    state.mail,
+                    state.password
+                )
             },
-            modifier=Modifier.weight(1.1f), fontSize = 20.sp, buttonEnabled = canEnable)
+            modifier = Modifier.weight(1.1f), fontSize = 20.sp, buttonEnabled = canEnable
+        )
 
     }
 
@@ -144,13 +152,15 @@ private fun isValidPassword(password: String): Boolean {
 }
 
 
-
-
 private fun checkPasswordRequirements(password: String): String {
-    val lengthRequirement = if (password.length >= 8) "✔ Lunghezza minima di 8 caratteri" else "❌ Lunghezza minima di 8 caratteri"
-    val uppercaseRequirement = if (password.any { it.isUpperCase() }) "✔ Contiene almeno una lettera maiuscola" else "❌ Deve contenere almeno una lettera maiuscola"
-    val specialCharacterRequirement = if (password.any { it !in 'A'..'Z' && it !in 'a'..'z' && it !in '0'..'9' }) "✔️ Contiene almeno un carattere speciale" else "❌ Deve contenere almeno un carattere speciale"
-    val digitRequirement = if (password.any { it.isDigit() }) "✔ Contiene almeno un numero" else "❌ Deve contenere almeno un numero"
+    val lengthRequirement =
+        if (password.length >= 8) "✔ Lunghezza minima di 8 caratteri" else "❌ Lunghezza minima di 8 caratteri"
+    val uppercaseRequirement =
+        if (password.any { it.isUpperCase() }) "✔ Contiene almeno una lettera maiuscola" else "❌ Deve contenere almeno una lettera maiuscola"
+    val specialCharacterRequirement =
+        if (password.any { it !in 'A'..'Z' && it !in 'a'..'z' && it !in '0'..'9' }) "✔️ Contiene almeno un carattere speciale" else "❌ Deve contenere almeno un carattere speciale"
+    val digitRequirement =
+        if (password.any { it.isDigit() }) "✔ Contiene almeno un numero" else "❌ Deve contenere almeno un numero"
 
     return buildString {
         appendLine("Requisiti della password:")

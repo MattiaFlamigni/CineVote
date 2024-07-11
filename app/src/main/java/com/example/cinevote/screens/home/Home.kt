@@ -1,6 +1,5 @@
 package com.example.cinevote.screens.home
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,26 +34,30 @@ import com.example.cinevote.R
 import com.example.cinevote.components.TopBar
 import com.example.cinevote.components.bottomAppBar
 import com.example.cinevote.data.Genre
-import com.example.cinevote.screens.login.LoginActions
 
 @Composable
 fun HomeScreen(
     navController: NavHostController,
-    actions : HomeAction,
-    state : HomeState,
-){
+    actions: HomeAction,
+    state: HomeState,
+) {
     Scaffold(
         bottomBar = { bottomAppBar(navController) },
-        topBar = { TopBar(title= stringResource(id = R.string.home_title),navController= navController)},
+        topBar = {
+            TopBar(
+                title = stringResource(id = R.string.home_title),
+                navController = navController
+            )
+        },
         containerColor = MaterialTheme.colorScheme.background
-    ) {innerPadding->
+    ) { innerPadding ->
         Surface {
             LazyColumn(
                 modifier = Modifier
                     .padding(innerPadding)
                     .padding(start = 10.dp)
             ) {
-                item{
+                item {
                     TopCategory(navController, state, actions)
 
 
@@ -69,79 +72,80 @@ fun HomeScreen(
 
 
 
-                        for (genre in Genre.entries) {
+                    for (genre in Genre.entries) {
 
 
-                            TextButton(
-                                onClick = {
-                                    navController.navigate(
-                                        NavigationRoute.Expand.buildRoute(genre.id)
-                                    )
-                                }
-
-
-                                /*onClick = { navController.navigate(NavigationRoute.Expand.buildRoute(genre.id))
-
-                                Log.d("route",
-                                    navController.navigate(NavigationRoute.Expand.buildRoute(genre.id))
-                                        .toString())
-                            }*/
-                            ) {
-                                Text(
-                                    text = genre.name,
+                        TextButton(
+                            onClick = {
+                                navController.navigate(
+                                    NavigationRoute.Expand.buildRoute(genre.id)
                                 )
-                                Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, "expand")
-
                             }
 
 
-                            LazyRow {
+                            /*onClick = { navController.navigate(NavigationRoute.Expand.buildRoute(genre.id))
 
-                                val films = state.filmsByGenre
-
-
-                                    items(films.size/4) { index ->
-
-                                        val genres = films[index].genreIDs.split(",")
-                                            .mapNotNull { it.trim().toIntOrNull() }
-
-
-                                        if (genres.contains(genre.id)) {
-
-
-                                            val film = films[index]
-                                            Card(
-                                                modifier = Modifier.padding(10.dp),
-                                                colors = CardDefaults.cardColors(
-                                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                                                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-                                                ),
-                                                onClick = { navController.navigate(NavigationRoute.Detail.buildRoute(film.title)) }
-                                            ) {
-                                                Image(
-                                                    painter = rememberAsyncImagePainter(model = film.posterPath),
-                                                    contentDescription = film.title,
-                                                    //contentDescription = "",
-                                                    //painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                                                    contentScale = ContentScale.Crop,
-                                                    modifier = Modifier
-                                                        .fillMaxWidth()
-                                                        .size(100.dp)
-                                                )
-
-                                            }
-                                        }
-                                    }
-
-
-                            }
+                            Log.d("route",
+                                navController.navigate(NavigationRoute.Expand.buildRoute(genre.id))
+                                    .toString())
+                        }*/
+                        ) {
+                            Text(
+                                text = genre.name,
+                            )
+                            Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, "expand")
 
                         }
 
 
+                        LazyRow {
+
+                            val films = state.filmsByGenre
 
 
+                            items(films.size / 4) { index ->
 
+                                val genres = films[index].genreIDs.split(",")
+                                    .mapNotNull { it.trim().toIntOrNull() }
+
+
+                                if (genres.contains(genre.id)) {
+
+
+                                    val film = films[index]
+                                    Card(
+                                        modifier = Modifier.padding(10.dp),
+                                        colors = CardDefaults.cardColors(
+                                            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                                            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        ),
+                                        onClick = {
+                                            navController.navigate(
+                                                NavigationRoute.Detail.buildRoute(
+                                                    film.title
+                                                )
+                                            )
+                                        }
+                                    ) {
+                                        Image(
+                                            painter = rememberAsyncImagePainter(model = film.posterPath),
+                                            contentDescription = film.title,
+                                            //contentDescription = "",
+                                            //painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                                            contentScale = ContentScale.Crop,
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .size(100.dp)
+                                        )
+
+                                    }
+                                }
+                            }
+
+
+                        }
+
+                    }
 
 
                 }
@@ -155,44 +159,46 @@ private fun TopCategory(navController: NavHostController, state: HomeState, acti
 
     actions.getTop()
 
-        Column {
-            Text(
-                text = "Top Film",
-                fontFamily = FontFamily.Default,
-                fontSize = 50.sp
-            )
+    Column {
+        Text(
+            text = "Top Film",
+            fontFamily = FontFamily.Default,
+            fontSize = 50.sp
+        )
 
 
-            LazyRow {
+        LazyRow {
 
-                for (film in state.topFilmList) {
+            for (film in state.topFilmList) {
 
-                    item{
-                        Card(
-                            modifier = Modifier
-                                .padding(10.dp)
-                                .size(200.dp),
-                            onClick = { navController.navigate(NavigationRoute.Detail.buildRoute(film.title)) },
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                        ) {
-                            Image(
-                                painter = rememberAsyncImagePainter(model = ImageRequest.Builder(LocalContext.current)
+                item {
+                    Card(
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .size(200.dp),
+                        onClick = { navController.navigate(NavigationRoute.Detail.buildRoute(film.title)) },
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                        )
+                    ) {
+                        Image(
+                            painter = rememberAsyncImagePainter(
+                                model = ImageRequest.Builder(LocalContext.current)
                                     .data(film.posterUrl)
                                     .size(coil.size.Size.ORIGINAL)
-                                    .build()),
-                                contentDescription = film.title,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
+                                    .build()
+                            ),
+                            contentDescription = film.title,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxWidth()
+                        )
                     }
                 }
-
             }
+
         }
+    }
 }
 
 

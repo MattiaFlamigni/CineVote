@@ -1,7 +1,6 @@
-    package com.example.cinevote.screens.search
+package com.example.cinevote.screens.search
 
 
-import android.graphics.PathIterator.Segment
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -41,8 +40,8 @@ import com.example.cinevote.components.TopBar
 import com.example.cinevote.components.bottomAppBar
 import kotlinx.coroutines.launch
 
-    @Composable
-fun searchScreen(navController:NavHostController, state : SearchStatus, action: searchAction) {
+@Composable
+fun searchScreen(navController: NavHostController, state: SearchStatus, action: searchAction) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
@@ -62,72 +61,72 @@ fun searchScreen(navController:NavHostController, state : SearchStatus, action: 
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Search(navController: NavHostController, state: SearchStatus, action: searchAction) {
+    var text by remember { mutableStateOf("") } // Query for SearchBar
+    var active by remember { mutableStateOf(false) } // Active state for SearchBar
+    val coroutineScope = rememberCoroutineScope()
 
+    SearchBar(modifier = Modifier.fillMaxWidth(),
+        query = text,
+        onQueryChange = {
+            text = it
+            coroutineScope.launch {
+                action.searchFilmByTitle(text)
+            }
+        },
+        onSearch = {
+            active = true
+            Log.d("OnSearch", "searching")
 
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun Search(navController: NavHostController, state : SearchStatus, action: searchAction){
-        var text by remember { mutableStateOf("") } // Query for SearchBar
-        var active by remember { mutableStateOf(false) } // Active state for SearchBar
-        val coroutineScope = rememberCoroutineScope()
-
-        SearchBar(modifier = Modifier.fillMaxWidth(),
-            query = text,
-            onQueryChange = {
-                text = it
-                coroutineScope.launch {
-                    action.searchFilmByTitle(text)
-                }
-            },
-            onSearch = {
-                active = true
-                Log.d("OnSearch", "searching")
-
-                coroutineScope.launch {
-                    action.searchFilmByTitle(text)
-                }
-
-
-
-            },
-            active = active,
-            onActiveChange = {
-                active = it
-            },
-            placeholder = {
-                Text(text = "Cerca Film")
-            },
-
-            trailingIcon = {
-                Icon(imageVector = Icons.Default.Search, contentDescription = null)
-            }) {
-
-
-            LazyVerticalGrid(columns = GridCells.Fixed(2)) {
-                items(state.listfilm){film->
-
-                    Card(
-                        modifier= Modifier.padding(10.dp),
-                        colors= CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-                        ),
-                        onClick = {navController.navigate(NavigationRoute.Detail.buildRoute(film.title))}
-                    ){
-                        Image(
-                            painter = rememberAsyncImagePainter(model = ImageRequest.Builder(
-                                LocalContext.current)
-                                .data(film.posterUrl)
-                                .size(Size.ORIGINAL)
-                                .build()),
-                            contentDescription = film.title,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-
-                    }
-                }
+            coroutineScope.launch {
+                action.searchFilmByTitle(text)
             }
 
+
+        },
+        active = active,
+        onActiveChange = {
+            active = it
+        },
+        placeholder = {
+            Text(text = "Cerca Film")
+        },
+
+        trailingIcon = {
+            Icon(imageVector = Icons.Default.Search, contentDescription = null)
+        }) {
+
+
+        LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+            items(state.listfilm) { film ->
+
+                Card(
+                    modifier = Modifier.padding(10.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                    ),
+                    onClick = { navController.navigate(NavigationRoute.Detail.buildRoute(film.title)) }
+                ) {
+                    Image(
+                        painter = rememberAsyncImagePainter(
+                            model = ImageRequest.Builder(
+                                LocalContext.current
+                            )
+                                .data(film.posterUrl)
+                                .size(Size.ORIGINAL)
+                                .build()
+                        ),
+                        contentDescription = film.title,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                }
+            }
         }
+
     }
+}

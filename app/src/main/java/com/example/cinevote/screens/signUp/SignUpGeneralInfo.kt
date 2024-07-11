@@ -37,13 +37,13 @@ import com.example.cinevote.components.TextInput
 @Composable
 fun SignUpGeneralScreen(
     state: SignupState,
-    actions : SignUPActions,
-    navController:NavHostController
-){
+    actions: SignUPActions,
+    navController: NavHostController
+) {
     Scaffold(
-        modifier= Modifier.background(Color.White),
+        modifier = Modifier.background(Color.White),
         containerColor = MaterialTheme.colorScheme.primaryContainer
-    ) {innerPadding->
+    ) { innerPadding ->
         Column(
 
             modifier = Modifier
@@ -59,7 +59,7 @@ fun SignUpGeneralScreen(
                 modifier = Modifier
                     .padding(bottom = 40.dp, start = 20.dp)
                     .fillMaxWidth(),
-                text = stringResource(id =R.string.registration_spot),
+                text = stringResource(id = R.string.registration_spot),
                 style = MaterialTheme.typography.headlineMedium,
                 fontStyle = FontStyle.Italic,
                 fontFamily = FontFamily.Monospace,
@@ -72,8 +72,8 @@ fun SignUpGeneralScreen(
                 modifier = Modifier
                     .padding(bottom = 40.dp, start = 20.dp)
                     .fillMaxWidth(),
-                text= stringResource(id = R.string.registrati_title),
-                style= MaterialTheme.typography.headlineLarge,
+                text = stringResource(id = R.string.registrati_title),
+                style = MaterialTheme.typography.headlineLarge,
                 fontFamily = FontFamily.Monospace,
             )
             SignUpGeneralForm(navController, actions, state)
@@ -85,7 +85,11 @@ fun SignUpGeneralScreen(
 
 
 @Composable
-private fun SignUpGeneralForm(navController: NavHostController, actions: SignUPActions, state :SignupState){
+private fun SignUpGeneralForm(
+    navController: NavHostController,
+    actions: SignUPActions,
+    state: SignupState
+) {
 
     var username by remember { mutableStateOf("") }
 
@@ -95,12 +99,13 @@ private fun SignUpGeneralForm(navController: NavHostController, actions: SignUPA
     var canEnable by remember { mutableStateOf(false) }
     var userError by remember { mutableStateOf(false) }
 
-    nome= TextInput(role = "Nome", onChangeAction = actions::setName)
+    nome = TextInput(role = "Nome", onChangeAction = actions::setName)
     cognome = TextInput(role = "Cognome", onChangeAction = actions::setSurname)
-    username=TextInput(role = "username", onChangeAction = actions::setUsername, error=userError)
-    
+    username =
+        TextInput(role = "username", onChangeAction = actions::setUsername, error = userError)
+
     Spacer(modifier = Modifier.padding(20.dp))
-    if(userError) {
+    if (userError) {
         Text(text = stringResource(id = R.string.user_error_strings))
     }
 
@@ -108,28 +113,33 @@ private fun SignUpGeneralForm(navController: NavHostController, actions: SignUPA
     canEnable = !(username.isEmpty() || nome.isEmpty() || cognome.isEmpty())
 
     Row(
-        modifier= Modifier
+        modifier = Modifier
             .fillMaxWidth()
             .padding(top = 20.dp),
         horizontalArrangement = Arrangement.SpaceBetween
 
-    ){
-        SimpleButton(text = "Login", onClick = {navController.navigate(NavigationRoute.Login.route)}, modifier=Modifier.weight(1f), fontSize = 20.sp)
+    ) {
+        SimpleButton(
+            text = "Login",
+            onClick = { navController.navigate(NavigationRoute.Login.route) },
+            modifier = Modifier.weight(1f),
+            fontSize = 20.sp
+        )
 
         SimpleButton(text = "Continua", onClick = {
 
             isUsernameAvailable(username) { isAvailable ->
                 if (isAvailable) {
                     navController.navigate((NavigationRoute.SignUpMail.route))
-                    userError=false
+                    userError = false
                 } else {
                     // Username is not available, show an error message
-                    userError=true
+                    userError = true
                 }
             }
 
 
-        }, modifier=Modifier.weight(1.1f), fontSize = 20.sp, buttonEnabled = canEnable)
+        }, modifier = Modifier.weight(1.1f), fontSize = 20.sp, buttonEnabled = canEnable)
 
     }
 

@@ -3,8 +3,6 @@ package com.example.cinevote.screens.auth
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cinevote.screens.settings.theme.model.Theme
-import com.example.cinevote.screens.settings.theme.repositories.ThemeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

@@ -11,51 +11,47 @@ import com.example.cinevote.data.repository.FilmRepository
 import com.example.cinevote.screens.signUp.firebaseAuth
 import com.example.cinevote.util.TMDBService
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import com.squareup.okhttp.OkHttpClient
 import com.squareup.okhttp.Request
 import com.squareup.okhttp.Response
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
-import java.io.IOException
 
 data class DetailState(
-    val reviewList : List<Review> = emptyList(),
-    val title:String="",
+    val reviewList: List<Review> = emptyList(),
+    val title: String = "",
     val genres: List<String> = emptyList() /*TODO*/,
-    val plot: String="",
+    val plot: String = "",
     val vote: Float,
-    val year: Int=0,
-    val poster: String="",
-    val isReviewd : Boolean = false,
-    val isFavorite : Boolean = false,
-    val userVote : Int=-1,
+    val year: Int = 0,
+    val poster: String = "",
+    val isReviewd: Boolean = false,
+    val isFavorite: Boolean = false,
+    val userVote: Int = -1,
     val actorListState: List<Actors> = emptyList()
 )
 
-interface DetailAction{
-    fun showDetails(title:String)
-    fun loadFromDb(title:String)
+interface DetailAction {
+    fun showDetails(title: String)
+    fun loadFromDb(title: String)
     fun loadActor(id: Int)
 
     fun getIdFromTitle(title: String, callback: (Int) -> Unit)
 
     fun getKeyTrailer(id: Int, callback: (String) -> Unit)
 
-    fun hasReview(title:String)
+    fun hasReview(title: String)
 
-    fun addToWishList(title:String)
+    fun addToWishList(title: String)
 
-    fun isFavorite(title:String)
+    fun isFavorite(title: String)
 
-    fun loadReview(title:String)
+    fun loadReview(title: String)
     fun loadGenres(title: String): List<String>
 }
 
@@ -100,8 +96,7 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel() {
         override fun loadFromDb(title: String) {
 
             Log.d("recupero", title)
-            tmdb.fetchFilmData(
-                url = "https://api.themoviedb.org/3/search/movie?query=$title&region=it&language=it",
+            tmdb.fetchFilmData(url = "https://api.themoviedb.org/3/search/movie?query=$title&region=it&language=it",
                 onSuccess = { filmList ->
 
                     Log.d("successo", filmList.size.toString())
@@ -129,16 +124,14 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel() {
                     }
 
                 },
-                onFailure = {}
-            )
+                onFailure = {})
         }
 
         override fun loadActor(id: Int) {
             viewModelScope.launch {
                 try {
                     val actorList = withContext(Dispatchers.IO) {
-                        tmdb.fetchActorFromFilmID(
-                            url = "https://api.themoviedb.org/3/movie/$id/credits",
+                        tmdb.fetchActorFromFilmID(url = "https://api.themoviedb.org/3/movie/$id/credits",
                             onSuccess = { actorList ->
 
                                 Log.d("OnSuccess", actorList.size.toString())
@@ -159,8 +152,7 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel() {
                             onFailure = { e ->
                                 Log.e("loadActor", "Errore nella richiesta HTTP", e)
 
-                            }
-                        )
+                            })
                     }
 
 
@@ -198,8 +190,7 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel() {
                 try {
                     var username = ""
                     val query = db.collection("users").whereEqualTo("mail", mail).get().await()
-                    if (query.isEmpty) {
-                        /*_state.value = state.value.copy(isReviewd = false)
+                    if (query.isEmpty) {/*_state.value = state.value.copy(isReviewd = false)
                         return@launch*/
                         username = firebaseAuth.currentUser?.displayName.toString()
                     } else {
@@ -255,9 +246,7 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel() {
                 try {
                     val query = db.collection("favorites")
                         .whereEqualTo("user", firebaseAuth.currentUser?.email)
-                        .whereEqualTo("title", title)
-                        .get()
-                        .await()
+                        .whereEqualTo("title", title).get().await()
 
                     if (!query.isEmpty) {
                         _state.value = state.value.copy(isFavorite = true)
@@ -271,8 +260,7 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel() {
             }
         }
 
-        override fun loadReview(title: String) {
-            /*val list : MutableList<Review> = mutableListOf()
+        override fun loadReview(title: String) {/*val list : MutableList<Review> = mutableListOf()
             viewModelScope.launch {
                 val query = db.collection("review").whereEqualTo("titolo", title).get().await()
 
@@ -312,12 +300,7 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel() {
                     Log.d("generi", "generi : $genresIDsString")
 
 
-
-
-                    val numeriStringa = genresIDsString
-                        .replace("[", "")
-                        .replace("]", "")
-                        .trim()
+                    val numeriStringa = genresIDsString.replace("[", "").replace("]", "").trim()
 
                     // Dividere la stringa in array di stringhe separate dai numeri
                     val numeriArray = numeriStringa.split(", ")
@@ -329,14 +312,11 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel() {
                     val client = OkHttpClient()
 
                     val request = Request.Builder()
-                        .url("https://api.themoviedb.org/3/genre/movie/list?language=it")
-                        .get()
-                        .addHeader("accept", "application/json")
-                        .addHeader(
+                        .url("https://api.themoviedb.org/3/genre/movie/list?language=it").get()
+                        .addHeader("accept", "application/json").addHeader(
                             "Authorization",
                             "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMTNhOGQwMGFhYjU1MDIwN2FlMDBiMDliZDBlNDIxMyIsIm5iZiI6MTcxOTY0NzUxNS40Nzc0NTUsInN1YiI6IjY1ZjcxZWZkMjQyZjk0MDE3ZGNjZjQxNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.MTTGz_kRPsw9kkdiEm1lDFtyPX7zna33BQuTNoF3rHc"
-                        )
-                        .build()
+                        ).build()
 
                     val response: Response = withContext(Dispatchers.IO) {
                         client.newCall(request).execute()
@@ -353,7 +333,7 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel() {
                                 val genreName = genreObject.getString("name")
                                 val genreID = genreObject.getInt("id")
                                 Log.d("generi", "nome : $genreID")
-                                if(genreIdList.contains(genreID)){
+                                if (genreIdList.contains(genreID)) {
                                     genresNames.add(genreName)
                                 }
 

@@ -25,10 +25,8 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.CheckCircle
-import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.sharp.Star
 import androidx.compose.material.icons.twotone.Star
 import androidx.compose.material3.AssistChip
@@ -46,7 +44,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -73,19 +70,14 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.example.cinevote.NavigationRoute
 import com.example.cinevote.R
-import com.example.cinevote.components.TopBar
 import com.example.cinevote.data.Review
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
-    navController: NavHostController,
-    state: DetailState,
-    action: DetailAction,
-    title: String
+    navController: NavHostController, state: DetailState, action: DetailAction, title: String
 ) {
-
 
 
     BackHandler {
@@ -120,14 +112,16 @@ fun DetailScreen(
 
 
             CenterAlignedTopAppBar(
-                title={ Text(
-                    text=title,
-                    fontFamily = FontFamily.Default,
-                    fontSize = 30.sp,
-                    letterSpacing = 0.30.sp,
-                    color= Color.Black
+                title = {
+                    Text(
+                        text = title,
+                        fontFamily = FontFamily.Default,
+                        fontSize = 30.sp,
+                        letterSpacing = 0.30.sp,
+                        color = Color.Black
 
-                ) },
+                    )
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = Color.Black
@@ -136,7 +130,7 @@ fun DetailScreen(
                 navigationIcon = {
 
 
-                    if(title!= stringResource(id = R.string.home_title)) {
+                    if (title != stringResource(id = R.string.home_title)) {
                         IconButton(onClick = { navController.navigateUp() }) {
                             Icon(Icons.AutoMirrored.Default.ArrowBack, "back")
                         }
@@ -145,18 +139,15 @@ fun DetailScreen(
                 actions = {
 
 
-                    if(state.isFavorite){
+                    if (state.isFavorite) {
                         IconButton(onClick = { action.addToWishList(title) }) {
                             Icon(painterResource(id = R.drawable.star), "star")
                         }
-                    }else{
+                    } else {
                         IconButton(onClick = { action.addToWishList(title) }) {
                             Icon(painterResource(id = R.drawable.outlined_star), "star")
                         }
                     }
-
-
-
 
 
                 },
@@ -196,13 +187,11 @@ fun DetailScreen(
                             horizontalAlignment = Alignment.End,
                             modifier = Modifier.padding(start = 20.dp, top = 40.dp)
                         ) {
-                            IconToggle(
-                                initialIcon = Icons.Default.FavoriteBorder,
+                            IconToggle(initialIcon = Icons.Default.FavoriteBorder,
                                 finalIcon = Icons.Default.Favorite,
                                 { /*TODO*/ },
                                 {/*TODO*/ })
-                            IconToggle(
-                                initialIcon = Icons.Outlined.CheckCircle,
+                            IconToggle(initialIcon = Icons.Outlined.CheckCircle,
                                 finalIcon = Icons.Default.CheckCircle,
                                 {/*TODO*/ },
                                 {/*TODO*/ })
@@ -274,15 +263,15 @@ fun DetailScreen(
                                     disabledContentColor = Color.White
                                 ),
                                 onClick = {
-                                            navController.navigate(NavigationRoute.Review.buildRoute(state.title))
+                                    navController.navigate(NavigationRoute.Review.buildRoute(state.title))
 
-                                          },
+                                },
                                 shape = RectangleShape
 
                             ) {
-                                if(state.isReviewd){
+                                if (state.isReviewd) {
                                     Text(text = "Valuta")
-                                }else {
+                                } else {
                                     Text("Valutato")
                                 }
                             }
@@ -343,9 +332,7 @@ fun DetailScreen(
                         item {
 
                             AssistChipExample(
-                                "trama",
-                                Icons.Default.Info,
-                                selectedChip == ChipOption.TRAMA
+                                "trama", Icons.Default.Info, selectedChip == ChipOption.TRAMA
                             ) {
                                 selectedChip = ChipOption.TRAMA
                             }
@@ -354,9 +341,7 @@ fun DetailScreen(
                         item {
 
                             AssistChipExample(
-                                "Cast",
-                                Icons.Default.Person,
-                                selectedChip == ChipOption.CAST
+                                "Cast", Icons.Default.Person, selectedChip == ChipOption.CAST
                             ) {
                                 selectedChip = ChipOption.CAST
                             }
@@ -378,8 +363,7 @@ fun DetailScreen(
 
                     // Contenuto basato sul chip selezionato
                     when (selectedChip) {
-                        ChipOption.TRAMA -> {
-                            /*Text(
+                        ChipOption.TRAMA -> {/*Text(
                                 text = state.plot,
                                 fontFamily = FontFamily.Serif,
                                 fontSize = 24.sp,
@@ -390,7 +374,7 @@ fun DetailScreen(
                                 textAlign = TextAlign.Justify
                             )*/
 
-                            PlotSection(plot =state.plot)
+                            PlotSection(plot = state.plot)
                         }
 
                         ChipOption.CAST -> {
@@ -448,13 +432,12 @@ fun DetailScreen(
                         ChipOption.RECENSIONI -> {
                             //Text("recensioni"
 
-                            if(state.reviewList.isEmpty()){
+                            if (state.reviewList.isEmpty()) {
                                 NoReviewsMessage()
                             }
-                            for(review in state.reviewList){
+                            for (review in state.reviewList) {
                                 ReviewCard(review = review)
                             }
-
 
 
                         }
@@ -496,10 +479,7 @@ private fun AssistChipExample(
 
 @Composable
 private fun IconToggle(
-    initialIcon: ImageVector,
-    finalIcon: ImageVector,
-    firstClick: () -> Unit,
-    lastClick: () -> Unit
+    initialIcon: ImageVector, finalIcon: ImageVector, firstClick: () -> Unit, lastClick: () -> Unit
 ) {
     var isAdded by remember { mutableStateOf(false) }
 
@@ -523,11 +503,7 @@ private fun GetImage(poster: String, title: String) {
         painter = rememberAsyncImagePainter(
             model = ImageRequest.Builder(
                 LocalContext.current
-            )
-                .data(poster)
-                .crossfade(true)
-                .size(Size.ORIGINAL)
-                .build()
+            ).data(poster).crossfade(true).size(Size.ORIGINAL).build()
         ),
         contentDescription = title,
         contentScale = ContentScale.Crop,
@@ -568,8 +544,7 @@ private fun GetVote(global: Float, state: DetailState) {
         Card(
             modifier = Modifier
                 .weight(1f)
-                .padding(8.dp),
-            colors = CardDefaults.cardColors(
+                .padding(8.dp), colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer
             )
@@ -596,8 +571,7 @@ private fun GetVote(global: Float, state: DetailState) {
         Card(
             modifier = Modifier
                 .weight(1f)
-                .padding(8.dp),
-            colors = CardDefaults.cardColors(
+                .padding(8.dp), colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer
             )
@@ -614,7 +588,7 @@ private fun GetVote(global: Float, state: DetailState) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = if (state.userVote > 0) {
-                        "${state.userVote.toString()}/5"
+                        "${state.userVote}/5"
                     } else {
                         "-"
                     },
@@ -668,13 +642,10 @@ fun ReviewCard(review: Review) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
-        colors = CardDefaults.cardColors(
+            .padding(8.dp), colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
             contentColor = MaterialTheme.colorScheme.onSurface
-        ),
-        elevation = CardDefaults.cardElevation(2.dp),
-        shape = MaterialTheme.shapes.medium
+        ), elevation = CardDefaults.cardElevation(2.dp), shape = MaterialTheme.shapes.medium
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -723,19 +694,15 @@ fun RatingBar(rating: Int) {
 }
 
 
-
-
 @Composable
 fun PlotSection(plot: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
-        colors = CardDefaults.cardColors(
+            .padding(16.dp), colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer,
             contentColor = MaterialTheme.colorScheme.onSecondaryContainer
-        ),
-        elevation = CardDefaults.cardElevation(8.dp)
+        ), elevation = CardDefaults.cardElevation(8.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -783,8 +750,7 @@ fun NoReviewsMessage() {
         Text(
             text = "Nessuna recensione pubblicata",
             style = MaterialTheme.typography.bodyMedium.copy(
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Bold
+                color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold
             ),
             textAlign = TextAlign.Center
         )

@@ -18,7 +18,7 @@ data class wishListState(
 )
 
 interface WishListAction {
-    fun loadFilm(mail:String)
+    fun loadFilm(mail: String)
 }
 
 class WishListVM(private val repository: FilmRepository) : ViewModel() {
@@ -29,7 +29,7 @@ class WishListVM(private val repository: FilmRepository) : ViewModel() {
 
 
     val action = object : WishListAction {
-        override fun loadFilm(mail:String) {
+        override fun loadFilm(mail: String) {
             val tmpList: MutableList<String> = mutableListOf()
             val filmList: MutableList<FilmList> = mutableListOf()
             val prova: Film

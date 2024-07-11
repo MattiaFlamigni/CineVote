@@ -33,14 +33,14 @@ import com.example.cinevote.components.TextInput
 
 @Composable
 fun SignUpMailScreen(
-    state : SignupState,
-    actions : SignUPActions,
-    navController:NavHostController
-){
+    state: SignupState,
+    actions: SignUPActions,
+    navController: NavHostController
+) {
     Scaffold(
-        modifier= Modifier.background(Color.White),
+        modifier = Modifier.background(Color.White),
         containerColor = MaterialTheme.colorScheme.primaryContainer
-    ) {innerPadding->
+    ) { innerPadding ->
         Column(
 
             modifier = Modifier
@@ -56,11 +56,11 @@ fun SignUpMailScreen(
                 modifier = Modifier
                     .padding(bottom = 40.dp, start = 20.dp)
                     .fillMaxWidth(),
-                text= stringResource(id = R.string.registrati_title),
-                style= MaterialTheme.typography.headlineLarge,
+                text = stringResource(id = R.string.registrati_title),
+                style = MaterialTheme.typography.headlineLarge,
                 fontFamily = FontFamily.Monospace,
 
-            )
+                )
 
             SignUpMailForm(navController, actions)
 
@@ -71,37 +71,39 @@ fun SignUpMailScreen(
 
 
 @Composable
-private fun SignUpMailForm(navController: NavHostController, actions: SignUPActions){
+private fun SignUpMailForm(navController: NavHostController, actions: SignUPActions) {
 
 
-    var mail by remember { mutableStateOf("") } ; var mailError by remember { mutableStateOf(false) }
+    var mail by remember { mutableStateOf("") }
+    var mailError by remember { mutableStateOf(false) }
 
     var confirmMail by remember { mutableStateOf("") }
     var canEnable by remember { mutableStateOf(false) }
 
 
-    mail= TextInput(role = "Mail", error = mailError, type=KeyBoard.MAIL, onChangeAction = {})
-    confirmMail= TextInput(role = "Conferma Mail", error=mailError, type=KeyBoard.MAIL, onChangeAction = actions::setMail)
+    mail = TextInput(role = "Mail", error = mailError, type = KeyBoard.MAIL, onChangeAction = {})
+    confirmMail = TextInput(
+        role = "Conferma Mail",
+        error = mailError,
+        type = KeyBoard.MAIL,
+        onChangeAction = actions::setMail
+    )
 
 
 
-    if(confirmMail!=mail && confirmMail.isNotEmpty()){
+    if (confirmMail != mail && confirmMail.isNotEmpty()) {
         Text(text = "Le mail non corrispondono ")
-        mailError=true
-    }else if(!isValidEmailFormat(confirmMail) && confirmMail.isNotEmpty()){
-        mailError=true
-        Text(text="Mail non valida")
-    }else{
-        mailError=false
+        mailError = true
+    } else if (!isValidEmailFormat(confirmMail) && confirmMail.isNotEmpty()) {
+        mailError = true
+        Text(text = "Mail non valida")
+    } else {
+        mailError = false
     }
 
 
 
-    canEnable = if(mailError|| mail.isEmpty() || confirmMail.isEmpty()){
-        false
-    }else{
-        true
-    }
+    canEnable = !(mailError || mail.isEmpty() || confirmMail.isEmpty())
 
 
 
@@ -110,19 +112,24 @@ private fun SignUpMailForm(navController: NavHostController, actions: SignUPActi
 
 
     Row(
-        modifier= Modifier
+        modifier = Modifier
             .fillMaxWidth()
             .padding(top = 20.dp),
         horizontalArrangement = Arrangement.SpaceBetween
 
-    ){
+    ) {
 
-        SimpleButton(text = "Continua", onClick = {navController.navigate(NavigationRoute.SignUpPassword.route)}, modifier=Modifier.weight(1.1f), fontSize = 20.sp, buttonEnabled = canEnable)
+        SimpleButton(
+            text = "Continua",
+            onClick = { navController.navigate(NavigationRoute.SignUpPassword.route) },
+            modifier = Modifier.weight(1.1f),
+            fontSize = 20.sp,
+            buttonEnabled = canEnable
+        )
 
     }
 
 }
-
 
 
 private fun isValidEmailFormat(email: String): Boolean {

@@ -1,6 +1,5 @@
 package com.example.cinevote.screens.expandView
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinevote.data.database.Room.FilmList
@@ -8,15 +7,14 @@ import com.example.cinevote.data.repository.FilmRepository
 import com.example.cinevote.util.TMDBService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 
 data class ExpandStatus(val extendedFilmList: List<FilmList> = emptyList())
 
 
-interface ExpandActions{
-    fun getFilm(genre:Int, pages:Int)
+interface ExpandActions {
+    fun getFilm(genre: Int, pages: Int)
 }
 
 class ExpandVM(private val repository: FilmRepository) : ViewModel() {
@@ -33,7 +31,9 @@ class ExpandVM(private val repository: FilmRepository) : ViewModel() {
                     val filteredFilms = filmList.filter { film ->
                         // Trasforma la stringa di generi in una lista di interi e controlla se contiene il genere desiderato
                         val genres = film.genreIDs.split(",")
-                            .mapNotNull { it.trim().toIntOrNull() } // Pulisci la stringa e converti in Int
+                            .mapNotNull {
+                                it.trim().toIntOrNull()
+                            } // Pulisci la stringa e converti in Int
                         genre in genres
 
 
@@ -45,11 +45,6 @@ class ExpandVM(private val repository: FilmRepository) : ViewModel() {
                     _state.value = _state.value.copy(extendedFilmList = filteredFilms)
                 }
             }
-
-
-
-
-
 
 
             /*viewModelScope.launch {
@@ -76,6 +71,6 @@ class ExpandVM(private val repository: FilmRepository) : ViewModel() {
                 } catch (e: Exception) {
                     Log.e("FilmViewModel", "Eccezione nella coroutine: ${e.message}", e)
                 }*/
-            }
         }
     }
+}

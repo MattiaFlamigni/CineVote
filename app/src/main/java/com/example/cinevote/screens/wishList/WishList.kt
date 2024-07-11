@@ -52,7 +52,9 @@ fun WishListScreen(
             ) {
                 items(state.favoriteFilmList) { film ->
                     Card(
-                        modifier = Modifier.padding(10.dp).width(50.dp),
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .width(50.dp),
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                             contentColor = MaterialTheme.colorScheme.onTertiaryContainer

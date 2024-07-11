@@ -2,24 +2,16 @@ package com.example.cinevote.screens.login
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.util.Log
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinevote.data.database.Room.FilmList
 import com.example.cinevote.data.repository.FilmRepository
 import com.example.cinevote.util.TMDBService
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
-import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +22,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-data class LoginState (
+data class LoginState(
     val mail: String = "",
     val password: String = ""
 )
@@ -43,12 +35,12 @@ interface LoginActions {
     fun loadFilm()
 }
 
-class LoginViewModel(private val repository: FilmRepository, private val context: Context) : ViewModel() {
+class LoginViewModel(private val repository: FilmRepository, private val context: Context) :
+    ViewModel() {
     private val _state = MutableStateFlow(LoginState())
     val state = _state.asStateFlow()
     private val auth: FirebaseAuth = Firebase.auth
     private lateinit var googleSignInClient: GoogleSignInClient
-
 
 
     val actions = object : LoginActions {
