@@ -246,7 +246,7 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel() {
         }
 
         override fun isFavorite(title: String) {
-            viewModelScope.launch {
+            /*viewModelScope.launch {
                 try {
                     val query = db.collection("favorites")
                         .whereEqualTo("user", firebaseAuth.currentUser?.email)
@@ -261,6 +261,10 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel() {
                     //_state.value = state.value.copy(isFavorite = false)
                     Log.e("FAVORITE", "Error while checking favorite", e)
                 }
+            }*/
+
+            viewModelScope.launch(Dispatchers.IO) {
+                _state.value = state.value.copy(isFavorite = firestore.actions.isFavorite(title = title))
             }
         }
 
@@ -284,7 +288,7 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel() {
             }*/
 
 
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 val review = firestore.actions.loadReview(title)
                 _state.value = state.value.copy(reviewList = review)
 
@@ -296,7 +300,7 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel() {
         override fun loadGenres(title: String): List<String> {
             val genresNames = mutableListOf<String>()
 
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 try {
                     val film = repository.getFilmFromTitle(title = title)
                     Log.d("generi", "film : $film")

@@ -1,12 +1,14 @@
 package com.example.cinevote.data.database
 
 import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.example.cinevote.data.Review
 import com.example.cinevote.screens.signUp.firebaseAuth
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 
@@ -25,6 +27,9 @@ interface FirestoreAction{
     suspend fun loadReview(title: String) : List<Review>
 
     suspend fun getReviewByUser(username: String) : List<Review>
+    suspend fun isFavorite(title: String) : Boolean
+
+
 
 }
 
@@ -100,6 +105,23 @@ class Firestore {
             }
             return list
         }
+
+        override suspend fun isFavorite(title: String) : Boolean {
+
+
+                    val query = db.collection("favorites")
+                        .whereEqualTo("user", firebaseAuth.currentUser?.email)
+                        .whereEqualTo("title", title).get().await()
+
+                    if (!query.isEmpty) {
+                        //_state.value = state.value.copy(isFavorite = true)
+                        return true
+                    } else {
+                        //_state.value = state.value.copy(isFavorite = false)
+                        return false
+                    }
+            }
+
 
     }
 

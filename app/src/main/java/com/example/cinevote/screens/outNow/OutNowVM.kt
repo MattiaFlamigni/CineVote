@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.cinevote.data.Film
 
 import com.example.cinevote.util.TMDBService
+import kotlinx.coroutines.Dispatchers
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,7 +32,7 @@ class OutNowVM : ViewModel() {
     val action = object : FilmAction {
         override fun getFilmList() {
 
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
 
 
                 val url = /*TODO: DATA DINAMICA*/

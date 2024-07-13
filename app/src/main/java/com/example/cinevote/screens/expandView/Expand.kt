@@ -44,7 +44,7 @@ fun ExpandScreen(
         bottomBar = { bottomAppBar(navController) },
         content = { innerPadding ->
             LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 200.dp),
+                columns = GridCells.Fixed(2),
                 modifier = Modifier.padding(innerPadding),
             ) {
 

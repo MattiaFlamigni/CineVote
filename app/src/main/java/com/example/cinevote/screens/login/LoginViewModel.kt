@@ -93,7 +93,7 @@ class LoginViewModel(private val repository: FilmRepository, private val context
         override fun loadFilm() {
             val tmdb = TMDBService()
 
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 for (page in 1..100) {
                     tmdb.fetchFilmData(
                         url = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=it&page=$page&sort_by=popularity.desc&region=it",

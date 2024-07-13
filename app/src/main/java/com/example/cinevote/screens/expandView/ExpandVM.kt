@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.cinevote.data.database.Room.FilmList
 import com.example.cinevote.data.repository.FilmRepository
 import com.example.cinevote.util.TMDBService
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -26,7 +27,7 @@ class ExpandVM(private val repository: FilmRepository) : ViewModel() {
 
     val action = object : ExpandActions {
         override fun getFilm(genre: Int, pages: Int) {
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 repository.film.collect { filmList ->
                     val filteredFilms = filmList.filter { film ->
                         // Trasforma la stringa di generi in una lista di interi e controlla se contiene il genere desiderato

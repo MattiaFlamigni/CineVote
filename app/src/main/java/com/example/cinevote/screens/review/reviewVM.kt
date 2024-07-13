@@ -7,6 +7,7 @@ import com.example.cinevote.data.repository.FilmRepository
 import com.example.cinevote.screens.signUp.firebaseAuth
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -40,7 +41,7 @@ class reviewVM(private val repository: FilmRepository) : ViewModel() {
 
         override fun setYear(title: String) {
 
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
 
                 val film = repository.getFilmFromTitle(title)
                 val year = film.releaseDate.substring(0, 4)
@@ -59,7 +60,7 @@ class reviewVM(private val repository: FilmRepository) : ViewModel() {
 
         override fun uploadReview(title: String) {
             val auth = FirebaseAuth.getInstance()
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 val mail = firebaseAuth.currentUser?.email
                 val query = db.collection("users").whereEqualTo("mail", mail).get().await()
                 var username = ""
