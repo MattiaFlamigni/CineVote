@@ -64,7 +64,7 @@ class SettingsVm(private val repository: FilmRepository) : ViewModel() {
     }
 
     private fun fetchUserData() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val username = firestore.actions.getDataFromMail("username")
             val name = auth.currentUser?.displayName?:"Utente non registrato"
             _state.update { it.copy(username=username, name = name) }
@@ -102,7 +102,7 @@ class SettingsVm(private val repository: FilmRepository) : ViewModel() {
 
         override fun getProfilePic(mail: String) {
 
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 val query = db.collection("profilePIC").whereEqualTo("user", mail).get().await()
                 if(query.isEmpty){
                     _state.value = state.value.copy(path = Uri.parse(
@@ -121,7 +121,7 @@ class SettingsVm(private val repository: FilmRepository) : ViewModel() {
         override fun getFilmReviewd() {
             val list: MutableList<String> = mutableListOf()
             val watchedMovie : MutableList<WatchedMovie> = mutableListOf()
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 try {
                     var query = db.collection("review").whereEqualTo("mail",
                         auth.currentUser?.email

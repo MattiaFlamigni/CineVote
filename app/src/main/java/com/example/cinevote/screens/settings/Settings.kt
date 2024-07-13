@@ -72,8 +72,8 @@ fun SettingsScreen(
     val email = firebaseAuth.currentUser?.email ?: ""
     LaunchedEffect(email) {
         action.getProfilePic(email)
+        action.getFilmReviewd()
     }
-    action.getFilmReviewd()
 
     Scaffold(
         topBar = { TopBar(title = "Impostazioni", navController = navController) }
