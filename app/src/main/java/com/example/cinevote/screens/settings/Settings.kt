@@ -51,6 +51,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.cinevote.NavigationRoute
 import com.example.cinevote.R
+import com.example.cinevote.components.TextInput
 import com.example.cinevote.components.TopBar
 import com.example.cinevote.screens.auth.AuthStatus
 import com.example.cinevote.screens.auth.AuthViewModel
@@ -58,6 +59,8 @@ import com.example.cinevote.screens.signUp.firebaseAuth
 import com.example.cinevote.util.LoadThumbnail
 import com.example.cinevote.util.PermissionStatus
 import com.example.cinevote.util.rememberPermission
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 
 @Composable
 fun SettingsScreen(
@@ -206,13 +209,15 @@ fun ShowProfile(state: SettingsStatus, action: SettingsAction, profileImageUri: 
             modifier = Modifier.padding(top = 4.dp)
         )
 
-        Button(
+
+        /*Button(
             onClick = { /*TODO*/ },
-            enabled = state.username == "Utente non registrato",
             modifier = Modifier.padding(top = 16.dp)
         ) {
             Text("Edit profile")
-        }
+        }*/
+
+        EditProfileButton(action)
     }
 
     if (showPermissionDeniedAlert) {
@@ -239,6 +244,28 @@ fun ShowProfile(state: SettingsStatus, action: SettingsAction, profileImageUri: 
         ) {
             Text("Permission permanently denied. Please enable it in settings.")
         }
+    }
+}
+
+
+@Composable
+fun EditProfileButton(action: SettingsAction) {
+
+    var txt by remember { mutableStateOf("modifica nome utente") }
+
+
+
+    TextInput(
+       role = "new username",
+        onChangeAction = {txt = it}
+    )
+    Button(
+        onClick = {
+            action.editUsername(txt)
+        },
+        modifier = Modifier.padding(top = 16.dp)
+    ) {
+        Text("Modifica nome utente")
     }
 }
 

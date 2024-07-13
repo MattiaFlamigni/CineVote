@@ -10,6 +10,7 @@ import com.example.cinevote.data.database.Room.FilmList
 import com.example.cinevote.data.repository.FilmRepository
 import com.example.cinevote.screens.signUp.firebaseAuth
 import com.example.cinevote.util.TMDBService
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.okhttp.OkHttpClient
 import com.squareup.okhttp.Request
@@ -197,7 +198,10 @@ class DetailsVM(private val repository: FilmRepository) : ViewModel() {
 
                         username = query.documents[0].getString("username").toString()
                     }
-                    val query2 = db.collection("review").whereEqualTo("autore", username)
+                    val auth = FirebaseAuth.getInstance()
+                    val query2 = db.collection("review").whereEqualTo("mail",
+                        auth.currentUser?.email
+                    )
                         .whereEqualTo("titolo", title).get().await()
 
                     if (query2.isEmpty) {

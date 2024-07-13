@@ -43,7 +43,7 @@ class HomeVM(private val repository: FilmRepository) : ViewModel() {
         override fun getTop() {
 
 
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
 
 
                 val url = "https://api.themoviedb.org/3/movie/popular?language=it&region=it"
@@ -62,7 +62,7 @@ class HomeVM(private val repository: FilmRepository) : ViewModel() {
         override fun getFilmsByGenre(pages: Int, genre: Int) {
 
 
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 repository.film.collect { filmList ->
                     val filmsWithBaseUrl = filmList.map { film ->
                         film.copy(posterPath = "$tmdbBaseUrl${film.posterPath}")
@@ -102,7 +102,7 @@ class HomeVM(private val repository: FilmRepository) : ViewModel() {
         override fun loadFilm() {
             val tmdb = TMDBService()
 
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 for (page in 1..100) {
                     tmdb.fetchFilmData(
                         url = "https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=it&page=$page&sort_by=popularity.desc&region=it",
@@ -118,7 +118,7 @@ class HomeVM(private val repository: FilmRepository) : ViewModel() {
                                     voteAverage = filmData.voteAverage
                                 )
 
-                                viewModelScope.launch {
+                                viewModelScope.launch(Dispatchers.IO) {
                                     withContext(Dispatchers.IO) {
                                         repository.upsert(film)
                                     }
@@ -138,7 +138,6 @@ class HomeVM(private val repository: FilmRepository) : ViewModel() {
         }
 
 
+
     }
-
-
 }

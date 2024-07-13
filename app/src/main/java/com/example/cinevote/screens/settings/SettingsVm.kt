@@ -12,7 +12,10 @@ import com.example.cinevote.data.database.Firestore
 import com.example.cinevote.data.repository.FilmRepository
 import com.example.cinevote.screens.signUp.firebaseAuth
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -41,6 +44,8 @@ interface SettingsAction {
     fun getProfilePic(mail:String)
 
     fun getFilmReviewd()
+
+    fun editUsername(txt : String)
 
 }
 
@@ -118,7 +123,9 @@ class SettingsVm(private val repository: FilmRepository) : ViewModel() {
             val watchedMovie : MutableList<WatchedMovie> = mutableListOf()
             viewModelScope.launch {
                 try {
-                    var query = db.collection("review").whereEqualTo("autore", state.value.username).get().await()
+                    var query = db.collection("review").whereEqualTo("mail",
+                        auth.currentUser?.email
+                    ).get().await()
                     var username=""
                     if(query.isEmpty){
                         username = firebaseAuth.currentUser?.displayName.toString()
@@ -159,6 +166,34 @@ class SettingsVm(private val repository: FilmRepository) : ViewModel() {
 
         }
 
+        override fun editUsername(txt : String) {
+            val currentUser = auth.currentUser
+            if (currentUser != null) {
+                Log.d("change", currentUser.displayName.toString())
+            }
+
+            val firestore = FirebaseFirestore.getInstance()
+
+            currentUser?.let { user ->
+                val newDisplayName = txt // Sostituisci con il nome da modificare
+                val profileUpdates = UserProfileChangeRequest.Builder()
+                    .setDisplayName(newDisplayName)
+                    .build()
+
+                user.updateProfile(profileUpdates)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            viewModelScope.launch(Dispatchers.IO) {
+                                updateUsername(currentUser = currentUser, newUsername = txt)
+                            }
+
+                        } else {
+                            // Gestione degli errori
+                        }
+                    }
+            }
+        }
+
     }
 
 
@@ -167,5 +202,32 @@ class SettingsVm(private val repository: FilmRepository) : ViewModel() {
 
 
 
+}
+
+
+private suspend fun updateUsername(currentUser: FirebaseUser, newUsername: String) {
+    val db = FirebaseFirestore.getInstance()
+    val usersRef = db.collection("users")
+
+    try {
+        // Get the document reference based on the user's UID or any unique identifier
+        val querySnapshot = usersRef.whereEqualTo("username", currentUser.displayName).get().await()
+
+        // Assume only one document is returned, update the username field
+        if (!querySnapshot.isEmpty) {
+            Log.d("change", "perfetto")
+            val documentSnapshot = querySnapshot.documents.first()
+            val documentId = documentSnapshot.id
+
+            // Update the username field in the Firestore document
+            usersRef.document(documentId).update("username", newUsername).await()
+
+            // Update local state or notify user about the successful update
+            // (optional, depending on your application flow)
+        }
+    } catch (e: Exception) {
+        // Handle errors, such as Firestore exceptions or network issues
+        e.printStackTrace()
+    }
 }
 

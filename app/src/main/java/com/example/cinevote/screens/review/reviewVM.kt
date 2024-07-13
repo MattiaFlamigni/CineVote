@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinevote.data.repository.FilmRepository
 import com.example.cinevote.screens.signUp.firebaseAuth
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -57,6 +58,7 @@ class reviewVM(private val repository: FilmRepository) : ViewModel() {
         }
 
         override fun uploadReview(title: String) {
+            val auth = FirebaseAuth.getInstance()
             viewModelScope.launch {
                 val mail = firebaseAuth.currentUser?.email
                 val query = db.collection("users").whereEqualTo("mail", mail).get().await()
@@ -70,9 +72,10 @@ class reviewVM(private val repository: FilmRepository) : ViewModel() {
 
                 val review = hashMapOf(
                     "descrizione" to state.value.desc,
-                    "autore" to username,
+                    "autore" to (auth.currentUser?.displayName ?: ""),
                     "stelle" to state.value.rating,
-                    "titolo" to title
+                    "titolo" to title,
+                    "mail" to (auth.currentUser?.email ?: "")
                 )
 
                 db.collection("review").add(review).addOnSuccessListener {

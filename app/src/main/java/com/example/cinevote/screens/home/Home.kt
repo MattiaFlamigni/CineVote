@@ -157,7 +157,9 @@ fun HomeScreen(
 @Composable
 private fun TopCategory(navController: NavHostController, state: HomeState, actions: HomeAction) {
 
-    actions.getTop()
+    LaunchedEffect(Unit) {
+        actions.getTop()
+    }
 
     Column {
         Text(
