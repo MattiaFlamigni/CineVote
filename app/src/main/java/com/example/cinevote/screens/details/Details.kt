@@ -20,13 +20,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.sharp.Star
 import androidx.compose.material.icons.twotone.Star
 import androidx.compose.material3.AssistChip
@@ -36,8 +32,8 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -114,7 +110,7 @@ fun DetailScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = title,
+                        text = "Dettaglio",
                         fontFamily = FontFamily.Default,
                         fontSize = 30.sp,
                         letterSpacing = 0.30.sp,
@@ -182,22 +178,6 @@ fun DetailScreen(
                         GetImage(state.poster, state.title)
 
 
-
-                        Column(
-                            horizontalAlignment = Alignment.End,
-                            modifier = Modifier.padding(start = 20.dp, top = 40.dp)
-                        ) {
-                            IconToggle(initialIcon = Icons.Default.FavoriteBorder,
-                                finalIcon = Icons.Default.Favorite,
-                                { /*TODO*/ },
-                                {/*TODO*/ })
-                            IconToggle(initialIcon = Icons.Outlined.CheckCircle,
-                                finalIcon = Icons.Default.CheckCircle,
-                                {/*TODO*/ },
-                                {/*TODO*/ })
-                        }
-
-
                     }
 
                     Column(
@@ -209,28 +189,16 @@ fun DetailScreen(
                     ) {
 
                         Row(modifier = Modifier.fillMaxWidth()) {
-
-
                             val generi = state.genres
-                            for (genre in generi) {
-                                Text(
-                                    text = genre,
-                                    fontFamily = FontFamily.Default,
-                                    fontSize = 20.sp,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                                )
-
-                                Text(
-                                    text = "|",
-                                    fontFamily = FontFamily.Default,
-                                    fontSize = 20.sp,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                                )
-
-
-                            }
+                            val generiConcatenati = generi.joinToString(separator = " | ")
+                            Text(
+                                text = generiConcatenati,
+                                fontFamily = FontFamily.Default,
+                                fontSize = 20.sp,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
                         }
-                        Spacer(modifier = Modifier.padding(top = 15.dp))
+                        //Spacer(modifier = Modifier.padding(top = 15.dp))
                         Text(
                             text = state.title,
                             fontFamily = FontFamily.Default,
@@ -477,24 +445,7 @@ private fun AssistChipExample(
     )
 }
 
-@Composable
-private fun IconToggle(
-    initialIcon: ImageVector, finalIcon: ImageVector, firstClick: () -> Unit, lastClick: () -> Unit
-) {
-    var isAdded by remember { mutableStateOf(false) }
 
-    IconButton(
-        onClick = { isAdded = !isAdded },
-    ) {
-        if (isAdded) {
-            Icon(finalIcon, "info") // Icona visibile
-            firstClick()
-        } else {
-            Icon(initialIcon, "info") // Icona nascosta
-            lastClick()
-        }
-    }
-}
 
 
 @Composable
@@ -511,10 +462,6 @@ private fun GetImage(poster: String, title: String) {
             .fillMaxWidth()
             .size(300.dp, 300.dp)
     )
-}
-
-private fun getGenres(): List<String> {
-    return listOf("Fantasy", "Avventura")
 }
 
 
@@ -655,7 +602,7 @@ fun ReviewCard(review: Review) {
                 color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Divider(color = MaterialTheme.colorScheme.primary, thickness = 1.dp)
+            HorizontalDivider(thickness = 1.dp, color = MaterialTheme.colorScheme.primary)
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 verticalAlignment = Alignment.CenterVertically,
