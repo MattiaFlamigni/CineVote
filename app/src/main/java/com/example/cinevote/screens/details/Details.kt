@@ -23,8 +23,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.sharp.Star
-import androidx.compose.material.icons.twotone.Star
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
@@ -464,20 +462,6 @@ private fun GetImage(poster: String, title: String) {
     )
 }
 
-
-@Composable
-private fun ReviewRating(index: Int) {
-
-
-    Row {
-        repeat(5) { current ->
-            Icon(
-                imageVector = if (current < index) Icons.Sharp.Star else Icons.TwoTone.Star,
-                contentDescription = null
-            )
-        }
-    }
-}
 
 
 @Composable
