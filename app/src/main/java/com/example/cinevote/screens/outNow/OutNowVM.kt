@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
+import org.threeten.bp.LocalDate
 
 data class OutNowStatus(val filmList: List<Film> = emptyList())
 
@@ -34,9 +35,10 @@ class OutNowVM : ViewModel() {
 
             viewModelScope.launch(Dispatchers.IO) {
 
+                val url =
+                    "https://api.themoviedb.org/3/movie/now_playing?language=it&page=1&region=it"
 
-                val url = /*TODO: DATA DINAMICA*/
-                    "https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=false&language=it&page=1&primary_release_date.gte=2024-04-17&region=it&sort_by=popularity.desc&with_release_type=3"
+                //"https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=false&language=it&page=1&primary_release_date.gte=2024-06-17&region=it&sort_by=popularity.desc&with_release_type=3"
                 tmdb.fetchFilmData(
                     url,
                     onSuccess = { filmList ->
