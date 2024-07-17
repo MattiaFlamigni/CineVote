@@ -4,7 +4,7 @@
 
     <string name="Web_Client_ID">366608684761-oqr72k5ikfvrukgm1oummsnv45vsvs69.apps.googleusercontent.com</string>
 
-                <!-- TITLE STRINGS !-->
+    <!-- TITLE STRINGS !-->
     <string name="login_title">Effettua il Login</string>
     <string name="registrati_title">Registrati</string>
     <string name="home_title">Catalogo</string>
@@ -15,29 +15,17 @@
     <string name="cinema_title">Cinema nelle vicinanze</string>
 
 
-
-                <!-- ERROR STRINGS !-->
+    <!-- ERROR STRINGS !-->
     <string name="user_error_strings">Nome utente gia utilizzato</string>
 
 
-
-
-                <!--SETTINGS SCREEN GENERAL STRINGS!-->
+    <!--SETTINGS SCREEN GENERAL STRINGS!-->
     <string name="Impostazioni_tema_option">Impostazioni tema</string>
     <string name="Logout_option">Logout</string>
 
 
-                <!--CINEMA NELLE VICINANZE GENERAL STRINGS!-->
+    <!--CINEMA NELLE VICINANZE GENERAL STRINGS!-->
     <string name="Nessun_cinema">Nessun cinema trovato nelle vicinanze</string>
-
-
-
-
-
-
-
-
-
 
 
     <string name="registration_spot">Unisciti. Esplora. Condividi. Cinema.</string>
@@ -47,6 +35,9 @@
     <string name="theme_dark">Dark</string>
     <string name="theme_system">System\n</string>
     <string name="select_theme">Select</string>
+    <string name="appwidget_text">FILM DEL GIORNO</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">This is an app widget description</string>
 
 
 </resources>
