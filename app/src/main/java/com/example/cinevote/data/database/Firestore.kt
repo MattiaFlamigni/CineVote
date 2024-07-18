@@ -1,8 +1,10 @@
 package com.example.cinevote.data.database
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.example.cinevote.data.Review
+import com.example.cinevote.data.database.Room.FilmList
 import com.example.cinevote.screens.signUp.firebaseAuth
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -28,6 +30,7 @@ interface FirestoreAction{
 
     suspend fun getReviewByUser(username: String) : List<Review>
     suspend fun isFavorite(title: String) : Boolean
+    suspend fun loadFavorites(mail:String) : List<String>
 
 
 
@@ -121,6 +124,20 @@ class Firestore {
                         return false
                     }
             }
+
+        override suspend fun loadFavorites(mail: String): List<String> {
+            val list : MutableList<String> = mutableListOf()
+            val query = db.collection("favorites").whereEqualTo("user", mail).get().await()
+            for (document in query.documents) {
+                val title = document.getString("title")
+                title?.let { it ->
+                    list.add(it)
+                }
+
+            }
+
+            return list
+        }
 
 
     }

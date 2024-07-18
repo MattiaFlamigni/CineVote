@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinevote.data.Film
+import com.example.cinevote.data.database.Firestore
 import com.example.cinevote.data.database.Room.FilmList
 import com.example.cinevote.data.repository.FilmRepository
 import com.google.firebase.firestore.FirebaseFirestore
@@ -30,20 +31,26 @@ class WishListVM(private val repository: FilmRepository) : ViewModel() {
 
     val action = object : WishListAction {
         override fun loadFilm(mail: String) {
-            val tmpList: MutableList<String> = mutableListOf()
+            //val tmpList: MutableList<String> = mutableListOf()
             val filmList: MutableList<FilmList> = mutableListOf()
             val prova: Film
 
 
             viewModelScope.launch {
-                val query = db.collection("favorites").whereEqualTo("user", mail).get().await()
+
+               val firestore = Firestore()
+                val tmpList = firestore.actions.loadFavorites(mail)
+
+
+
+                /*val query = db.collection("favorites").whereEqualTo("user", mail).get().await()
                 for (document in query.documents) {
                     val title = document.getString("title")
                     title?.let { it ->
                         tmpList.add(it)
                     }
 
-                }
+                }*/
 
                 for (filmTitle in tmpList) {
                     val film = repository.getFilmFromTitle(filmTitle)
