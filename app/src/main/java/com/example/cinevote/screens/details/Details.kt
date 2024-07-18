@@ -353,6 +353,14 @@ fun DetailScreen(
                             // Dividi gli attori in gruppi di tre per riga
                             val actorsInRows = state.actorListState.chunked(3)
 
+                            if(state.actorListState.isEmpty()){
+                                Text(
+                                    text = "N/D",
+                                    style = MaterialTheme.typography.labelLarge,
+                                    textAlign = TextAlign.Center,
+                                )
+                            }
+
                             // Itera sui gruppi di attori
                             actorsInRows.forEach { rowOfActors ->
                                 Row(
@@ -651,12 +659,21 @@ fun PlotSection(plot: String) {
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = plot,
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                modifier = Modifier.padding(top = 8.dp)
-            )
+            if(plot.isNotEmpty()) {
+                Text(
+                    text = plot,
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }else{
+                Text(
+                    text = "N/D",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
         }
     }
 }
