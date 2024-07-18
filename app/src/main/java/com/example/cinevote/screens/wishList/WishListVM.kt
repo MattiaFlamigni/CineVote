@@ -11,7 +11,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 
 data class wishListState(
@@ -38,9 +37,8 @@ class WishListVM(private val repository: FilmRepository) : ViewModel() {
 
             viewModelScope.launch {
 
-               val firestore = Firestore()
+                val firestore = Firestore()
                 val tmpList = firestore.actions.loadFavorites(mail)
-
 
 
                 /*val query = db.collection("favorites").whereEqualTo("user", mail).get().await()
