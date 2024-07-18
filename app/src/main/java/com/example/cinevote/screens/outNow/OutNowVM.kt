@@ -1,6 +1,11 @@
 package com.example.cinevote.screens.outNow
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinevote.data.Film
@@ -20,11 +25,13 @@ data class OutNowStatus(val filmList: List<Film> = emptyList())
 
 interface FilmAction {
     fun getFilmList()
+    fun getFutureFilm()
 }
 
 
 class OutNowVM : ViewModel() {
 
+    val selectedFilter: MutableState<TypeFilm> = mutableStateOf(TypeFilm.AL_CINEMA)
     private val tmdb = TMDBService()
 
     private val _state = MutableStateFlow(OutNowStatus())
@@ -51,6 +58,26 @@ class OutNowVM : ViewModel() {
             }
 
 
+        }
+
+        override fun getFutureFilm() {
+            viewModelScope.launch(Dispatchers.IO) {
+
+                val currentDate = LocalDate.now()
+                val url =
+                    //"https://api.themoviedb.org/3/movie/now_playing?language=it&page=1&region=it"
+
+                "https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=false&language=it&page=1&primary_release_date.gte=${currentDate}&region=it&sort_by=popularity.desc&with_release_type=3"
+                tmdb.fetchFilmData(
+                    url,
+                    onSuccess = { filmList ->
+                        _state.update { it.copy(filmList = filmList) }
+                    },
+                    onFailure = {
+                        Log.e("OutNowVM", "Errore nella richiesta")
+                    }
+                )
+            }
         }
     }
 }
