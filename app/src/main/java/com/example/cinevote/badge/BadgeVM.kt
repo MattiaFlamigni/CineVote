@@ -10,6 +10,7 @@ import com.example.cinevote.data.database.Firestore
 import com.example.cinevote.util.TMDBService
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Delay
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -56,7 +57,7 @@ class BadgeViewModel : ViewModel() {
 
 
         override fun checkBadgeReached(badge: Badge) {
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 var username = firestore.actions.getDataFromMail("username")
 
                 if (username.isEmpty()) {
