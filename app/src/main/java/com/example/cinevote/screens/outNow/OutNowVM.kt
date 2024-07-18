@@ -9,8 +9,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinevote.data.Film
+import com.example.cinevote.data.database.Firestore
 
 import com.example.cinevote.util.TMDBService
+import com.google.firebase.Firebase
 import kotlinx.coroutines.Dispatchers
 
 import kotlinx.coroutines.flow.MutableStateFlow
