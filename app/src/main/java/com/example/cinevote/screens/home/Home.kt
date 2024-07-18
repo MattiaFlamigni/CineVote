@@ -27,8 +27,11 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.wear.compose.material.placeholder
+import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import coil.size.Scale
 import com.example.cinevote.NavigationRoute
 import com.example.cinevote.R
 import com.example.cinevote.components.TopBar
@@ -127,15 +130,17 @@ fun HomeScreen(
                                             )
                                         }
                                     ) {
-                                        Image(
-                                            painter = rememberAsyncImagePainter(model = film.posterPath),
+                                        AsyncImage(
+                                            model = ImageRequest.Builder(LocalContext.current)
+                                                .data(film.posterPath)
+                                                .crossfade(true)  // Effetto di transizione
+                                                .scale(Scale.FILL) // Scala l'immagine per riempire l'area
+                                                .build(),
                                             contentDescription = film.title,
-                                            //contentDescription = "",
-                                            //painter = painterResource(id = R.drawable.ic_launcher_foreground),
                                             contentScale = ContentScale.Crop,
                                             modifier = Modifier
-                                                .fillMaxWidth()
                                                 .size(100.dp)
+                                                .fillMaxWidth()
                                         )
 
                                     }
