@@ -27,7 +27,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.wear.compose.material.placeholder
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
@@ -44,15 +43,11 @@ fun HomeScreen(
     actions: HomeAction,
     state: HomeState,
 ) {
-    Scaffold(
-        bottomBar = { bottomAppBar(navController) },
-        topBar = {
-            TopBar(
-                title = stringResource(id = R.string.home_title),
-                navController = navController
-            )
-        },
-        containerColor = MaterialTheme.colorScheme.background
+    Scaffold(bottomBar = { bottomAppBar(navController) }, topBar = {
+        TopBar(
+            title = stringResource(id = R.string.home_title), navController = navController
+        )
+    }, containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
         Surface {
             LazyColumn(
@@ -78,12 +73,11 @@ fun HomeScreen(
                     for (genre in Genre.entries) {
 
 
-                        TextButton(
-                            onClick = {
-                                navController.navigate(
-                                    NavigationRoute.Expand.buildRoute(genre.id)
-                                )
-                            }
+                        TextButton(onClick = {
+                            navController.navigate(
+                                NavigationRoute.Expand.buildRoute(genre.id)
+                            )
+                        }
 
 
                             /*onClick = { navController.navigate(NavigationRoute.Expand.buildRoute(genre.id))
@@ -91,8 +85,7 @@ fun HomeScreen(
                             Log.d("route",
                                 navController.navigate(NavigationRoute.Expand.buildRoute(genre.id))
                                     .toString())
-                        }*/
-                        ) {
+                        }*/) {
                             Text(
                                 text = genre.name,
                             )
@@ -116,8 +109,7 @@ fun HomeScreen(
 
 
                                     val film = films[index]
-                                    Card(
-                                        modifier = Modifier.padding(10.dp),
+                                    Card(modifier = Modifier.padding(10.dp),
                                         colors = CardDefaults.cardColors(
                                             containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                                             contentColor = MaterialTheme.colorScheme.onTertiaryContainer
@@ -128,8 +120,7 @@ fun HomeScreen(
                                                     film.title
                                                 )
                                             )
-                                        }
-                                    ) {
+                                        }) {
                                         AsyncImage(
                                             model = ImageRequest.Builder(LocalContext.current)
                                                 .data(film.posterPath)
@@ -168,9 +159,7 @@ private fun TopCategory(navController: NavHostController, state: HomeState, acti
 
     Column {
         Text(
-            text = "Top Film",
-            fontFamily = FontFamily.Default,
-            fontSize = 50.sp
+            text = "Top Film", fontFamily = FontFamily.Default, fontSize = 50.sp
         )
 
 
@@ -192,9 +181,7 @@ private fun TopCategory(navController: NavHostController, state: HomeState, acti
                         Image(
                             painter = rememberAsyncImagePainter(
                                 model = ImageRequest.Builder(LocalContext.current)
-                                    .data(film.posterUrl)
-                                    .size(coil.size.Size.ORIGINAL)
-                                    .build()
+                                    .data(film.posterUrl).size(coil.size.Size.ORIGINAL).build()
                             ),
                             contentDescription = film.title,
                             contentScale = ContentScale.Crop,
