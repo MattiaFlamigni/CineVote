@@ -77,7 +77,7 @@ fun LoginScreen(
 
         ) {
 
-            Text(
+            /*Text(
                 modifier = Modifier
                     .padding(bottom = 40.dp, start = 20.dp)
                     .fillMaxWidth(),
@@ -89,7 +89,7 @@ fun LoginScreen(
                     //color = colorResource(id = R.color.myOrange) // Colore del testo aggiunto per maggior leggibilità
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
-            )
+            )*/
 
 
             Text(

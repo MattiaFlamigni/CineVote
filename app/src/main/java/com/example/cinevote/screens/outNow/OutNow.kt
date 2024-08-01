@@ -62,7 +62,7 @@ fun OutNowScreen(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(innerPadding)
+                .padding(innerPadding).padding(start=20.dp)
         ) {
             AssistChip(
                 leadingIcon = {

@@ -55,7 +55,7 @@ fun SignUpGeneralScreen(
 
         ) {
 
-            Text(
+            /*Text(
                 modifier = Modifier
                     .padding(bottom = 40.dp, start = 20.dp)
                     .fillMaxWidth(),
@@ -66,7 +66,7 @@ fun SignUpGeneralScreen(
                 fontWeight = FontWeight(50)
 
 
-            )
+            )*/
 
             Text(
                 modifier = Modifier

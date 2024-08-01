@@ -175,11 +175,14 @@ fun ShowProfile(state: SettingsStatus, action: SettingsAction, profileImageUri: 
                 .size(120.dp)
                 .padding(16.dp)
                 .clickable {
-                    if (readImagePermission.status.isGranted) {
-                        launcher.launch("image/*")
+
+                    launcher.launch("image/*")
+
+                    /*if (readImagePermission.status.isGranted) {
+                        launcher.launch("image")//TODO
                     } else {
                         readImagePermission.launchPermissionRequest()
-                    }
+                    }*/
                 }
         ) {
             if (state.path.toString().isEmpty()) {

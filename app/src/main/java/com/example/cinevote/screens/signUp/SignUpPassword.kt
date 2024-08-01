@@ -55,7 +55,7 @@ fun SignUpasswordScreen(
 
         ) {
 
-            Text(
+            /*Text(
                 modifier = Modifier
                     .padding(bottom = 40.dp, start = 20.dp)
                     .fillMaxWidth(),
@@ -64,7 +64,7 @@ fun SignUpasswordScreen(
                 fontStyle = FontStyle.Italic,
                 fontFamily = FontFamily.Monospace,
                 fontWeight = FontWeight(50)
-            )
+            )*/
 
             SignUpPasswordForm(navController, actions, state) //STATE SOLO PER DEBUG
 

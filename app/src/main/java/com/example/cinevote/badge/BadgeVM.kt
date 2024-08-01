@@ -58,14 +58,9 @@ class BadgeViewModel : ViewModel() {
 
         override fun checkBadgeReached(badge: Badge) {
             viewModelScope.launch(Dispatchers.IO) {
-                var username = firestore.actions.getDataFromMail("username")
+                    val username = auth.currentUser?.email.toString()
 
-                if (username.isEmpty()) {
-                    username = auth.currentUser?.displayName.toString()
-                }
 
-                // Implementa la logica per verificare se un badge è stato raggiunto
-                // Esempio: controlla se l'utente ha soddisfatto la condizione del badge
                 val isReached = when (badge.type) {
                     BadgeType.WATCH_MOVIES -> {
                         Log.d("username", username)

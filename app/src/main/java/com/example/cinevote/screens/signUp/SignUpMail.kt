@@ -52,7 +52,7 @@ fun SignUpMailScreen(
 
         ) {
 
-            Text(
+            /*Text(
                 modifier = Modifier
                     .padding(bottom = 40.dp, start = 20.dp)
                     .fillMaxWidth(),
@@ -60,7 +60,7 @@ fun SignUpMailScreen(
                 style = MaterialTheme.typography.headlineLarge,
                 fontFamily = FontFamily.Monospace,
 
-                )
+                )*/
 
             SignUpMailForm(navController, actions)
 

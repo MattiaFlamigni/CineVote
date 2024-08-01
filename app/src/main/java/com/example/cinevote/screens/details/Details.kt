@@ -314,6 +314,8 @@ fun DetailScreen(
                         }
 
 
+
+
                         item {
                             AssistChipExample( /*TODO*/
                                 "Recensioni",
@@ -353,13 +355,13 @@ fun DetailScreen(
                             // Dividi gli attori in gruppi di tre per riga
                             val actorsInRows = state.actorListState.chunked(3)
 
-                            if(state.actorListState.isEmpty()){
+                            /*if(state.actorListState.isEmpty()){
                                 Text(
                                     text = "N/D",
                                     style = MaterialTheme.typography.labelLarge,
                                     textAlign = TextAlign.Center,
                                 )
-                            }
+                            }*/
 
                             // Itera sui gruppi di attori
                             actorsInRows.forEach { rowOfActors ->

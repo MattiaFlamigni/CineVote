@@ -91,8 +91,8 @@ class Firestore {
             return list
         }
 
-        override suspend fun getReviewByUser(username: String): List<Review> {
-            val query = db.collection("review").whereEqualTo("autore", username).get().await()
+        override suspend fun getReviewByUser(mail: String): List<Review> {
+            val query = db.collection("review").whereEqualTo("mail", mail).get().await()
             val list : MutableList<Review> = mutableListOf()
 
 
@@ -101,8 +101,9 @@ class Firestore {
                 val descrizione = document.getString("descrizione") ?: ""
                 val stelle = document.getLong("stelle")?.toInt() ?: 0
                 val titolo = document.getString("titolo") ?: ""
+                val autore = document.getString("autore")?:""
 
-                val review = Review(descrizione = descrizione, stelle = stelle, autore = username, titolo = titolo)
+                val review = Review(descrizione = descrizione, stelle = stelle, autore = autore, titolo = titolo)
 
                 list.add(review)
             }
