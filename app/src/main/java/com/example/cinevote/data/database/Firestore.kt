@@ -5,9 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.example.cinevote.data.Review
 import com.example.cinevote.data.database.Room.FilmList
+import com.example.cinevote.screens.settings.WatchedMovie
 import com.example.cinevote.screens.signUp.firebaseAuth
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -25,12 +27,11 @@ data class UserInfo(
 
 interface FirestoreAction{
     suspend fun getDataFromMail(data:String):String
-
     suspend fun loadReview(title: String) : List<Review>
-
     suspend fun getReviewByUser(username: String) : List<Review>
     suspend fun isFavorite(title: String) : Boolean
     suspend fun loadFavorites(mail:String) : List<String>
+    suspend fun getFilmReviewd() :  List<String>
 
 
 
@@ -138,6 +139,50 @@ class Firestore {
             }
 
             return list
+        }
+
+        override suspend fun getFilmReviewd() : List<String> {
+            val list: MutableList<String> = mutableListOf()
+            val watchedMovie : MutableList<WatchedMovie> = mutableListOf()
+
+                try {
+                    var query = db.collection("review").whereEqualTo("mail",
+                        auth.currentUser?.email
+                    ).get().await()
+                    var username=""
+                    if(query.isEmpty){
+                        username = firebaseAuth.currentUser?.displayName.toString()
+                        query = db.collection("review").whereEqualTo("autore", username).get().await()
+                    }
+                    for (document in query.documents) {
+                        val title = document.getString("titolo") ?: ""
+                        list.add(title)
+                    }
+                } catch (e: Exception) {
+                    Log.e("getFilmReviewed", "Error fetching reviews", e)
+                    // Handle the error appropriately (e.g., show a message to the user)
+                }
+
+            return list
+
+
+
+
+            /*
+
+                for(movie in list){
+                    val film = repository.getFilmFromTitle(movie)
+                    val watched = WatchedMovie(
+                        posterUrl = "${tmdbBaseUrl}${film.posterPath}",
+                        title = film.title
+                    )
+                    watchedMovie.add(watched)
+                }
+                _state.value = state.value.copy(watchedMovie = watchedMovie )
+                Log.d("watchedList", state.value.watchedMovie.toString())
+
+             */
+
         }
 
 
