@@ -8,8 +8,16 @@
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
 .DS_Store
-/build
+/build/
 /captures
+/app/build/
 .externalNativeBuild
 .cxx
 local.properties
+gradle.properties
+*.apk
+*.ap_
+*.dex
+*.log
+*.class
+/.gradle

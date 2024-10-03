@@ -2,6 +2,7 @@ package com.example.cinevote.util
 
 
 import android.util.Log
+import com.example.cinevote.BuildConfig
 import com.example.cinevote.data.Actors
 import com.example.cinevote.data.Film
 import okhttp3.OkHttpClient
@@ -15,17 +16,19 @@ import org.json.JSONObject
 
 class TMDBService {
 
+    val apikey = BuildConfig.TMDB_API_KEY
+
     // Definisci una funzione che accetta un URL e un callback per la gestione dei dati
     fun fetchFilmData(url: String, onSuccess: (List<Film>) -> Unit, onFailure: (IOException) -> Unit) {
-        val request: Request = Request.Builder()
+        val request: Request.Builder = Request.Builder()
             .url(url)
             .get()
             .addHeader("accept", "application/json")
-            .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMTNhOGQwMGFhYjU1MDIwN2FlMDBiMDliZDBlNDIxMyIsInN1YiI6IjY1ZjcxZWZkMjQyZjk0MDE3ZGNjZjQxNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ._wgFHK2BtHQEPT_EHs1T6sfwVtxLscm2NKYAlOzRCfo")
-            .build()
+            //.addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMTNhOGQwMGFhYjU1MDIwN2FlMDBiMDliZDBlNDIxMyIsInN1YiI6IjY1ZjcxZWZkMjQyZjk0MDE3ZGNjZjQxNyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ._wgFHK2BtHQEPT_EHs1T6sfwVtxLscm2NKYAlOzRCfo")
+            .addHeader("Authorization", apikey )
 
         val client = OkHttpClient()
-        client.newCall(request).enqueue(object : Callback {
+        client.newCall(request.build()).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 onFailure(e)
             }
